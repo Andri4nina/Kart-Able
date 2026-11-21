@@ -1,0 +1,492 @@
+{
+  "_meta": {
+    "name": "Malagasy",
+    "order": 3
+  },
+  "brand": {
+    "tagline": "Hazakazaka kart arcade"
+  },
+  "common": {
+    "back": "Hiverina",
+    "continue": "Tohizo",
+    "close": "Hidio",
+    "done": "Vita",
+    "soon": "Ho avy",
+    "start": "Atombohy ny lalao",
+    "selected": "Voafidy",
+    "unavailable": "Tsy azo atao"
+  },
+  "keys": {
+    "enter": "Enter",
+    "escape": "Esc",
+    "arrows": "Zana-tsipika",
+    "space": "Espace",
+    "backspace": "Backspace",
+    "numpadEnter": "Enter (isa)",
+    "shiftLeft": "Shift havia",
+    "shiftRight": "Shift havanana",
+    "controlLeft": "Ctrl havia",
+    "controlRight": "Ctrl havanana",
+    "altLeft": "Alt",
+    "altRight": "Alt Gr",
+    "capsLock": "Caps Lock",
+    "delete": "Suppr",
+    "insert": "Inser",
+    "home": "Home",
+    "end": "End",
+    "pageUp": "Page Up",
+    "pageDown": "Page Down",
+    "numpad": "Isa {{key}}",
+    "arrowUp": "↑",
+    "arrowDown": "↓",
+    "arrowLeft": "←",
+    "arrowRight": "→"
+  },
+  "hints": {
+    "play": "Hilalao",
+    "select": "Ekena",
+    "back": "Hiverina",
+    "fullscreen": "Efijery feno",
+    "navigate": "Hifindra"
+  },
+  "mainMenu": {
+    "label": "Menio fototra",
+    "play": "Hilalao",
+    "playHint": "Hazakazaka, ady amin'ny fotoana, ady, Rocket Gol",
+    "garage": "Garazy",
+    "garageHint": "Amboary ny kart-nao",
+    "settings": "Fikirana",
+    "settingsHint": "Fiteny, sary, feo, fanaraha-maso"
+  },
+  "nav": {
+    "steps": {
+      "label": "Dingana",
+      "mode": "Fomba",
+      "type": "Karazana",
+      "players": "Mpilalao",
+      "connection": "Fifandraisana",
+      "lobby": "Efitra",
+      "characters": "Mpitondra",
+      "vehicles": "Fiara",
+      "tracks": "Lalana"
+    },
+    "stepNumber": "Dingana {{number}}"
+  },
+  "modeSelect": {
+    "title": "Fomba filalaovana",
+    "subtitle": "Fidio ny fomba itondranao."
+  },
+  "modes": {
+    "race": {
+      "name": "Hazakazaka",
+      "description": "Fihodinana telo, lampihazo iray. Izay tonga voalohany amin'ny tsipika no mandresy."
+    },
+    "timeTrial": {
+      "name": "Ady amin'ny fotoana",
+      "description": "Irery manoloana ny famantaranandro: resio ny fotoana tsara indrindra nataonao."
+    },
+    "battle": {
+      "name": "Ady",
+      "description": "Kianja mihidy, zavatra an-tanana: izay mijoro farany no mandresy."
+    },
+    "rocketGol": {
+      "name": "Rocket Gol",
+      "description": "Baolina kitra amin'ny kart: ekipa roa, baolina goavana iray."
+    }
+  },
+  "modeTags": {
+    "teams": "Ekipa",
+    "solo": "Irery"
+  },
+  "players": {
+    "upTo": {
+      "one": "Hatramin'ny mpilalao {{count}}",
+      "other": "Hatramin'ny mpilalao {{count}}"
+    },
+    "solo": "Irery · mpilalao 1",
+    "count": "Mpilalao {{count}} / {{max}}",
+    "player": "Mpilalao {{number}}"
+  },
+  "playType": {
+    "title": "Karazana lalao",
+    "subtitle": "Amin'ity fitaovana ity sa an-tserasera?",
+    "notAvailable": "Tsy azo atao amin'ity fomba ity",
+    "local": {
+      "name": "Eo an-toerana",
+      "description": "Amin'ity fitaovana ity, efijery zaraina, fitendry sy manette."
+    },
+    "online": {
+      "name": "An-tserasera",
+      "description": "Mifanandrina amin'ny mpilalao mifandray, na aiza na aiza misy azy."
+    }
+  },
+  "local": {
+    "title": "Mpilalao eo an-toerana",
+    "subtitle": "Samy manindry START amin'ny fitaovany ny mpilalao tsirairay vao miditra.",
+    "pressStart": "Tsindrio START",
+    "tapToJoin": "na kitiho eto",
+    "joining": "Miditra",
+    "ready": "Vonona",
+    "leave": "Esory i {{player}}",
+    "leaveHint": "Hiala: {{keyboard1}} (fitendry 1) · {{keyboard2}} (fitendry 2) · {{gamepad}} (manette)",
+    "continueHint": "Mpilalao vonona iray manindry START hanohizana.",
+    "waitingHint": "Miandry mpilalao vonona iray farafahakeliny.",
+    "howToJoin": "Ahoana no hidirana"
+  },
+  "online": {
+    "title": "Lalao an-tserasera",
+    "subtitle": "Mamorona lalao na midira amin'ny an'ny namana.",
+    "offline": "Mbola tsy mifandray ny mpizara: topimaso ny endrika ihany ity.",
+    "create": {
+      "name": "Hamorona lalao",
+      "description": "Ho mpampiantrano ianao ary manasa ny namanao amin'ny kaody.",
+      "submit": "Mamorona"
+    },
+    "join": {
+      "name": "Hiditra amin'ny lalao",
+      "description": "Ampidiro ny kaody misy tarehintsoratra 6 avy amin'ny mpampiantrano.",
+      "codeLabel": "Kaodin'ny lalao",
+      "placeholder": "ABC123",
+      "submit": "Hiditra",
+      "invalid": "Tsy maintsy litera na isa 6 ny kaody."
+    },
+    "matchmaking": {
+      "name": "Matchmaking",
+      "description": "Mitady mpifanandrina ho azy."
+    }
+  },
+  "lobby": {
+    "title": "Efitra fiandrasana",
+    "mode": "Fomba",
+    "type": "Karazana",
+    "players": "Mpilalao",
+    "host": "Mpampiantrano",
+    "guest": "Vahiny",
+    "you": "Ianao",
+    "code": "Kaodin'ny lalao",
+    "codePending": "Omena rehefa mifandray amin'ny mpizara",
+    "freeSlots": {
+      "one": "Toerana malalaka {{count}}",
+      "other": "Toerana malalaka {{count}}"
+    },
+    "startOnlineBlocked": "Ilaina ny mpizara vao afaka manomboka lalao an-tserasera.",
+    "waiting": "Miandry mpilalao",
+    "charactersPending": "Tsy maintsy manamafy ny mpitondrany ny mpilalao rehetra.",
+    "noPlayers": "Tsy misy mpilalao niditra.",
+    "duplicateCharacters": "Mpilalao roa no nanamafy mpitondra mitovy.",
+    "vehiclesPending": "Tsy maintsy manamafy ny fiarany ny mpilalao rehetra.",
+    "setReady": "Vonona?",
+    "ready": "Vonona",
+    "cancelReady": "Foano: mbola tsy vonona",
+    "readyPending": {
+      "one": "Mpilalao {{count}} mbola tsy vonona (START)",
+      "other": "Mpilalao {{count}} mbola tsy vonona (START)"
+    },
+    "allReady": "Vonona daholo: mandeha!",
+    "track": "Lalana",
+    "trackValue": "{{track}} · {{cup}}",
+    "trackPending": "Mbola tsy voafidy ny lalana."
+  },
+  "settings": {
+    "title": "Fikirana",
+    "close": "Hidio ny fikirana",
+    "soon": "Ho avy tsy ho ela ity fizarana ity.",
+    "tabs": {
+      "language": "Fiteny",
+      "audio": "Feo",
+      "graphics": "Sary",
+      "controls": "Fanaraha-maso"
+    },
+    "language": {
+      "hint": "Miova avy hatrany ary voatahiry."
+    },
+    "graphics": {
+      "quality": "Kalitao",
+      "qualityHint": "Mametra ny haavon'ny kalitaon'ny sary.",
+      "low": "Ambany",
+      "medium": "Antonony",
+      "high": "Avo",
+      "motion": "Fihetsika",
+      "motionHint": "« Rafitra » dia manaraka ny safidin'ny fitaovanao.",
+      "system": "Rafitra",
+      "reduced": "Voafetra",
+      "full": "Feno",
+      "fov": "Saha fahitana",
+      "fovHint": "Fakan-tsarin'ny hazakazaka ihany."
+    },
+    "controls": {
+      "profile": "Mombamomba",
+      "gamepads": "Manette",
+      "groups": {
+        "menu": "Menio",
+        "race": "Hazakazaka"
+      },
+      "raceHint": "Ampiasaina rehefa afaka mandeha ny kart (dingana 2).",
+      "stickNote": "Ny stick havia no mitarika foana, na amin'ny menio na amin'ny hazakazaka.",
+      "reset": "Bokotra tany am-boalohany",
+      "intro": "Tsindrio ny toerana iray, avy eo ny bokotra tianao.",
+      "waiting": "Tsindrio…",
+      "waitingKey": "Tsindrio ny bokotra ho an'ny « {{action}} » (Esc hanafoanana).",
+      "waitingButton": "Tsindrio ny bokotry ny manette ho an'ny « {{action}} » (Esc hanafoanana).",
+      "empty": "Tsy misy",
+      "primary": "voalohany",
+      "secondary": "faharoa",
+      "change": "Ovay ny bokotra {{slot}} an'ny « {{action}} »",
+      "clear": "Esory {{key}} amin'ny « {{action}} »",
+      "notices": {
+        "assigned": "« {{action}} » : {{key}}.",
+        "swapped": "{{key}} dia an'ny « {{other}} » : nifanakalo ny bokotra.",
+        "reserved": "{{key}} dia voatokana (Esc, F, Tab, bokotra F1-F12).",
+        "usedByOther": "{{key}} efa ampiasain'ny {{profile}}.",
+        "required": "« {{action}} » tsy maintsy manana bokotra iray farafahakeliny.",
+        "cleared": "Nesorina ny bokotra amin'ny « {{action}} ».",
+        "reset": "Naverina ny bokotra tany am-boalohany : {{profile}}."
+      }
+    }
+  },
+  "language": {
+    "label": "Fiteny",
+    "change": "Hanova fiteny"
+  },
+  "hud": {
+    "label": "HUD hazakazaka",
+    "item": "Zavatra",
+    "noItem": "Tsy misy zavatra",
+    "lap": "Fihodinana",
+    "time": "Fotoana",
+    "speed": "Hafainganana",
+    "kmh": "km/h",
+    "position": "Laharana {{position}} amin'ny {{total}}",
+    "ordinal": {
+      "other": ""
+    },
+    "settings": "Fikirana",
+    "exit": "Hiverina amin'ny menio",
+    "demo": "HUD fanandramana · {{mode}} · kart amin'ny dingana 2",
+    "playerView": "Fijerin'i {{player}}",
+    "overview": "Topimaso ankapobeny"
+  },
+  "input": {
+    "keyboard1": "Fitendry 1",
+    "keyboard2": "Fitendry 2",
+    "gamepad": "Manette {{number}}",
+    "gamepadAny": "Manette",
+    "pointer": "Tsindry / totozy",
+    "tap": "Kitiho",
+    "dpad": "D-pad",
+    "disconnected": "Tapaka"
+  },
+  "characterSelect": {
+    "title": "Mpitondra",
+    "subtitle": "Samy misafidy ny mpitondrany ny mpilalao tsirairay.",
+    "roster": "Mpitondra"
+  },
+  "classes": {
+    "tank": {
+      "name": "Mavesatra",
+      "strength": "Manosika ny kart maivana, mahatanty fifandonana",
+      "weakness": "Miadana manomboka, mivily lavitra"
+    },
+    "standard": {
+      "name": "Salantsalany",
+      "strength": "Voalanjalanja, mora ampiasaina",
+      "weakness": "Tsy manana tanjaka miavaka"
+    },
+    "speed": {
+      "name": "Haingana",
+      "strength": "Hafainganana ambony sy drift tena tsara",
+      "weakness": "Miadana miverina, maivana, sarotra fehezina"
+    },
+    "special": {
+      "name": "Manokana",
+      "mechanic": "Manidina: tsy miadana ivelan'ny lalana",
+      "strength": "Manokatra lalana fohy ivelan'ny lalana",
+      "weakness": "Tsy dia mifikitra, tena marefo amin'ny fifandonana"
+    }
+  },
+  "sizes": {
+    "small": {
+      "name": "Kely"
+    },
+    "medium": {
+      "name": "Antonony"
+    },
+    "large": {
+      "name": "Lehibe"
+    }
+  },
+  "stats": {
+    "topSpeed": "Hafainganana",
+    "acceleration": "Fanafainganana",
+    "weight": "Lanja",
+    "handling": "Fitondrana",
+    "drift": "Drift",
+    "toughness": "Faharetana"
+  },
+  "characters": {
+    "diesel": {
+      "name": "Diesel"
+    },
+    "marlo": {
+      "name": "Marlo"
+    },
+    "timo": {
+      "name": "Timo"
+    },
+    "pyrox": {
+      "name": "Pyrox"
+    },
+    "osso": {
+      "name": "Osso"
+    },
+    "rubis": {
+      "name": "Rubis"
+    },
+    "mitsu": {
+      "name": "Mitsu"
+    },
+    "volt": {
+      "name": "Volt"
+    },
+    "gibus": {
+      "name": "Sir Gibus"
+    },
+    "tempo": {
+      "name": "Tempo"
+    },
+    "frisko": {
+      "name": "Frisko"
+    },
+    "kosmo": {
+      "name": "Kosmo"
+    },
+    "nox": {
+      "name": "Nox"
+    },
+    "zenji": {
+      "name": "Zenji"
+    },
+    "pompon": {
+      "name": "Pompon"
+    },
+    "miella": {
+      "name": "Miella"
+    }
+  },
+  "selection": {
+    "confirm": "Hamafiso",
+    "cancel": "Ovay",
+    "confirmed": "Voamafy",
+    "preselected": "Voafantina",
+    "reservedBy": "Efa nalain'i {{player}}",
+    "pending": {
+      "one": "Mpilalao {{count}} mbola tsy nanamafy",
+      "other": "Mpilalao {{count}} mbola tsy nanamafy"
+    },
+    "allConfirmed": "Vonona daholo: tsindrio START hanohizana.",
+    "controlledBy": "Safidin'i {{player}}",
+    "previous": "Teo aloha",
+    "next": "Manaraka"
+  },
+  "vehicleSelect": {
+    "title": "Fiara",
+    "subtitle": "Samy misafidy ny fiarany ny mpilalao tsirairay.",
+    "roster": "Fiara azo safidiana"
+  },
+  "trackSelect": {
+    "title": "Lalana",
+    "subtitle": "{{player}} no misafidy ny kiopy sy ny lalana.",
+    "roster": "Lalan'ny {{cup}}",
+    "length": "{{meters}} m",
+    "lapLength": "Halavan'ny fihodinana",
+    "laps": "Fihodinana",
+    "width": "Sakany",
+    "widthRange": "{{min}} hatramin'ny {{max}} m",
+    "checkpoints": "Toerana fandalovana",
+    "pending": "Misafidiana lalana dia hamafiso.",
+    "confirmed": "Voafidy ny lalana: tsindrio START hanohizana."
+  },
+  "cups": {
+    "kairos": {
+      "name": "Kairos Cup"
+    }
+  },
+  "tracks": {
+    "kairosMeadow": {
+      "name": "Saha Kairos",
+      "description": "Lalana malefaka eo anelanelan'ny saha sy dobo, tsara hanombohana."
+    },
+    "mirrorLake": {
+      "name": "Farihy Fitaratra",
+      "description": "Fihodinana lehibe manodidina ny farihy, misy fiolahana tery eo amoron-drano."
+    },
+    "echoWoods": {
+      "name": "Alan'ny Akony",
+      "description": "Fiolahana miendrika S sy fiolahana mafy ao anaty ala kesika."
+    },
+    "turquoiseCoast": {
+      "name": "Morontsiraka Manga",
+      "description": "Manaraka ny ranomasina, avy eo fiolahana S alohan'ny tsipika: ny lava indrindra amin'ny kiopy."
+    }
+  },
+  "vehicles": {
+    "classic": {
+      "name": "Klasika"
+    },
+    "sprint": {
+      "name": "Sprint"
+    },
+    "hotrod": {
+      "name": "Hot Rod"
+    },
+    "buggy": {
+      "name": "Buggy"
+    },
+    "comet": {
+      "name": "Kometa"
+    },
+    "rookie": {
+      "name": "Vaovao"
+    },
+    "flamingo": {
+      "name": "Flamingo"
+    }
+  },
+  "controls": {
+    "actions": {
+      "start": "Start / Pause",
+      "confirm": "Hamafy",
+      "back": "Hiverina",
+      "up": "Ambony",
+      "down": "Ambany",
+      "left": "Havia",
+      "right": "Havanana",
+      "accelerate": "Hampitombo hafainganana",
+      "brake": "Hijanona / hihemotra",
+      "steerLeft": "Mivily havia",
+      "steerRight": "Mivily havanana",
+      "drift": "Drift / mitsambikina",
+      "item": "Hampiasa ny zavatra"
+    }
+  },
+  "buttons": {
+    "b0": "A / Lakroa",
+    "b1": "B / Faribolana",
+    "b2": "X / Efamira",
+    "b3": "Y / Telozoro",
+    "b4": "LB / L1",
+    "b5": "RB / R1",
+    "b6": "LT / L2",
+    "b7": "RT / R2",
+    "b8": "Select / Share",
+    "b9": "Start / Options",
+    "b10": "L3",
+    "b11": "R3",
+    "b12": "D-pad ambony",
+    "b13": "D-pad ambany",
+    "b14": "D-pad havia",
+    "b15": "D-pad havanana",
+    "b16": "Home / PS",
+    "other": "Bokotra {{number}}"
+  }
+}

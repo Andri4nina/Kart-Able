@@ -1,0 +1,495 @@
+{
+  "_meta": {
+    "name": "English",
+    "order": 2
+  },
+  "brand": {
+    "tagline": "Arcade kart racing"
+  },
+  "common": {
+    "back": "Back",
+    "continue": "Continue",
+    "close": "Close",
+    "done": "Done",
+    "soon": "Soon",
+    "start": "Start match",
+    "selected": "Selected",
+    "unavailable": "Unavailable"
+  },
+  "keys": {
+    "enter": "Enter",
+    "escape": "Esc",
+    "arrows": "Arrows",
+    "space": "Space",
+    "backspace": "Backspace",
+    "numpadEnter": "Numpad Enter",
+    "shiftLeft": "Left Shift",
+    "shiftRight": "Right Shift",
+    "controlLeft": "Left Ctrl",
+    "controlRight": "Right Ctrl",
+    "altLeft": "Alt",
+    "altRight": "Alt Gr",
+    "capsLock": "Caps Lock",
+    "delete": "Del",
+    "insert": "Ins",
+    "home": "Home",
+    "end": "End",
+    "pageUp": "Page Up",
+    "pageDown": "Page Down",
+    "numpad": "Num {{key}}",
+    "arrowUp": "↑",
+    "arrowDown": "↓",
+    "arrowLeft": "←",
+    "arrowRight": "→"
+  },
+  "hints": {
+    "play": "Play",
+    "select": "Select",
+    "back": "Back",
+    "fullscreen": "Fullscreen",
+    "navigate": "Navigate"
+  },
+  "mainMenu": {
+    "label": "Main menu",
+    "play": "Play",
+    "playHint": "Race, time trial, battle, Rocket Gol",
+    "garage": "Garage",
+    "garageHint": "Customize your kart",
+    "settings": "Settings",
+    "settingsHint": "Language, graphics, audio, controls"
+  },
+  "nav": {
+    "steps": {
+      "label": "Progress",
+      "mode": "Mode",
+      "type": "Type",
+      "players": "Players",
+      "connection": "Connection",
+      "lobby": "Lobby",
+      "characters": "Characters",
+      "vehicles": "Vehicles",
+      "tracks": "Tracks"
+    },
+    "stepNumber": "Step {{number}}"
+  },
+  "modeSelect": {
+    "title": "Game mode",
+    "subtitle": "Pick how you want to race."
+  },
+  "modes": {
+    "race": {
+      "name": "Race",
+      "description": "Three laps, one podium. First across the line wins."
+    },
+    "timeTrial": {
+      "name": "Time Trial",
+      "description": "Just you and the clock: beat your best time."
+    },
+    "battle": {
+      "name": "Battle",
+      "description": "Closed arena, items in hand: last kart standing wins."
+    },
+    "rocketGol": {
+      "name": "Rocket Gol",
+      "description": "Kart football: two teams, one giant ball."
+    }
+  },
+  "modeTags": {
+    "teams": "Teams",
+    "solo": "Solo"
+  },
+  "players": {
+    "upTo": {
+      "one": "Up to {{count}} player",
+      "other": "Up to {{count}} players"
+    },
+    "solo": "Solo · 1 player",
+    "count": "{{count}} / {{max}} players",
+    "player": "Player {{number}}"
+  },
+  "playType": {
+    "title": "Match type",
+    "subtitle": "On this device or online?",
+    "notAvailable": "Not available for this mode",
+    "local": {
+      "name": "Local",
+      "description": "On this device, split screen, keyboard and gamepads."
+    },
+    "online": {
+      "name": "Online",
+      "description": "Take on connected players, wherever they are."
+    }
+  },
+  "local": {
+    "title": "Local players",
+    "subtitle": "Each player presses START on their controller to join.",
+    "pressStart": "Press start",
+    "tapToJoin": "or tap here",
+    "joining": "Joining",
+    "ready": "Ready",
+    "leave": "Remove {{player}}",
+    "leaveHint": "Leave: {{keyboard1}} (keyboard 1) · {{keyboard2}} (keyboard 2) · {{gamepad}} (gamepad)",
+    "continueHint": "A ready player presses START to continue.",
+    "waitingHint": "Waiting for at least one ready player.",
+    "howToJoin": "How to join"
+  },
+  "online": {
+    "title": "Online match",
+    "subtitle": "Create a match or join a friend's.",
+    "offline": "Multiplayer server not connected yet: interface preview.",
+    "create": {
+      "name": "Create a match",
+      "description": "Become the host and invite friends with a code.",
+      "submit": "Create"
+    },
+    "join": {
+      "name": "Join a match",
+      "description": "Enter the host's 6-character code.",
+      "codeLabel": "Match code",
+      "placeholder": "ABC123",
+      "submit": "Join",
+      "invalid": "The code must be 6 letters or digits."
+    },
+    "matchmaking": {
+      "name": "Matchmaking",
+      "description": "Find opponents automatically."
+    }
+  },
+  "lobby": {
+    "title": "Lobby",
+    "mode": "Mode",
+    "type": "Type",
+    "players": "Players",
+    "host": "Host",
+    "guest": "Guest",
+    "you": "You",
+    "code": "Match code",
+    "codePending": "Assigned once connected to the server",
+    "freeSlots": {
+      "one": "{{count}} free slot",
+      "other": "{{count}} free slots"
+    },
+    "startOnlineBlocked": "A server is required to start an online match.",
+    "waiting": "Waiting for players",
+    "charactersPending": "All players must confirm their character.",
+    "noPlayers": "No player has joined.",
+    "duplicateCharacters": "Two players confirmed the same character.",
+    "vehiclesPending": "All players must confirm their vehicle.",
+    "setReady": "Ready?",
+    "ready": "Ready",
+    "cancelReady": "Cancel: not ready yet",
+    "readyPending": {
+      "one": "{{count}} player is not ready yet (START)",
+      "other": "{{count}} players are not ready yet (START)"
+    },
+    "allReady": "Everyone is ready: go!",
+    "track": "Track",
+    "trackValue": "{{track}} · {{cup}}",
+    "trackPending": "The track hasn't been chosen yet."
+  },
+  "settings": {
+    "title": "Settings",
+    "close": "Close settings",
+    "soon": "This section is coming soon.",
+    "tabs": {
+      "language": "Language",
+      "audio": "Audio",
+      "graphics": "Graphics",
+      "controls": "Controls"
+    },
+    "language": {
+      "hint": "Changes apply instantly and are remembered."
+    },
+    "graphics": {
+      "quality": "Quality",
+      "qualityHint": "Caps the render resolution.",
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "motion": "Animations",
+      "motionHint": "\"System\" follows your device preference.",
+      "system": "System",
+      "reduced": "Reduced",
+      "full": "Full",
+      "fov": "Field of view",
+      "fovHint": "Race camera only."
+    },
+    "controls": {
+      "profile": "Profile",
+      "gamepads": "Gamepads",
+      "groups": {
+        "menu": "Menus",
+        "race": "Race"
+      },
+      "raceHint": "Used as soon as the karts can drive (phase 2).",
+      "stickNote": "The left stick always steers, in menus and in races.",
+      "reset": "Default keys",
+      "intro": "Click a slot, then press the key you want.",
+      "waiting": "Press…",
+      "waitingKey": "Press a key for \"{{action}}\" (Esc to cancel).",
+      "waitingButton": "Press a gamepad button for \"{{action}}\" (Esc to cancel).",
+      "empty": "None",
+      "primary": "primary",
+      "secondary": "secondary",
+      "change": "Change the {{slot}} key of \"{{action}}\"",
+      "clear": "Remove {{key}} from \"{{action}}\"",
+      "notices": {
+        "assigned": "\"{{action}}\": {{key}}.",
+        "swapped": "{{key}} was used for \"{{other}}\": the keys were swapped.",
+        "reserved": "{{key}} is reserved (Esc, F, Tab, function keys).",
+        "usedByOther": "{{key}} is already used by {{profile}}.",
+        "required": "\"{{action}}\" must keep at least one key.",
+        "cleared": "Key removed from \"{{action}}\".",
+        "reset": "Default keys restored: {{profile}}."
+      }
+    }
+  },
+  "language": {
+    "label": "Language",
+    "change": "Change language"
+  },
+  "hud": {
+    "label": "Race HUD",
+    "item": "Item",
+    "noItem": "No item",
+    "lap": "Lap",
+    "time": "Time",
+    "speed": "Speed",
+    "kmh": "km/h",
+    "position": "Position {{position}} of {{total}}",
+    "ordinal": {
+      "one": "st",
+      "two": "nd",
+      "few": "rd",
+      "other": "th"
+    },
+    "settings": "Settings",
+    "exit": "Back to menu",
+    "demo": "Demo HUD · {{mode}} · kart in phase 2",
+    "playerView": "{{player}} view",
+    "overview": "Overview"
+  },
+  "input": {
+    "keyboard1": "Keyboard 1",
+    "keyboard2": "Keyboard 2",
+    "gamepad": "Gamepad {{number}}",
+    "gamepadAny": "Gamepad",
+    "pointer": "Touch / mouse",
+    "tap": "Tap",
+    "dpad": "D-pad",
+    "disconnected": "Disconnected"
+  },
+  "characterSelect": {
+    "title": "Characters",
+    "subtitle": "Each player picks a character.",
+    "roster": "Drivers"
+  },
+  "classes": {
+    "tank": {
+      "name": "Tank",
+      "strength": "Shoves light karts aside, shrugs off hits",
+      "weakness": "Slow to launch, wide turns"
+    },
+    "standard": {
+      "name": "Standard",
+      "strength": "Balanced and easy to pick up",
+      "weakness": "No standout strength"
+    },
+    "speed": {
+      "name": "Speed",
+      "strength": "Excellent top speed and drifting",
+      "weakness": "Slow recovery, light and twitchy"
+    },
+    "special": {
+      "name": "Special",
+      "mechanic": "Hover: no slowdown off-road",
+      "strength": "Opens shortcuts off the track",
+      "weakness": "Low grip, very fragile in collisions"
+    }
+  },
+  "sizes": {
+    "small": {
+      "name": "Small"
+    },
+    "medium": {
+      "name": "Medium"
+    },
+    "large": {
+      "name": "Large"
+    }
+  },
+  "stats": {
+    "topSpeed": "Top speed",
+    "acceleration": "Acceleration",
+    "weight": "Weight",
+    "handling": "Handling",
+    "drift": "Drift",
+    "toughness": "Toughness"
+  },
+  "characters": {
+    "diesel": {
+      "name": "Diesel"
+    },
+    "marlo": {
+      "name": "Marlo"
+    },
+    "timo": {
+      "name": "Timo"
+    },
+    "pyrox": {
+      "name": "Pyrox"
+    },
+    "osso": {
+      "name": "Osso"
+    },
+    "rubis": {
+      "name": "Rubis"
+    },
+    "mitsu": {
+      "name": "Mitsu"
+    },
+    "volt": {
+      "name": "Volt"
+    },
+    "gibus": {
+      "name": "Sir Gibus"
+    },
+    "tempo": {
+      "name": "Tempo"
+    },
+    "frisko": {
+      "name": "Frisko"
+    },
+    "kosmo": {
+      "name": "Kosmo"
+    },
+    "nox": {
+      "name": "Nox"
+    },
+    "zenji": {
+      "name": "Zenji"
+    },
+    "pompon": {
+      "name": "Pompon"
+    },
+    "miella": {
+      "name": "Miella"
+    }
+  },
+  "selection": {
+    "confirm": "Confirm",
+    "cancel": "Change",
+    "confirmed": "Locked",
+    "preselected": "Preselected",
+    "reservedBy": "Taken by {{player}}",
+    "pending": {
+      "one": "{{count}} player still has to confirm",
+      "other": "{{count}} players still have to confirm"
+    },
+    "allConfirmed": "Everyone is ready: press START to continue.",
+    "controlledBy": "{{player}}'s selection",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "vehicleSelect": {
+    "title": "Vehicles",
+    "subtitle": "Each player picks a vehicle.",
+    "roster": "Available vehicles"
+  },
+  "trackSelect": {
+    "title": "Tracks",
+    "subtitle": "{{player}} picks the cup and the track.",
+    "roster": "{{cup}} tracks",
+    "length": "{{meters}} m",
+    "lapLength": "Lap length",
+    "laps": "Laps",
+    "width": "Width",
+    "widthRange": "{{min}} to {{max}} m",
+    "checkpoints": "Checkpoints",
+    "pending": "Pick a track and confirm it.",
+    "confirmed": "Track chosen: press START to continue."
+  },
+  "cups": {
+    "kairos": {
+      "name": "Kairos Cup"
+    }
+  },
+  "tracks": {
+    "kairosMeadow": {
+      "name": "Kairos Meadow",
+      "description": "A flowing loop through meadows and a pond, perfect to get started."
+    },
+    "mirrorLake": {
+      "name": "Mirror Lake",
+      "description": "A wide loop around the lake, with a tight chicane by the water."
+    },
+    "echoWoods": {
+      "name": "Echo Woods",
+      "description": "S-bends and hairpins deep in a pine forest."
+    },
+    "turquoiseCoast": {
+      "name": "Turquoise Coast",
+      "description": "Along the sea, then an S-hairpin before the line: the longest of the cup."
+    }
+  },
+  "vehicles": {
+    "classic": {
+      "name": "Classic"
+    },
+    "sprint": {
+      "name": "Sprint"
+    },
+    "hotrod": {
+      "name": "Hot Rod"
+    },
+    "buggy": {
+      "name": "Buggy"
+    },
+    "comet": {
+      "name": "Comet"
+    },
+    "rookie": {
+      "name": "Rookie"
+    },
+    "flamingo": {
+      "name": "Flamingo"
+    }
+  },
+  "controls": {
+    "actions": {
+      "start": "Start / Pause",
+      "confirm": "Confirm",
+      "back": "Back",
+      "up": "Up",
+      "down": "Down",
+      "left": "Left",
+      "right": "Right",
+      "accelerate": "Accelerate",
+      "brake": "Brake / reverse",
+      "steerLeft": "Steer left",
+      "steerRight": "Steer right",
+      "drift": "Drift / hop",
+      "item": "Use item"
+    }
+  },
+  "buttons": {
+    "b0": "A / Cross",
+    "b1": "B / Circle",
+    "b2": "X / Square",
+    "b3": "Y / Triangle",
+    "b4": "LB / L1",
+    "b5": "RB / R1",
+    "b6": "LT / L2",
+    "b7": "RT / R2",
+    "b8": "Select / Share",
+    "b9": "Start / Options",
+    "b10": "L3",
+    "b11": "R3",
+    "b12": "D-pad up",
+    "b13": "D-pad down",
+    "b14": "D-pad left",
+    "b15": "D-pad right",
+    "b16": "Home / PS",
+    "other": "Button {{number}}"
+  }
+}

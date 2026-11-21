@@ -1,0 +1,493 @@
+{
+  "_meta": {
+    "name": "Français",
+    "order": 1
+  },
+  "brand": {
+    "tagline": "Course de karts arcade"
+  },
+  "common": {
+    "back": "Retour",
+    "continue": "Continuer",
+    "close": "Fermer",
+    "done": "Terminé",
+    "soon": "Bientôt",
+    "start": "Lancer la partie",
+    "selected": "Sélectionné",
+    "unavailable": "Indisponible"
+  },
+  "keys": {
+    "enter": "Entrée",
+    "escape": "Échap",
+    "arrows": "Flèches",
+    "space": "Espace",
+    "backspace": "Retour arr.",
+    "numpadEnter": "Entrée pavé",
+    "shiftLeft": "Maj gauche",
+    "shiftRight": "Maj droite",
+    "controlLeft": "Ctrl gauche",
+    "controlRight": "Ctrl droite",
+    "altLeft": "Alt",
+    "altRight": "Alt Gr",
+    "capsLock": "Verr. maj",
+    "delete": "Suppr",
+    "insert": "Inser",
+    "home": "Début",
+    "end": "Fin",
+    "pageUp": "Page préc.",
+    "pageDown": "Page suiv.",
+    "numpad": "Pavé {{key}}",
+    "arrowUp": "↑",
+    "arrowDown": "↓",
+    "arrowLeft": "←",
+    "arrowRight": "→"
+  },
+  "hints": {
+    "play": "Jouer",
+    "select": "Valider",
+    "back": "Retour",
+    "fullscreen": "Plein écran",
+    "navigate": "Naviguer"
+  },
+  "mainMenu": {
+    "label": "Menu principal",
+    "play": "Jouer",
+    "playHint": "Course, contre-la-montre, bataille, Rocket Gol",
+    "garage": "Garage",
+    "garageHint": "Personnalise ton kart",
+    "settings": "Paramètres",
+    "settingsHint": "Langue, graphismes, audio, contrôles"
+  },
+  "nav": {
+    "steps": {
+      "label": "Progression",
+      "mode": "Mode",
+      "type": "Type",
+      "players": "Joueurs",
+      "connection": "Connexion",
+      "lobby": "Lobby",
+      "characters": "Personnages",
+      "vehicles": "Véhicules",
+      "tracks": "Circuits"
+    },
+    "stepNumber": "Étape {{number}}"
+  },
+  "modeSelect": {
+    "title": "Mode de jeu",
+    "subtitle": "Choisis comment tu veux rouler."
+  },
+  "modes": {
+    "race": {
+      "name": "Course",
+      "description": "Trois tours, un podium. Le premier à franchir la ligne l'emporte."
+    },
+    "timeTrial": {
+      "name": "Contre-la-montre",
+      "description": "Seul face au chrono : bats ton meilleur temps."
+    },
+    "battle": {
+      "name": "Bataille",
+      "description": "Arène fermée, objets en main : le dernier debout gagne."
+    },
+    "rocketGol": {
+      "name": "Rocket Gol",
+      "description": "Du football en kart : deux équipes, un ballon géant."
+    }
+  },
+  "modeTags": {
+    "teams": "Équipes",
+    "solo": "Solo"
+  },
+  "players": {
+    "upTo": {
+      "one": "Jusqu'à {{count}} joueur",
+      "other": "Jusqu'à {{count}} joueurs"
+    },
+    "solo": "Solo · 1 joueur",
+    "count": "{{count}} / {{max}} joueurs",
+    "player": "Joueur {{number}}"
+  },
+  "playType": {
+    "title": "Type de partie",
+    "subtitle": "Sur cet appareil ou en réseau ?",
+    "notAvailable": "Non disponible pour ce mode",
+    "local": {
+      "name": "Local",
+      "description": "Sur cet appareil, en écran partagé, clavier et manettes."
+    },
+    "online": {
+      "name": "En réseau",
+      "description": "Affronte des joueurs connectés, où qu'ils soient."
+    }
+  },
+  "local": {
+    "title": "Joueurs locaux",
+    "subtitle": "Chaque joueur appuie sur START avec son contrôleur pour rejoindre.",
+    "pressStart": "Appuie sur START",
+    "tapToJoin": "ou touche ici",
+    "joining": "Arrivée",
+    "ready": "Prêt",
+    "leave": "Retirer {{player}}",
+    "leaveHint": "Quitter : {{keyboard1}} (clavier 1) · {{keyboard2}} (clavier 2) · {{gamepad}} (manette)",
+    "continueHint": "Un joueur prêt appuie sur START pour continuer.",
+    "waitingHint": "En attente d'au moins un joueur prêt.",
+    "howToJoin": "Comment rejoindre"
+  },
+  "online": {
+    "title": "Partie en réseau",
+    "subtitle": "Crée une partie ou rejoins celle d'un ami.",
+    "offline": "Serveur multijoueur pas encore connecté : aperçu de l'interface.",
+    "create": {
+      "name": "Créer une partie",
+      "description": "Deviens l'hôte et invite tes amis avec un code.",
+      "submit": "Créer"
+    },
+    "join": {
+      "name": "Rejoindre une partie",
+      "description": "Entre le code à 6 caractères de l'hôte.",
+      "codeLabel": "Code de la partie",
+      "placeholder": "ABC123",
+      "submit": "Rejoindre",
+      "invalid": "Le code doit contenir 6 lettres ou chiffres."
+    },
+    "matchmaking": {
+      "name": "Matchmaking",
+      "description": "Trouve automatiquement des adversaires."
+    }
+  },
+  "lobby": {
+    "title": "Lobby",
+    "mode": "Mode",
+    "type": "Type",
+    "players": "Joueurs",
+    "host": "Hôte",
+    "guest": "Invité",
+    "you": "Toi",
+    "code": "Code de la partie",
+    "codePending": "Attribué à la connexion au serveur",
+    "freeSlots": {
+      "one": "{{count}} place libre",
+      "other": "{{count}} places libres"
+    },
+    "startOnlineBlocked": "Un serveur est nécessaire pour lancer une partie en ligne.",
+    "waiting": "En attente de joueurs",
+    "charactersPending": "Tous les joueurs doivent confirmer leur personnage.",
+    "noPlayers": "Aucun joueur n'a rejoint la partie.",
+    "duplicateCharacters": "Deux joueurs ont confirmé le même personnage.",
+    "vehiclesPending": "Tous les joueurs doivent confirmer leur véhicule.",
+    "setReady": "Prêt ?",
+    "ready": "Prêt",
+    "cancelReady": "Annuler : pas encore prêt",
+    "readyPending": {
+      "one": "{{count}} joueur n'est pas encore prêt (START)",
+      "other": "{{count}} joueurs ne sont pas encore prêts (START)"
+    },
+    "allReady": "Tout le monde est prêt : départ !",
+    "track": "Circuit",
+    "trackValue": "{{track}} · {{cup}}",
+    "trackPending": "Le circuit n'est pas encore choisi."
+  },
+  "settings": {
+    "title": "Paramètres",
+    "close": "Fermer les paramètres",
+    "soon": "Cette section arrive bientôt.",
+    "tabs": {
+      "language": "Langue",
+      "audio": "Audio",
+      "graphics": "Graphismes",
+      "controls": "Contrôles"
+    },
+    "language": {
+      "hint": "Le changement est immédiat et mémorisé."
+    },
+    "graphics": {
+      "quality": "Qualité",
+      "qualityHint": "Plafonne la résolution de rendu.",
+      "low": "Basse",
+      "medium": "Moyenne",
+      "high": "Haute",
+      "motion": "Animations",
+      "motionHint": "« Système » suit la préférence de ton appareil.",
+      "system": "Système",
+      "reduced": "Réduites",
+      "full": "Complètes",
+      "fov": "Champ de vision",
+      "fovHint": "Caméra de course uniquement."
+    },
+    "controls": {
+      "profile": "Profil",
+      "gamepads": "Manettes",
+      "groups": {
+        "menu": "Menus",
+        "race": "Course"
+      },
+      "raceHint": "Utilisées dès que les karts rouleront (phase 2).",
+      "stickNote": "Le stick gauche dirige toujours, dans les menus comme en course.",
+      "reset": "Touches par défaut",
+      "intro": "Clique un emplacement, puis appuie sur la touche voulue.",
+      "waiting": "Appuie…",
+      "waitingKey": "Appuie sur une touche pour « {{action}} » (Échap pour annuler).",
+      "waitingButton": "Appuie sur un bouton de la manette pour « {{action}} » (Échap pour annuler).",
+      "empty": "Aucune",
+      "primary": "principale",
+      "secondary": "secondaire",
+      "change": "Changer la touche {{slot}} de « {{action}} »",
+      "clear": "Retirer {{key}} de « {{action}} »",
+      "notices": {
+        "assigned": "« {{action}} » : {{key}}.",
+        "swapped": "{{key}} servait à « {{other}} » : les touches ont été échangées.",
+        "reserved": "{{key}} est réservée (Échap, F, Tab, touches de fonction).",
+        "usedByOther": "{{key}} est déjà utilisée par {{profile}}.",
+        "required": "« {{action}} » doit garder au moins une touche.",
+        "cleared": "Touche retirée de « {{action}} ».",
+        "reset": "Touches par défaut rétablies : {{profile}}."
+      }
+    }
+  },
+  "language": {
+    "label": "Langue",
+    "change": "Changer de langue"
+  },
+  "hud": {
+    "label": "HUD de course",
+    "item": "Objet",
+    "noItem": "Aucun objet",
+    "lap": "Tour",
+    "time": "Temps",
+    "speed": "Vitesse",
+    "kmh": "km/h",
+    "position": "Position {{position}} sur {{total}}",
+    "ordinal": {
+      "one": "er",
+      "other": "e"
+    },
+    "settings": "Paramètres",
+    "exit": "Retour au menu",
+    "demo": "HUD de démo · {{mode}} · kart en phase 2",
+    "playerView": "Vue de {{player}}",
+    "overview": "Vue d'ensemble"
+  },
+  "input": {
+    "keyboard1": "Clavier 1",
+    "keyboard2": "Clavier 2",
+    "gamepad": "Manette {{number}}",
+    "gamepadAny": "Manette",
+    "pointer": "Tactile / souris",
+    "tap": "Toucher",
+    "dpad": "Croix",
+    "disconnected": "Déconnecté"
+  },
+  "characterSelect": {
+    "title": "Personnages",
+    "subtitle": "Chaque joueur choisit son personnage.",
+    "roster": "Pilotes"
+  },
+  "classes": {
+    "tank": {
+      "name": "Tank",
+      "strength": "Écarte les karts légers, encaisse les chocs",
+      "weakness": "Démarrage lent, tourne large"
+    },
+    "standard": {
+      "name": "Standard",
+      "strength": "Équilibré, facile à prendre en main",
+      "weakness": "Aucun point fort marqué"
+    },
+    "speed": {
+      "name": "Vitesse",
+      "strength": "Vitesse de pointe et drift excellents",
+      "weakness": "Reprise lente, léger et nerveux"
+    },
+    "special": {
+      "name": "Spécial",
+      "mechanic": "Survol : aucun ralentissement hors-piste",
+      "strength": "Ouvre des raccourcis hors de la piste",
+      "weakness": "Faible adhérence, très fragile aux chocs"
+    }
+  },
+  "sizes": {
+    "small": {
+      "name": "Petit"
+    },
+    "medium": {
+      "name": "Moyen"
+    },
+    "large": {
+      "name": "Grand"
+    }
+  },
+  "stats": {
+    "topSpeed": "Vitesse max",
+    "acceleration": "Accélération",
+    "weight": "Poids",
+    "handling": "Maniabilité",
+    "drift": "Drift",
+    "toughness": "Résistance"
+  },
+  "characters": {
+    "diesel": {
+      "name": "Diesel"
+    },
+    "marlo": {
+      "name": "Marlo"
+    },
+    "timo": {
+      "name": "Timo"
+    },
+    "pyrox": {
+      "name": "Pyrox"
+    },
+    "osso": {
+      "name": "Osso"
+    },
+    "rubis": {
+      "name": "Rubis"
+    },
+    "mitsu": {
+      "name": "Mitsu"
+    },
+    "volt": {
+      "name": "Volt"
+    },
+    "gibus": {
+      "name": "Sir Gibus"
+    },
+    "tempo": {
+      "name": "Tempo"
+    },
+    "frisko": {
+      "name": "Frisko"
+    },
+    "kosmo": {
+      "name": "Kosmo"
+    },
+    "nox": {
+      "name": "Nox"
+    },
+    "zenji": {
+      "name": "Zenji"
+    },
+    "pompon": {
+      "name": "Pompon"
+    },
+    "miella": {
+      "name": "Miella"
+    }
+  },
+  "selection": {
+    "confirm": "Confirmer",
+    "cancel": "Changer",
+    "confirmed": "Confirmé",
+    "preselected": "Présélection",
+    "reservedBy": "Pris par {{player}}",
+    "pending": {
+      "one": "{{count}} joueur doit encore confirmer",
+      "other": "{{count}} joueurs doivent encore confirmer"
+    },
+    "allConfirmed": "Tout le monde est prêt : START pour continuer.",
+    "controlledBy": "Sélection de {{player}}",
+    "previous": "Précédent",
+    "next": "Suivant"
+  },
+  "vehicleSelect": {
+    "title": "Véhicules",
+    "subtitle": "Chaque joueur choisit son véhicule.",
+    "roster": "Véhicules disponibles"
+  },
+  "trackSelect": {
+    "title": "Circuits",
+    "subtitle": "{{player}} choisit la coupe et le circuit.",
+    "roster": "Circuits de la {{cup}}",
+    "length": "{{meters}} m",
+    "lapLength": "Longueur du tour",
+    "laps": "Tours",
+    "width": "Largeur",
+    "widthRange": "{{min}} à {{max}} m",
+    "checkpoints": "Points de passage",
+    "pending": "Choisis un circuit et confirme-le.",
+    "confirmed": "Circuit choisi : START pour continuer."
+  },
+  "cups": {
+    "kairos": {
+      "name": "Kairos Cup"
+    }
+  },
+  "tracks": {
+    "kairosMeadow": {
+      "name": "Prairie Kairos",
+      "description": "Un tracé fluide entre prés et étang, idéal pour se lancer."
+    },
+    "mirrorLake": {
+      "name": "Lac Miroir",
+      "description": "Une grande boucle autour du lac, avec une chicane serrée au bord de l'eau."
+    },
+    "echoWoods": {
+      "name": "Bois des Échos",
+      "description": "Virages en S et épingles au cœur d'une forêt de pins."
+    },
+    "turquoiseCoast": {
+      "name": "Côte Turquoise",
+      "description": "Le long de la mer, puis une épingle en S avant la ligne : le plus long de la coupe."
+    }
+  },
+  "vehicles": {
+    "classic": {
+      "name": "Classique"
+    },
+    "sprint": {
+      "name": "Sprint"
+    },
+    "hotrod": {
+      "name": "Hot Rod"
+    },
+    "buggy": {
+      "name": "Buggy"
+    },
+    "comet": {
+      "name": "Comète"
+    },
+    "rookie": {
+      "name": "Recrue"
+    },
+    "flamingo": {
+      "name": "Flamant"
+    }
+  },
+  "controls": {
+    "actions": {
+      "start": "Start / Pause",
+      "confirm": "Valider",
+      "back": "Retour",
+      "up": "Haut",
+      "down": "Bas",
+      "left": "Gauche",
+      "right": "Droite",
+      "accelerate": "Accélérer",
+      "brake": "Freiner / reculer",
+      "steerLeft": "Tourner à gauche",
+      "steerRight": "Tourner à droite",
+      "drift": "Drift / saut",
+      "item": "Utiliser l’objet"
+    }
+  },
+  "buttons": {
+    "b0": "A / Croix",
+    "b1": "B / Rond",
+    "b2": "X / Carré",
+    "b3": "Y / Triangle",
+    "b4": "LB / L1",
+    "b5": "RB / R1",
+    "b6": "LT / L2",
+    "b7": "RT / R2",
+    "b8": "Select / Share",
+    "b9": "Start / Options",
+    "b10": "L3",
+    "b11": "R3",
+    "b12": "Croix haut",
+    "b13": "Croix bas",
+    "b14": "Croix gauche",
+    "b15": "Croix droite",
+    "b16": "Home / PS",
+    "other": "Bouton {{number}}"
+  }
+}

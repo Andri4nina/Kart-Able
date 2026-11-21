@@ -1,0 +1,107 @@
+/*
+  Fichier CSS global minimal : uniquement ce dont Tailwind a besoin.
+  Aucun style de composant ici (voir docs/REGLES_D_OR.md).
+*/
+@import "tailwindcss";
+
+/* Tokens de design exposés en classes Tailwind (bg-brand-red, font-display, ...). */
+@theme {
+  --font-display: "Bungee", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Chakra Petch", ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-red: #e63946;
+  --color-brand-yellow: #ffc93c;
+  --color-brand-ink: #14161c;
+  --color-brand-sky: #8ccff2;
+  --color-brand-orange: #ff7a1a;
+  --color-brand-blue: #2f80ed;
+
+  /* Couleurs des 8 joueurs locaux (slots 1 à 8). */
+  --color-player-1: #e63946;
+  --color-player-2: #2f80ed;
+  --color-player-3: #ffc93c;
+  --color-player-4: #2bb673;
+  --color-player-5: #ff7a1a;
+  --color-player-6: #8e5cf7;
+  --color-player-7: #ff5fa2;
+  --color-player-8: #19c3c3;
+
+  /* Couleurs des archétypes de personnages. */
+  --color-class-tank: #2f80ed;
+  --color-class-standard: #2bb673;
+  --color-class-speed: #e63946;
+  --color-class-special: #8e5cf7;
+
+  /* Identité colorée des personnages : mêmes valeurs que config/characters.js (vérifié par check:rules). */
+  --color-char-diesel: #b5651d;
+  --color-char-marlo: #7b4dff;
+  --color-char-timo: #2bb673;
+  --color-char-pyrox: #ff6a13;
+  --color-char-osso: #f2ede0;
+  --color-char-rubis: #e0115f;
+  --color-char-mitsu: #b8a9ff;
+  --color-char-volt: #a3e635;
+  --color-char-gibus: #7a1f3d;
+  --color-char-tempo: #ff3fa4;
+  --color-char-frisko: #5ce1e6;
+  --color-char-kosmo: #2f6fed;
+  --color-char-nox: #1f1f2b;
+  --color-char-zenji: #0f8b8d;
+  --color-char-pompon: #ff9ec4;
+  --color-char-miella: #ffc21a;
+}
+
+/*
+  Variante `motion-ok:` : actif seulement si le mouvement n'est pas réduit.
+  La source de vérité est l'attribut data-reduced-motion posé par App.jsx
+  (préférence système + réglage du joueur).
+*/
+@custom-variant motion-ok (&:where(:root:not([data-reduced-motion="true"]) *));
+
+/*
+  Variantes de hauteur d'une case d'écran partagé (conteneur `[container-type:size]`) :
+  les requêtes de conteneur de Tailwind (@md...) ne portent que sur la largeur.
+  `cell-short:` = case basse (moins de 15rem), `cell-low:` = case moyenne (moins de 24rem).
+*/
+@custom-variant cell-short (@container (max-height: 15rem));
+@custom-variant cell-low (@container (max-height: 24rem));
+
+/*
+  Utilitaire `scrollbar-game` : barre de défilement aux couleurs du jeu pour les zones
+  qui défilent (écrans étroits). Les pseudo-éléments de scrollbar ne s'expriment pas en
+  classes Tailwind, d'où cette unique définition. Chrome / Edge / Safari : pseudo-éléments
+  WebKit ; Firefox : propriétés standard (qui désactiveraient les pseudo-éléments ailleurs).
+*/
+@utility scrollbar-game {
+  overscroll-behavior: contain;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgb(20 22 28 / 0.6);
+    border-left: 1px solid rgb(255 255 255 / 0.08);
+  }
+  &::-webkit-scrollbar-thumb {
+    min-height: 48px;
+    background-color: var(--color-brand-red);
+    background-clip: padding-box;
+    border: 3px solid transparent;
+  }
+  &::-webkit-scrollbar-thumb:hover,
+  &::-webkit-scrollbar-thumb:active {
+    background-color: var(--color-brand-yellow);
+  }
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+  &::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-brand-red) rgb(20 22 28 / 0.6);
+  }
+}
