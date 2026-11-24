@@ -4,8 +4,9 @@ import { VEHICLES } from '../../config/vehicles'
 import { createRandom } from '../track/noise'
 
 // Pilotes ordinateur du mode course (config/gameModes.js : bots) : le peloton est complété
-// jusqu'à RACE.fieldSize avec des personnages qu'aucun joueur n'a choisis, sur des véhicules
-// tirés au hasard (graine de la partie). Niveau étalé : le premier de la grille est le plus fort.
+// jusqu'à RACE.fieldSize avec d'abord des personnages qu'aucun joueur n'a choisis, puis (16
+// personnages pour 32 places) des doublons sur d'autres véhicules, tirés au hasard (graine de la
+// partie). Niveau étalé : le premier de la grille est le plus fort.
 const SKILL = { best: 0.97, worst: 0.86 }
 
 export function buildRaceBots(mode, players, seed) {
@@ -17,11 +18,13 @@ export function buildRaceBots(mode, players, seed) {
     const j = Math.floor(random() * (i + 1))
     ;[pool[i], pool[j]] = [pool[j], pool[i]]
   }
-  const count = Math.min(pool.length, Math.max(0, RACE.fieldSize - players.length))
+  const count = Math.max(0, RACE.fieldSize - players.length)
+  const all = CHARACTERS.map((character) => character.id)
+  const pick = (index) => (index < pool.length ? pool[index] : all[Math.floor(random() * all.length)])
   return Array.from({ length: count }, (_, index) =>
     Object.freeze({
       id: `CPU${index + 1}`,
-      characterId: pool[index],
+      characterId: pick(index),
       vehicleId: VEHICLES[Math.floor(random() * VEHICLES.length)].id,
       skill: SKILL.best - ((SKILL.best - SKILL.worst) * index) / Math.max(1, count - 1),
       lane: (random() * 2 - 1) * 0.5,

@@ -1,5 +1,6 @@
 import { useGLTF } from '@react-three/drei'
 import { useMemo } from 'react'
+import { getGroundHeight } from '../../game/track/trackHeight'
 import { DECOR_MODELS, getModelParts } from './decorAssets'
 import { placeDecor } from './decorPlacement'
 import { InstancedParts } from './InstancedParts'
@@ -13,9 +14,13 @@ function DecorFamily({ id, transforms }) {
   return <InstancedParts name={`decor-${id}`} parts={parts} transforms={scaled} />
 }
 
-// Décor de course placé d'après le chemin (decorPlacement.js).
-export function TrackDecor({ path, bounds }) {
-  const decor = useMemo(() => placeDecor(path, bounds), [path, bounds])
+// Décor de course placé d'après le chemin (decorPlacement.js), posé sur le relief.
+export function TrackDecor({ geometry }) {
+  const decor = useMemo(() => {
+    const placed = placeDecor(geometry.path, geometry.bounds)
+    const ground = (item) => ({ ...item, y: getGroundHeight(geometry, item.x, item.z) })
+    return Object.fromEntries(Object.entries(placed).map(([id, list]) => [id, list.map(ground)]))
+  }, [geometry])
   return (
     <group name="track-decor">
       {Object.entries(decor).map(([id, transforms]) => (

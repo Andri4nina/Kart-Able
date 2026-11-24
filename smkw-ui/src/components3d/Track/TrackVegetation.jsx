@@ -1,14 +1,20 @@
 import { useGLTF } from '@react-three/drei'
 import { useMemo } from 'react'
+import { getGroundHeight } from '../../game/track/trackHeight'
 import { InstancedParts } from './InstancedParts'
 import { BUSH_NODES, getVegetationPart, TREE_PACK_URL } from './treeAssets'
 import { scatterVegetation } from './vegetationScatter'
 
 // Arbres et buissons du circuit, en instances (un maillage instancié par essence).
-export function TrackVegetation({ track, path, field, theme }) {
+// Chaque instance est posée sur le relief.
+export function TrackVegetation({ geometry, field, theme }) {
+  const { track, path } = geometry
   const { scene } = useGLTF(TREE_PACK_URL)
   const groups = useMemo(() => {
-    const { trees, bushes } = scatterVegetation({ track, path, field, theme })
+    const scattered = scatterVegetation({ track, path, field, theme })
+    const ground = (item) => ({ ...item, y: getGroundHeight(geometry, item.x, item.z) - 0.1 })
+    const trees = scattered.trees.map(ground)
+    const bushes = scattered.bushes.map(ground)
     const bySpecies = theme.trees.map((species) => ({
       id: species,
       part: getVegetationPart(scene, species),
@@ -20,7 +26,7 @@ export function TrackVegetation({ track, path, field, theme }) {
       transforms: bushes.filter((bush) => bush.kind === kind),
     }))
     return [...bySpecies, ...byBush].filter((group) => group.part)
-  }, [scene, track, path, field, theme])
+  }, [scene, geometry, track, path, field, theme])
 
   return (
     <group name="track-vegetation">

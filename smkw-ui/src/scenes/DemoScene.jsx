@@ -1,3 +1,4 @@
+import { RaceItems } from '../components3d/Items/RaceItems'
 import { StartGrid } from '../components3d/Racers/StartGrid'
 import { SelectionPreviewStage } from '../components3d/SelectionPreview/SelectionPreviewStage'
 import { TrackWorld } from '../components3d/Track/TrackWorld'
@@ -17,7 +18,10 @@ export function DemoScene() {
       <Atmosphere />
       <Lights />
       {trackId ? (
-        <TrackWorld trackId={trackId} />
+        <>
+          <TrackWorld trackId={trackId} />
+          <RaceItems />
+        </>
       ) : (
         <>
           <Ground />

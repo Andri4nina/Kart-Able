@@ -1,5 +1,7 @@
 import { DataTexture, LinearFilter, RGBAFormat } from 'three'
 import { fractalNoise } from '../../game/track/noise'
+import { FIELD_MARGIN } from '../../game/track/trackHeight'
+import { buildHeightTexture } from './heightTexture'
 
 // Texture de données d'un circuit (même principe que le terrain du portfolio) : une carte vue de
 // dessus où chaque canal décrit le sol.
@@ -10,7 +12,7 @@ import { fractalNoise } from '../../game/track/noise'
 // Générée une fois par circuit ; les shaders (terrain, eau, herbe) et le placement de la
 // végétation lisent tous la même carte.
 const RESOLUTION = 512
-const MARGIN = 220 // mètres de paysage autour du circuit
+const MARGIN = FIELD_MARGIN // mètres de paysage autour du circuit (même emprise que le relief)
 const SHOULDER = 9
 const SHORE_DEPTH = 22 // mètres pour passer du rivage au large
 const BEACH = 12
@@ -52,7 +54,8 @@ function drawRoadMask(path, origin, size) {
   return context.getImageData(0, 0, RESOLUTION, RESOLUTION).data
 }
 
-export function buildTrackField({ track, path, bounds }) {
+export function buildTrackField(geometry) {
+  const { track, path, bounds } = geometry
   const size = (bounds.halfSize + MARGIN) * 2
   const origin = [bounds.centerX - size / 2, bounds.centerZ - size / 2]
   const road = drawRoadMask(path, origin, size)
@@ -82,7 +85,7 @@ export function buildTrackField({ track, path, bounds }) {
   texture.magFilter = LinearFilter
   texture.minFilter = LinearFilter
   texture.needsUpdate = true
-  return { texture, data, origin, size, resolution: RESOLUTION }
+  return { texture, data, origin, size, resolution: RESOLUTION, ...buildHeightTexture(geometry, origin, size) }
 }
 
 // Lecture CPU d'un point du monde (placement de la végétation et du décor), valeurs 0..1.

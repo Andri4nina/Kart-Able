@@ -267,3 +267,49 @@ Demande : « maintenant l'assignation des touches, tu peux faire marcher » (ong
 ### TODO
 - Phase 2 : brancher les actions de course sur le kart.
 - Sensibilité du stick, vibrations, affichage des touches de course dans un écran d'aide.
+
+---
+
+## 2026-11-23 — Phase 2A : drift arcade, chocs, équilibrage, pilotes animés, backend Rust
+
+Demande : améliorer les chocs, l'équilibrage véhicules / personnages, les rigs et animations des pilotes (« très moches »), un drift façon jeux de kart arcade ; comparer l'existant au cahier des charges en 8 phases sans rien casser ni changer les intentions ; backend en Rust. Fiche : docs/phases/PHASE_2A_DRIFT_HITS.md (contient l'audit).
+
+### Fait
+- config/kartTuning.js : courbes de stats, DRIFT, BOOSTS (+ cumul), COLLISION, WALL.
+- game/race : kartDrift.js (saut, sens, jauge par qualité, 3 paliers), kartBoost.js (turbo centralisé), kartCollisions.js + kartCapsule.js (capsules, poussée latérale, secousse), kartPhysics.js (élan conservé en virage), murs dans trackTracking.js, racePace.js extrait de raceWorld.js.
+- Équilibrage : tank topSpeed 4 -> 6, hot rod handling 3 -> 4, buggy offRoad 0,72.
+- Pilotes : driverPose.js / driverRig.js (pose assise sur squelette, poses clés mélangées), kartPose.js (saut, glisse, roulis, secousse), KartEffects (étincelles 4 couleurs, flamme selon la source). Osso exclu (`driverPose: false`).
+- HUD : vitesse / tour / temps / position réels par joueur, DriftGauge, StartLights et FinishBanner branchés, clés i18n `race.*` ajoutées (elles manquaient), mention démo seulement hors circuit.
+- smkw-api : squelette Rust (Cargo.toml sans dépendance, main.rs, config.rs) ; docs ARCHITECTURE, CLAUDE.md, README mis à jour.
+
+### Tests
+Voir la fiche de phase. Panneau navigateur masqué au début : Canvas non monté et animations Motion bloquées (rAF) ; afficher le panneau, puis lancer la course via sessionStore + `window.restartRace()` (les imports dynamiques de raceSession peuvent viser une autre instance de module après rechargement à chaud).
+
+### TODO
+- Écran de résultats (phase `results` publiée, aucune UI), meilleur tour à l'écran.
+- IA : drift et remplacement de l'ajustement de rythme (racePace) par un vrai comportement.
+- Presets d'équilibrage (Arcade / Compétitif / Détente) sur kartTuning.js.
+- Objets, pads, pièces, rampes, audio : phases suivantes.
+- Pose assise d'Osso (squelette atypique) : animation dédiée ou réglage par os.
+
+---
+
+## 2026-11-23 — Phase 2B : drift revu, 32 pilotes, cases à objets, relief, Summit Cup
+
+Demande : drift plus fidèle aux jeux de kart ; 32 karts en course joueurs compris ; autres coupes avec montées / descentes ; cases à objets ; point sur l'objectif. Fiche : docs/phases/PHASE_2B_FIELD_ITEMS_RELIEF.md (état du cahier des charges inclus).
+
+### Fait
+- kartDrift.js : drift armé tant que Drift est tenu, départ dès qu'on braque au sol, poussée `entryKick`, relance après relâchement ; slipAngle 0,6.
+- RACE.fieldSize 32 ; raceRoster : doublons de personnages au-delà de 16.
+- config/items.js + game/items/* + components3d/Items/* + ItemSlot (roulette, charges, icônes) ; spin et bulle dans kartPose / KartEffects ; raceControls.js extrait de raceWorld.js.
+- Relief : trackPath (y), trackHeight.js (grille), lakes.js, kartVertical.js (RELIEF), route / marquages / terrain / herbe (heightTexture.js) / végétation / décor / grille / caméra sur le relief.
+- Summit Cup (4 circuits), thèmes canyon et alpine, relief ajouté à kairosMeadow et echoWoods ; textes fr / en / mg.
+
+### Tests
+Voir la fiche. Astuce : après un rechargement à chaud, l'app importe `raceSession.js?t=...` ; pour lire le monde de course depuis la console, prendre l'URL dans `performance.getEntriesByType('resource')`. Le panneau navigateur doit être affiché (sinon Canvas et animations Motion à l'arrêt). Scène R3F accessible par `_roots` de `@react-three/fiber` (rendus hors écran pour les vérifications).
+
+### TODO
+- Écran de résultats, meilleur tour (phase course).
+- Rampes et pads de turbo (vrais sauts), pièces.
+- Performance à 32 karts en écran partagé : fusion des maillages des véhicules, LOD des pilotes lointains.
+- IA : drift.

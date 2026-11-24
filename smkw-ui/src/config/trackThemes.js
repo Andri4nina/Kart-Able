@@ -43,6 +43,28 @@ export const TRACK_THEMES = Object.freeze({
     treeCount: 260,
     bushCount: 200,
   },
+  // Canyon : terre ocre, herbe sèche rare, arbres du désert.
+  canyon: {
+    ground: ['#d99a5b', '#c27d43'],
+    shoulder: '#a86a3a',
+    sand: '#f0c98a',
+    water: { shallow: '#58c7c0', deep: '#1d7a8c', foam: '#f4fffd' },
+    grass: { tip: '#d8c16a', base: '#8a6a2e' },
+    trees: ['acacia', 'orangeUmbrella', 'limeCube'],
+    treeCount: 160,
+    bushCount: 140,
+  },
+  // Col alpin : prairies d'altitude pâles, conifères.
+  alpine: {
+    ground: ['#9fcf8a', '#86b975'],
+    shoulder: '#b9b2a4',
+    sand: '#e6e1d4',
+    water: { shallow: '#7ad7e8', deep: '#2a6fa8', foam: '#ffffff' },
+    grass: { tip: '#cfe9a8', base: '#5e8f4a' },
+    trees: ['bluePine', 'fir', 'tallPine', 'softPine'],
+    treeCount: 700,
+    bushCount: 220,
+  },
 })
 
 export function getTrackTheme(themeId) {

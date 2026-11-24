@@ -15,6 +15,11 @@
   --color-brand-sky: #8ccff2;
   --color-brand-orange: #ff7a1a;
   --color-brand-blue: #2f80ed;
+  /* Paliers de mini-turbo (mêmes valeurs que components3d/World/palette.js). */
+  --color-turbo-0: #f5f7fa;
+  --color-turbo-1: #3aa0ff;
+  --color-turbo-2: #ff7a1a;
+  --color-turbo-3: #c45cff;
 
   /* Couleurs des 8 joueurs locaux (slots 1 à 8). */
   --color-player-1: #e63946;

@@ -1,0 +1,16 @@
+[package]
+name = "smkw-api"
+version = "0.1.0"
+edition = "2021"
+description = "Serveur de jeu autoritaire de Kart Able (squelette, phase multijoueur a venir)"
+publish = false
+
+# Aucune dependance tant que la phase multijoueur n'a pas commence.
+# Pile prevue (a ajouter a ce moment-la) : tokio (runtime), axum (HTTP + WebSocket),
+# serde / serde_json (messages), tracing (journaux).
+[dependencies]
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true

@@ -1,5 +1,5 @@
 // Ligne médiane d'un circuit : spline de Catmull-Rom centripète fermée passant par les points
-// de contrôle [x, z, largeur], rééchantillonnée à pas constant (mètres). Calcul pur, sans
+// de contrôle [x, z, largeur, hauteur?], rééchantillonnée à pas constant (mètres). Calcul pur, sans
 // Three.js : partagé par la scène 3D (route, décor, grille) et l'UI (mini-cartes).
 
 const DENSITY = 24 // échantillons par segment avant rééchantillonnage
@@ -25,7 +25,8 @@ function catmullRom(p0, p1, p2, p3, u) {
   return lerp(b1, b2, t1, t2)
 }
 
-// Polyligne dense (x, z, largeur), fermée, dans l'ordre de course.
+// Polyligne dense (x, z, largeur, hauteur), fermée, dans l'ordre de course. Largeur et hauteur
+// passent d'un point de contrôle au suivant en douceur (smoothstep) : pentes sans cassure.
 function densify(points) {
   const dense = []
   const count = points.length
@@ -35,13 +36,15 @@ function densify(points) {
       const u = step / DENSITY
       const [x, z] = catmullRom(p0, p1, p2, p3, u)
       const blend = u * u * (3 - 2 * u)
-      dense.push([x, z, p1[2] + (p2[2] - p1[2]) * blend])
+      const y1 = p1[3] ?? 0
+      const y2 = p2[3] ?? 0
+      dense.push([x, z, p1[2] + (p2[2] - p1[2]) * blend, y1 + (y2 - y1) * blend])
     }
   }
   return dense
 }
 
-// Chemin rééchantillonné tous les `step` mètres : positions, largeurs, tangentes unitaires,
+// Chemin rééchantillonné tous les `step` mètres : positions, largeurs, hauteurs, tangentes unitaires,
 // distances cumulées, longueur totale. Le point 0 est la ligne de départ / arrivée.
 export function buildTrackPath(points, step = 1) {
   const dense = densify(points)
@@ -53,7 +56,7 @@ export function buildTrackPath(points, step = 1) {
   }
   const length = lengths[dense.length]
   const count = Math.max(8, Math.round(length / step))
-  const path = { count, length, step: length / count, x: new Float32Array(count), z: new Float32Array(count), width: new Float32Array(count), tx: new Float32Array(count), tz: new Float32Array(count) }
+  const path = { count, length, step: length / count, x: new Float32Array(count), z: new Float32Array(count), width: new Float32Array(count), y: new Float32Array(count), tx: new Float32Array(count), tz: new Float32Array(count) }
 
   let cursor = 0
   for (let i = 0; i < count; i += 1) {
@@ -65,6 +68,7 @@ export function buildTrackPath(points, step = 1) {
     path.x[i] = a[0] + (b[0] - a[0]) * f
     path.z[i] = a[1] + (b[1] - a[1]) * f
     path.width[i] = a[2] + (b[2] - a[2]) * f
+    path.y[i] = a[3] + (b[3] - a[3]) * f
   }
   for (let i = 0; i < count; i += 1) {
     const next = (i + 1) % count

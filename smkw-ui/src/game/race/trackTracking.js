@@ -1,4 +1,7 @@
+import { WALL } from '../../config/kartTuning'
 import { RACE } from '../../config/race'
+import { clearBoost } from './kartBoost'
+import { cancelDrift } from './kartDrift'
 import { distanceToLake } from '../track/trackGeometry'
 
 // Position d'un kart par rapport au circuit (calcul pur, aucune allocation) : échantillon du
@@ -28,8 +31,9 @@ export function updateTrackIndex(path, kart) {
   kart.offRoad = Math.abs(kart.lateral) > path.width[best] / 2 + CURB
 }
 
-// Barrière invisible à RACE.fence mètres du bord : le kart y est retenu et perd sa vitesse
-// vers l'extérieur (les portes de checkpoint couvrent toute cette largeur).
+// Barrière invisible à RACE.fence mètres du bord : le kart y est retenu, rebondit un peu et,
+// sur un choc franc, perd de la vitesse selon sa résistance et est secoué (les portes de
+// checkpoint couvrent toute cette largeur).
 export function applyFence(path, kart) {
   const i = kart.trackIndex
   const limit = path.width[i] / 2 + RACE.fence
@@ -42,10 +46,17 @@ export function applyFence(path, kart) {
   kart.z -= rightZ * excess
   kart.lateral = side * limit
   const outward = (kart.vx * rightX + kart.vz * rightZ) * side
-  if (outward > 0) {
-    kart.vx -= rightX * outward * side
-    kart.vz -= rightZ * outward * side
-  }
+  if (outward <= 0) return
+  const push = outward * (1 + WALL.bounce)
+  kart.vx -= rightX * push * side
+  kart.vz -= rightZ * push * side
+  if (outward < WALL.bumpSpeed) return
+  const speed = Math.hypot(kart.vx, kart.vz)
+  const loss = WALL.speedLoss * (1 - kart.stats.toughness * 0.5) * Math.min(1, outward / Math.max(speed, 1))
+  kart.vx *= 1 - loss
+  kart.vz *= 1 - loss
+  kart.bump = Math.max(kart.bump, 0.25)
+  kart.hits += 1
 }
 
 export function isInWater(lakes, x, z) {
@@ -63,9 +74,11 @@ export function respawnOnTrack(path, kart) {
   kart.vx = 0
   kart.vz = 0
   kart.speed = 0
-  kart.driftDir = 0
-  kart.driftCharge = 0
-  kart.boost = 0
+  kart.hop = 0
+  kart.bump = 0
+  kart.spin = 0
+  cancelDrift(kart)
+  clearBoost(kart)
   kart.lateral = 0
   kart.offRoad = false
 }

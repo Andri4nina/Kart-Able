@@ -7,10 +7,11 @@
 // Textes : clés i18n classes.<id>.*, sizes.<id>.* et characters.<id>.*
 
 export const CHARACTER_CLASSES = Object.freeze({
-  // Lourd et solide : pousse les autres, mais lent à lancer et à tourner.
+  // Lourd et solide : pousse les autres, mais lent à lancer et à tourner. Vitesse de pointe
+  // dans la moyenne (sans quoi il perd 2 s au tour sans compensation réelle).
   tank: {
     id: 'tank',
-    stats: { topSpeed: 4, acceleration: 3, weight: 9, handling: 3, drift: 4, toughness: 9 },
+    stats: { topSpeed: 6, acceleration: 3, weight: 9, handling: 3, drift: 4, toughness: 9 },
     mechanic: null,
   },
   // Équilibré : aucun point faible, aucun point fort marqué.

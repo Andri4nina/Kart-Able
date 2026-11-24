@@ -2,7 +2,7 @@ import { BufferAttribute, BufferGeometry } from 'three'
 
 const ROAD_Y = 0.03
 
-// Ruban d'asphalte le long du chemin (boucle fermée), largeur variable.
+// Ruban d'asphalte le long du chemin (boucle fermée), largeur et hauteur variables (relief).
 // Attribut `aRoad` : x = position en travers (-1 bord gauche, +1 bord droit), y = distance (m).
 export function buildRoadGeometry(path) {
   const count = path.count
@@ -16,7 +16,7 @@ export function buildRoadGeometry(path) {
     for (let edge = 0; edge < 2; edge += 1) {
       const sign = edge === 0 ? -1 : 1
       const v = i * 2 + edge
-      positions.set([path.x[i] + sideX * half * sign, ROAD_Y, path.z[i] + sideZ * half * sign], v * 3)
+      positions.set([path.x[i] + sideX * half * sign, path.y[i] + ROAD_Y, path.z[i] + sideZ * half * sign], v * 3)
       road.set([sign, i * path.step], v * 2)
       normals.set([0, 1, 0], v * 3)
     }
@@ -33,6 +33,8 @@ export function buildRoadGeometry(path) {
   geometry.setAttribute('normal', new BufferAttribute(normals, 3))
   geometry.setAttribute('aRoad', new BufferAttribute(road, 2))
   geometry.setIndex(indices)
+  // Normales recalculées : la route en pente est éclairée selon son inclinaison.
+  geometry.computeVertexNormals()
   geometry.computeBoundingSphere()
   return geometry
 }

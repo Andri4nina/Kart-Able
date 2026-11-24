@@ -19,7 +19,7 @@ function createBuilder() {
   const quad = (a, b, c, d, color) => {
     const facesUp = (b[1] - a[1]) * (c[0] - a[0]) - (b[0] - a[0]) * (c[1] - a[1]) > 0
     for (const p of facesUp ? [a, b, c, a, c, d] : [a, c, b, a, d, c]) {
-      positions.push(p[0], MARK_Y, p[1])
+      positions.push(p[0], (p[2] ?? 0) + MARK_Y, p[1])
       colors.push(color.r, color.g, color.b)
     }
   }
@@ -33,8 +33,8 @@ function createBuilder() {
   return { quad, toGeometry }
 }
 
-// Point à `lateral` mètres sur la droite de l'échantillon i.
-const offsetPoint = (path, i, lateral) => [path.x[i] - path.tz[i] * lateral, path.z[i] + path.tx[i] * lateral]
+// Point à `lateral` mètres sur la droite de l'échantillon i : [x, z, hauteur de la route].
+const offsetPoint = (path, i, lateral) => [path.x[i] - path.tz[i] * lateral, path.z[i] + path.tx[i] * lateral, path.y[i]]
 
 function addCurbs(builder, path) {
   for (let i = 0; i < path.count; i += 1) {
@@ -58,7 +58,7 @@ function addStartLine(builder, path) {
     for (let column = 0; column < columns; column += 1) {
       const along = (row - 1) * 1.5
       const lateral = -point.width / 2 + column * cell
-      const at = (forward, side) => [point.x + point.tx * forward - point.tz * side, point.z + point.tz * forward + point.tx * side]
+      const at = (forward, side) => [point.x + point.tx * forward - point.tz * side, point.z + point.tz * forward + point.tx * side, point.y]
       builder.quad(at(along, lateral), at(along + 1.5, lateral), at(along + 1.5, lateral + cell), at(along, lateral + cell), (row + column) % 2 ? WHITE : BLACK)
     }
   }
@@ -70,7 +70,7 @@ function addGridMarks(builder, path, slotCount) {
     const slot = getStartSlot(path, index)
     const fx = Math.sin(slot.yaw)
     const fz = Math.cos(slot.yaw)
-    const at = (forward, side) => [slot.x + fx * forward - fz * side, slot.z + fz * forward + fx * side]
+    const at = (forward, side) => [slot.x + fx * forward - fz * side, slot.z + fz * forward + fx * side, slot.y]
     builder.quad(at(1.6, -1), at(1.9, -1), at(1.9, 1), at(1.6, 1), WHITE)
   }
 }

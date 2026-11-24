@@ -1,14 +1,17 @@
-import { RACE, START_LIGHTS } from '../../config/race'
+import { RACE } from '../../config/race'
 import { createRandom } from '../track/noise'
 import { getTrackGeometry } from '../track/trackGeometry'
 import { getStartSlot } from '../track/trackLayout'
-import { driveBot } from './botDriver'
+import { createItemState, updateItems } from '../items/itemSystem'
 import { resolveKartCollisions } from './kartCollisions'
 import { stepKartPhysics } from './kartPhysics'
+import { chooseControls } from './raceControls'
 import { createRaceKart } from './raceKart'
+import { placeOnGround, updateKartVertical } from './kartVertical'
+import { updatePace } from './racePace'
 import { updateProgress, updateRanking } from './raceProgress'
 import { getRaceRoster } from './raceRoster'
-import { createStartSequence, getStartBoost } from './startLights'
+import { createStartSequence } from './startLights'
 import { applyFence, isInWater, respawnOnTrack, updateTrackIndex } from './trackTracking'
 
 // Monde d'une course (calcul pur, sans React ni Three) : départ, conduite, chocs, tours,
@@ -25,6 +28,9 @@ export function createRaceWorld(match, seed, resolveDevice) {
     geometry,
     laps: match.laps,
     seed,
+    random,
+    dt: 0,
+    items: createItemState(geometry),
     karts,
     humans: karts.filter((kart) => !kart.isBot),
     kartsById: new Map(karts.map((kart) => [kart.id, kart])),
@@ -41,41 +47,20 @@ export function createRaceWorld(match, seed, resolveDevice) {
   return world
 }
 
-function chooseControls(world, kart, readControls) {
-  if (kart.isBot || kart.finished || kart.autopilot) driveBot(kart, world.geometry.path, kart.controls)
-  else readControls(kart, kart.controls)
-  if (kart.isBot && world.raceTime < kart.reaction) kart.controls.throttle = 0
-  // Départ turbo : nouvel appui sur l'accélérateur juste après l'extinction des feux.
-  const pressed = kart.controls.throttle > 0
-  if (!kart.launched && world.raceTime >= 0) {
-    kart.boost = Math.max(kart.boost, getStartBoost(world.raceTime, pressed, kart.throttleBefore))
-    kart.launched = pressed || world.raceTime > START_LIGHTS.perfectWindow
-  }
-  kart.throttleBefore = pressed
-}
-
-// Rythme des pilotes : un bot loin devant le meilleur joueur ralentit un peu, loin derrière il
-// accélère un peu (course serrée). Après l'arrivée, le pilote automatique roule tranquillement.
-function updatePace(world) {
-  let lead = -Infinity
-  for (const kart of world.humans) lead = Math.max(lead, kart.finished ? Infinity : kart.raceDistance)
-  for (const kart of world.karts) {
-    if (!kart.isBot) kart.topFactor = kart.finished ? 0.85 : kart.autopilot ? 0.97 : 1
-    else if (Number.isFinite(lead)) kart.topFactor = kart.skill * Math.min(1.07, Math.max(0.93, 1 - (kart.raceDistance - lead) / 2500))
-    else kart.topFactor = kart.skill
-  }
-}
-
 function moveKart(world, kart, dt) {
   const { path, track } = world.geometry
   if (kart.sinking > 0) {
     kart.sinking = Math.max(0, kart.sinking - dt)
-    if (kart.sinking === 0) respawnOnTrack(path, kart)
+    if (kart.sinking === 0) {
+      respawnOnTrack(path, kart)
+      placeOnGround(kart, world.geometry)
+    }
     return
   }
   const fromX = kart.x
   const fromZ = kart.z
   stepKartPhysics(kart, kart.controls, dt)
+  updateKartVertical(kart, world.geometry, dt)
   updateTrackIndex(path, kart)
   applyFence(path, kart)
   if (kart.offRoad && isInWater(track.lakes, kart.x, kart.z)) {
@@ -97,6 +82,7 @@ function updateEnd(world) {
 // commandes d'un joueur.
 export function stepRaceWorld(world, delta, readControls) {
   world.time += delta
+  world.dt = delta
   world.raceTime = world.time - world.start.goAt
   if (world.phase === RACE_PHASES.COUNTDOWN && world.raceTime >= 0) world.phase = RACE_PHASES.RACING
   for (const kart of world.karts) chooseControls(world, kart, readControls)
@@ -107,6 +93,7 @@ export function stepRaceWorld(world, delta, readControls) {
   for (let step = 0; step < steps; step += 1) {
     for (const kart of world.karts) moveKart(world, kart, delta / steps)
     resolveKartCollisions(world.karts)
+    updateItems(world, delta / steps)
   }
   updateRanking(world)
   updateEnd(world)

@@ -2,7 +2,6 @@ import { DEMO_HUD } from '../../config/gameConfig'
 import { useRaceStore } from '../../stores/raceStore'
 import { useTelemetryStore } from '../../stores/telemetryStore'
 import { getDisplayedLap } from '../track/lapRules'
-import { getDriftTier } from './kartPhysics'
 import { getRace } from './raceSession'
 import { getLightsOn } from './startLights'
 
@@ -21,19 +20,30 @@ export function describeRace() {
     goAt: round(world.start.goAt, 3),
     lightsOn: getLightsOn(world.start, world.time),
     laps: world.laps,
+    itemBoxes: `${world.items.boxes.filter((box) => box.active).length}/${world.items.boxes.length}`,
+    hazards: world.items.hazards.filter((entry) => entry.ttl > 0).length,
+    projectiles: world.items.projectiles.filter((entry) => entry.ttl > 0).length,
     karts: world.ranking.map((kart) => ({
       id: kart.id,
       bot: kart.isBot,
       position: kart.position,
       xz: [round(kart.x, 1), round(kart.z, 1)],
+      y: round(kart.y, 2),
+      airborne: kart.airborne,
       yaw: round(kart.yaw, 2),
       kmh: Math.round(kart.speed * MS_TO_KMH),
       lap: getDisplayedLap(kart.progress, world.laps),
       nextGate: kart.progress.nextGate,
       distance: round(kart.raceDistance, 1),
       offRoad: kart.offRoad,
-      drift: kart.driftDir ? { dir: kart.driftDir, tier: getDriftTier(kart.driftCharge) } : null,
-      boost: round(kart.boost, 2),
+      hop: kart.hop > 0,
+      drift: kart.driftDir ? { dir: kart.driftDir, tier: kart.driftTier, charge: round(kart.driftCharge) } : null,
+      boost: kart.boost > 0 ? { time: round(kart.boost, 2), source: kart.boostSource, speed: kart.boostSpeed } : null,
+      bump: kart.bump > 0,
+      hits: kart.hits,
+      item: kart.item ? `${kart.item}x${kart.itemCharges}` : kart.itemRoll > 0 ? 'rolling' : null,
+      spin: kart.spin > 0,
+      shield: kart.shield > 0,
       sinking: kart.sinking > 0,
       finishTime: kart.finished ? round(kart.finishTime, 3) : null,
       ...(kart.isBot ? null : { controls: { ...kart.controls, steer: round(kart.controls.steer) }, autopilot: kart.autopilot }),

@@ -1,35 +1,40 @@
 import { getCharacterClass } from '../../config/characters'
+import { STAT_CURVES } from '../../config/kartTuning'
 import { getVehicle } from '../../config/vehicles'
 
-// Caractéristiques physiques d'un kart : statistiques du véhicule (60 %) et de l'archétype du
-// pilote (40 %), sur 10, converties en unités physiques (m/s, m/s², rad/s). Calcul pur.
-const VEHICLE_SHARE = 0.6
+// Caractéristiques physiques d'un kart : statistiques du véhicule et de l'archétype du pilote
+// (sur 10, mélangées selon STAT_CURVES.vehicleShare), converties en unités physiques par les
+// courbes de config/kartTuning.js. Calcul pur.
 const NEUTRAL = { topSpeed: 6, acceleration: 6, weight: 5, handling: 6, drift: 6, toughness: 5 }
 
 function blendStats(vehicle, characterClass) {
   const a = vehicle?.stats ?? NEUTRAL
   const b = characterClass?.stats ?? NEUTRAL
+  const share = STAT_CURVES.vehicleShare
   const blended = {}
-  for (const key of Object.keys(NEUTRAL)) blended[key] = a[key] * VEHICLE_SHARE + b[key] * (1 - VEHICLE_SHARE)
+  for (const key of Object.keys(NEUTRAL)) blended[key] = a[key] * share + b[key] * (1 - share)
   return blended
 }
 
+const curve = (name, stat) => STAT_CURVES[name].base + (stat - 6) * STAT_CURVES[name].perPoint
+
 export function buildKartStats(characterId, vehicleId) {
   const characterClass = getCharacterClass(characterId)
-  const s = blendStats(getVehicle(vehicleId), characterClass)
+  const vehicle = getVehicle(vehicleId)
+  const s = blendStats(vehicle, characterClass)
   return Object.freeze({
-    maxSpeed: 24 + s.topSpeed * 0.9, // ~29 m/s (105 km/h) pour un kart moyen
-    acceleration: 7 + s.acceleration * 1.3,
-    reverseSpeed: 7,
-    brake: 26,
-    coast: 5, // ralentissement sans accélérer
-    turnRate: 1.6 + s.handling * 0.12, // rad/s à vitesse moyenne
-    grip: 6 + s.handling * 0.5, // amortissement de la glisse latérale (1/s)
-    driftGrip: 1.6 + s.drift * 0.12,
-    driftCharge: 0.75 + s.drift * 0.05, // vitesse de charge du turbo de drift
-    mass: 1 + s.weight * 0.15,
-    toughness: s.toughness,
-    // Hors-piste : vitesse maximale réduite (l'aéroglisseur n'est pas ralenti).
-    offRoad: characterClass?.mechanic?.ignoresOffRoad ? 1 : 0.5,
+    maxSpeed: curve('maxSpeed', s.topSpeed),
+    // Un kart lourd démarre un peu moins vite (en plus de sa statistique d'accélération).
+    acceleration: curve('acceleration', s.acceleration) - (s.weight - 5) * 0.15,
+    reverseSpeed: STAT_CURVES.reverseSpeed,
+    brake: STAT_CURVES.brake,
+    coast: STAT_CURVES.coast,
+    turnRate: curve('turnRate', s.handling),
+    grip: curve('grip', s.handling),
+    driftGrip: curve('driftGrip', s.drift),
+    driftCharge: curve('driftCharge', s.drift),
+    mass: curve('mass', s.weight),
+    toughness: Math.min(0.95, curve('toughness', s.toughness)),
+    offRoad: characterClass?.mechanic?.ignoresOffRoad ? 1 : (vehicle?.offRoad ?? STAT_CURVES.offRoad),
   })
 }

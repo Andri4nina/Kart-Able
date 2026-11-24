@@ -8,6 +8,7 @@ import { trackTime } from './trackClock'
 // couché là où la texture de données dit « pas d'herbe » (route, sable, eau).
 // Version allégée : pas de traînée de pas ni de neige. En écran partagé, la caméra de chaque
 // case est poussée dans uCameraOffset avant son rendu (onBeforeRender, voir TrackGrass).
+// Les brins sont posés sur le relief (texture de hauteurs uHeight, voir trackField.js).
 
 export function buildGrassGeometry({ count, spacing, seed }) {
   const random = createRandom(seed)
@@ -38,6 +39,8 @@ const VERTEX = /* glsl */ `
   #include <fog_pars_vertex>
   attribute vec3 aCenter;
   uniform sampler2D uField;
+  uniform sampler2D uHeight;
+  uniform vec2 uHeightRange;
   uniform vec2 uFieldOrigin;
   uniform float uFieldSize;
   uniform vec2 uCameraOffset;
@@ -49,7 +52,9 @@ const VERTEX = /* glsl */ `
     float halfPatch = uPatchSize * 0.5;
     vec2 wrapped = mod(aCenter.xz - uCameraOffset + halfPatch, uPatchSize) - halfPatch;
     vec3 center = vec3(wrapped.x + uCameraOffset.x, 0.0, wrapped.y + uCameraOffset.y);
-    vec4 cell = texture2D(uField, (center.xz - uFieldOrigin) / uFieldSize);
+    vec2 fieldUv = (center.xz - uFieldOrigin) / uFieldSize;
+    vec4 cell = texture2D(uField, fieldUv);
+    center.y = uHeightRange.x + texture2D(uHeight, fieldUv).r * uHeightRange.y;
     float visible = smoothstep(0.15, 0.45, cell.g) * (1.0 - smoothstep(0.02, 0.2, cell.r)) * (1.0 - step(0.02, cell.b));
     vec3 right = vec3(viewMatrix[0][0], viewMatrix[1][0], viewMatrix[2][0]);
     float sway = sin(uTime * 1.7 + center.x * 0.35 + center.z * 0.21) * 0.12 * position.y;
@@ -88,6 +93,8 @@ export function createGrassMaterial(field, theme, patchSize) {
     uniforms: {
       ...UniformsUtils.clone(UniformsLib.fog),
       uField: { value: field.texture },
+      uHeight: { value: field.heightTexture },
+      uHeightRange: { value: new Vector2(field.heightRange[0], field.heightRange[1]) },
       uFieldOrigin: { value: new Vector2(field.origin[0], field.origin[1]) },
       uFieldSize: { value: field.size },
       uCameraOffset: { value: new Vector2() },

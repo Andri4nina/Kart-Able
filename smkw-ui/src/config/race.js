@@ -2,8 +2,9 @@
 // (la physique est dans game/race/kartStats.js et kartPhysics.js).
 
 export const RACE = Object.freeze({
-  // Mode course : le peloton est complété par des pilotes ordinateur jusqu'à `fieldSize`.
-  fieldSize: 8,
+  // Mode course : le peloton est complété par des pilotes ordinateur jusqu'à `fieldSize`
+  // (joueurs compris) : 32 karts, la taille de la grille des circuits.
+  fieldSize: 32,
   // Physique en pas fixes (déterministe, indépendante de la fréquence d'affichage).
   step: 1 / 120,
   // Les karts ne s'éloignent pas de plus de `fence` mètres du bord de la route (barrière
@@ -29,6 +30,5 @@ export const START_LIGHTS = Object.freeze({
   holdMax: 2,
   goShown: 1.2, // durée de l'affichage « Partez ! »
   // Réaction : accélérer dans cet intervalle après l'extinction donne un départ turbo.
-  perfectWindow: 0.35,
-  perfectBoost: 0.9,
+  perfectWindow: 0.35, // turbo obtenu : BOOSTS.start (config/kartTuning.js)
 })

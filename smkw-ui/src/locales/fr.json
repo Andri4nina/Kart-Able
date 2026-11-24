@@ -255,6 +255,7 @@
     "lap": "Tour",
     "time": "Temps",
     "speed": "Vitesse",
+    "miniTurbo": "Mini-turbo",
     "kmh": "km/h",
     "position": "Position {{position}} sur {{total}}",
     "ordinal": {
@@ -265,7 +266,9 @@
     "exit": "Retour au menu",
     "demo": "HUD de démo · {{mode}} · kart en phase 2",
     "playerView": "Vue de {{player}}",
-    "overview": "Vue d'ensemble"
+    "overview": "Vue d'ensemble",
+    "itemRolling": "Tirage en cours",
+    "itemCharges": "×{{count}}"
   },
   "input": {
     "keyboard1": "Clavier 1",
@@ -410,6 +413,9 @@
   "cups": {
     "kairos": {
       "name": "Kairos Cup"
+    },
+    "summit": {
+      "name": "Summit Cup"
     }
   },
   "tracks": {
@@ -428,6 +434,22 @@
     "turquoiseCoast": {
       "name": "Côte Turquoise",
       "description": "Le long de la mer, puis une épingle en S avant la ligne : le plus long de la coupe."
+    },
+    "sunsetCanyon": {
+      "name": "Canyon Couchant",
+      "description": "Grimpe entre les falaises ocre, puis redescends à toute allure vers l'oasis."
+    },
+    "alpinePass": {
+      "name": "Col Alpin",
+      "description": "Vingt mètres de montée jusqu'au col, puis une longue descente entre les sapins."
+    },
+    "cloudRidge": {
+      "name": "Crête des Nuages",
+      "description": "Des bosses en série au-dessus du lac : prises vite, elles allègent le kart."
+    },
+    "duneRun": {
+      "name": "Course des Dunes",
+      "description": "Des dunes qui ondulent et des virages larges : garde ta vitesse dans les bosses."
     }
   },
   "vehicles": {
@@ -489,5 +511,27 @@
     "b15": "Croix droite",
     "b16": "Home / PS",
     "other": "Bouton {{number}}"
+  },
+  "race": {
+    "go": "Partez !",
+    "lights": "Feux de départ : {{count}} sur {{total}}",
+    "finished": "Arrivée"
+  },
+  "items": {
+    "nitro": {
+      "name": "Nitro"
+    },
+    "tripleNitro": {
+      "name": "Triple nitro"
+    },
+    "oilSlick": {
+      "name": "Flaque d'huile"
+    },
+    "shockOrb": {
+      "name": "Orbe de choc"
+    },
+    "bubble": {
+      "name": "Bulle"
+    }
   }
 }

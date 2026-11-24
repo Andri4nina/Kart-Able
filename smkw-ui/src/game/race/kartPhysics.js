@@ -1,83 +1,72 @@
+import { COLLISION, OVER_SPEED_DRAG, STAT_CURVES } from '../../config/kartTuning'
+import { tickBoost } from './kartBoost'
+import { driftTurnRate, updateDrift } from './kartDrift'
+
 // Conduite arcade d'un kart sur le plan du sol (calcul pur, pas fixe `dt`).
 // Repère : avant = (sin yaw, cos yaw), droite = (-cos yaw, sin yaw) ; braquer à droite
 // (steer > 0) fait décroître yaw. La vitesse est un vecteur monde : en tournant, sa part
 // latérale est amortie par l'adhérence (glisse en drift, adhérence faible).
+// Réglages : config/kartTuning.js ; dérapage : kartDrift.js ; turbo : kartBoost.js.
 //
 // `controls` : { throttle 0..1, brake 0..1, steer -1..1, drift bool }.
-
-const BOOST_SPEED = 1.3
-const BOOST_ACCELERATION = 2
-const OVER_SPEED_DRAG = 22 // m/s² pour revenir à la vitesse maximale (hors-piste, fin de turbo)
-const DRIFT_MIN_SPEED = 0.45 // fraction de la vitesse maximale pour lancer un drift
-// Paliers de charge du drift (secondes chargées) et durée du turbo obtenu.
-export const DRIFT_TIERS = Object.freeze([
-  { charge: 1, boost: 0.55 },
-  { charge: 2.1, boost: 1.1 },
-])
-
-export function getDriftTier(charge) {
-  let tier = 0
-  for (const step of DRIFT_TIERS) if (charge >= step.charge) tier += 1
-  return tier
-}
+export { getDriftTier } from './kartDrift'
 
 function steerRate(kart, controls, forward) {
   const { stats } = kart
+  if (kart.driftDir) return driftTurnRate(kart, controls)
   const speed = Math.abs(forward)
-  // À l'arrêt on ne tourne pas ; à pleine vitesse on tourne un peu moins vite.
-  const grip = Math.min(1, speed / 5) * (1 - 0.3 * Math.min(1, speed / stats.maxSpeed))
-  if (!kart.driftDir) return controls.steer * stats.turnRate * grip * (forward < 0 ? -1 : 1)
-  // En drift : on tourne toujours du côté du drift, plus ou moins serré selon la direction.
-  return kart.driftDir * stats.turnRate * (0.95 + 0.45 * controls.steer * kart.driftDir)
-}
-
-function updateDrift(kart, controls, forward, dt) {
-  const { stats } = kart
-  if (!kart.driftDir) {
-    if (controls.drift && Math.abs(controls.steer) > 0.3 && forward > stats.maxSpeed * DRIFT_MIN_SPEED) {
-      kart.driftDir = Math.sign(controls.steer)
-      kart.driftCharge = 0
-    }
-    return
-  }
-  if (controls.drift && forward > stats.maxSpeed * 0.3) {
-    kart.driftCharge += dt * stats.driftCharge * (0.6 + 0.4 * Math.abs(controls.steer))
-    return
-  }
-  // Drift relâché : turbo selon le palier atteint.
-  const tier = getDriftTier(kart.driftCharge)
-  if (tier > 0) kart.boost = Math.max(kart.boost, DRIFT_TIERS[tier - 1].boost)
-  kart.driftDir = 0
-  kart.driftCharge = 0
+  // À l'arrêt on ne tourne pas ; à pleine vitesse on tourne un peu moins vite. En l'air (saut
+  // du drift), le braquage reste possible mais réduit.
+  const grip = Math.min(1, speed / 5) * (1 - 0.25 * Math.min(1, speed / stats.maxSpeed))
+  const air = kart.hop > 0 || kart.airborne ? 0.6 : 1
+  // Secousse après un choc : le braquage ne répond qu'en partie.
+  const wobble = kart.bump > 0 ? COLLISION.wobbleSteer : 1
+  return controls.steer * stats.turnRate * grip * air * wobble * (forward < 0 ? -1 : 1)
 }
 
 function updateForward(kart, controls, forward, dt) {
   const { stats } = kart
   const boosting = kart.boost > 0
   const surface = kart.offRoad && !boosting ? stats.offRoad : 1
-  const top = stats.maxSpeed * kart.topFactor * surface * (boosting ? BOOST_SPEED : 1)
+  const top = stats.maxSpeed * kart.topFactor * surface * (boosting ? kart.boostSpeed : 1)
   let next = forward
-  if (controls.throttle > 0) {
-    const falloff = 1 - 0.55 * Math.max(0, next) / top
-    next += stats.acceleration * (boosting ? BOOST_ACCELERATION : 1) * falloff * controls.throttle * dt
+  // Un turbo pousse même sans accélérer.
+  const throttle = boosting ? Math.max(controls.throttle, 1) : controls.throttle
+  if (throttle > 0) {
+    const falloff = 1 - 0.6 * Math.max(0, next) / top
+    next += stats.acceleration * (boosting ? kart.boostAccel : 1) * falloff * throttle * dt
   }
-  if (controls.brake > 0) {
+  if (controls.brake > 0 && !boosting) {
     if (next > 0.5) next -= stats.brake * controls.brake * dt
     else next = Math.max(-stats.reverseSpeed, next - stats.acceleration * 0.5 * controls.brake * dt)
   }
-  if (controls.throttle === 0 && controls.brake === 0) next -= Math.sign(next) * Math.min(Math.abs(next), stats.coast * dt)
+  if (throttle === 0 && controls.brake === 0) next -= Math.sign(next) * Math.min(Math.abs(next), stats.coast * dt)
   if (next > top) next = Math.max(top, next - OVER_SPEED_DRAG * dt)
   return next
 }
 
+// Fait tourner le vecteur vitesse avec le kart (part `carry` de la rotation `turn`).
+function carryVelocity(kart, turn) {
+  const carry = kart.hop > 0 || kart.airborne ? STAT_CURVES.carryAir : kart.driftDir ? STAT_CURVES.carryDrift : STAT_CURVES.carry
+  const angle = turn * carry
+  const cos = Math.cos(angle)
+  const sin = Math.sin(angle)
+  const vx = kart.vx
+  kart.vx = vx * cos + kart.vz * sin
+  kart.vz = -vx * sin + kart.vz * cos
+}
+
 export function stepKartPhysics(kart, controls, dt) {
-  updateDrift(kart, controls, kart.speed, dt)
-  kart.yaw -= steerRate(kart, controls, kart.speed) * dt
+  updateDrift(kart, controls, dt)
+  const turn = -steerRate(kart, controls, kart.speed) * dt
+  kart.yaw += turn
+  carryVelocity(kart, turn)
 
   const forwardX = Math.sin(kart.yaw)
   const forwardZ = Math.cos(kart.yaw)
   const forward = kart.vx * forwardX + kart.vz * forwardZ
-  const side = (kart.vx * -forwardZ + kart.vz * forwardX) * Math.exp(-(kart.driftDir ? kart.stats.driftGrip : kart.stats.grip) * dt)
+  const sideGrip = kart.driftDir ? kart.stats.driftGrip : kart.hop > 0 || kart.airborne ? kart.stats.grip * 0.5 : kart.stats.grip
+  const side = (kart.vx * -forwardZ + kart.vz * forwardX) * Math.exp(-sideGrip * dt)
   const nextForward = updateForward(kart, controls, forward, dt)
 
   kart.vx = forwardX * nextForward - forwardZ * side
@@ -85,5 +74,6 @@ export function stepKartPhysics(kart, controls, dt) {
   kart.x += kart.vx * dt
   kart.z += kart.vz * dt
   kart.speed = nextForward
-  kart.boost = Math.max(0, kart.boost - dt)
+  kart.bump = Math.max(0, kart.bump - dt)
+  tickBoost(kart, dt)
 }

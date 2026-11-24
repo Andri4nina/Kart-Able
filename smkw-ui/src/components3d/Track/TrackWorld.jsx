@@ -17,7 +17,13 @@ export function TrackWorld({ trackId }) {
   const theme = getTrackTheme(geometry?.track.theme)
   const field = useMemo(() => (geometry ? buildTrackField(geometry) : null), [geometry])
 
-  useEffect(() => () => field?.texture.dispose(), [field])
+  useEffect(
+    () => () => {
+      field?.texture.dispose()
+      field?.heightTexture.dispose()
+    },
+    [field],
+  )
 
   // Seule animation continue du circuit : le temps des vagues et du vent dans l'herbe.
   const reducedMotion = useReducedMotion()
@@ -26,17 +32,17 @@ export function TrackWorld({ trackId }) {
   })
 
   if (!geometry || !field) return null
-  const { track, path, bounds } = geometry
+  const { track } = geometry
 
   return (
     <group name="track-world" userData={{ trackId }}>
-      <TrackGround path={path} field={field} theme={theme} />
+      <TrackGround geometry={geometry} field={field} theme={theme} />
       <TrackGrass field={field} theme={theme} seed={track.seed} />
       <Suspense fallback={null}>
-        <TrackVegetation track={track} path={path} field={field} theme={theme} />
+        <TrackVegetation geometry={geometry} field={field} theme={theme} />
       </Suspense>
       <Suspense fallback={null}>
-        <TrackDecor path={path} bounds={bounds} />
+        <TrackDecor geometry={geometry} />
       </Suspense>
     </group>
   )

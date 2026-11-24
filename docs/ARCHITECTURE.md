@@ -19,8 +19,8 @@ super mario kart web/
 | Couche | Technologies | Rôle |
 | --- | --- | --- |
 | Frontend `smkw-ui` | React, Vite, React Three Fiber, Three.js, Drei, Tailwind CSS, Motion, Zustand, lucide-react | Rendu 3D, UI, entrées joueur, prédiction client |
-| Physique (phase 2+) | Rapier (`@react-three/rapier`) | Physique du kart et des collisions |
-| Backend `smkw-api` (phase multi) | Node.js, Colyseus, WebSocket | Serveur autoritaire : rooms, synchronisation d'état, gestion des joueurs |
+| Physique | Maison, calcul pur (`game/race`) | Conduite arcade, drift, turbo, chocs en capsules ; réglages dans `config/kartTuning.js` (portable tel quel côté serveur) |
+| Backend `smkw-api` (phase multi) | Rust (tokio, axum, WebSocket) | Serveur autoritaire léger : rooms, simulation à pas fixe, synchronisation d'état. Squelette seulement aujourd'hui |
 | Données (plus tard) | PostgreSQL | Uniquement comptes et progression |
 | Déploiement | Vercel (front), VPS / Railway / Fly.io (game server) | |
 
@@ -111,6 +111,8 @@ src/
 │   ├── vehicles.js              7 VEHICLES (statistiques)
 │   ├── stats.js                 STAT_KEYS, STAT_MAX
 │   ├── cups.js, tracks.js       Coupes (Kairos Cup) et circuits : points de contrôle, lacs, ambiance, graine
+│   ├── kartTuning.js            Réglages de conduite : courbes de stats, drift, turbos, chocs, murs, relief
+│   ├── items.js                 Objets, tirage selon la place, cases à objets
 │   ├── trackThemes.js           Ambiances : couleurs du sol et de l'eau, essences d'arbres, densités
 │   ├── splitScreen.js           Écran partagé : grille par nombre de joueurs, rectangles des cases (UI + 3D)
 │   ├── startGrid.js             Grille de départ : case de chaque joueur
@@ -124,9 +126,16 @@ src/
 │   ├── characterSelect.js       Contrôleur personnages -> véhicules
 │   ├── vehicleSelect.js         Contrôleur véhicules -> lobby
 │   ├── trackSelect.js           Contrôleur du choix du circuit (P1) -> lobby
-│   ├── track/                   Génération pure : trackPath (spline), trackLayout (grille 32, portes), lapRules
+│   ├── track/                   Génération pure : trackPath (spline, hauteurs), trackHeight (relief), lakes,
+│   │                            trackLayout (grille 32, portes), lapRules
 │   │                            (checkpoints, anti-raccourci), trackGeometry, trackOutline, noise
 │   ├── race/startSlots.js       Place de départ d'un joueur (circuit ou arène)
+│   ├── race/                    Course (calcul pur) : raceWorld (pas fixes), kartPhysics (conduite), kartDrift
+│   │                            (saut + mini-turbo 3 paliers), kartBoost (turbo centralisé), kartCollisions +
+│   │                            kartCapsule (chocs), kartVertical (relief), trackTracking (surface, murs, eau),
+│   │                            raceControls, botDriver, racePace...
+│   ├── items/                   Objets (calcul pur) : itemSystem (cases, roulette, usage), itemRules, itemBehaviors,
+│   │                            itemEntities (flaques, orbes en réserve fixe), kartHit (tête-à-queue), botItems
 │   ├── matchConfig.js, lobbyRules.js  Configuration figée de la partie ; règles du lobby
 │   ├── lobbyReady.js            Prêt par joueur ; départ quand tous sont prêts
 │   ├── session.js               startMatch() / exitMatch()
@@ -173,7 +182,8 @@ src/
 │   │                            characterResources (formes partagées)
 │   ├── Vehicles/                VehicleModel (GLB cloné), normalizeModel, kartPaint, vehicleAssets (fichiers dans assets/models)
 │   ├── SelectionPreview/        SelectionPreviewStage (rangée par joueur), PreviewSlot, previewAnimation
-│   ├── Racers/                  StartGrid, RacerKart (véhicule + personnage sur sa case de départ)
+│   ├── Racers/                  StartGrid, RacerKart (véhicule + pilote animé), kartPose, KartEffects
+│   ├── Items/                   RaceItems : cases à objets, flaques, orbes (maillages instanciés)
 │   ├── Track/                   Monde du circuit généré : texture de données, terrain, eau, route, marquages,
 │   │                            herbe, végétation et décor en instances, préchargement
 │   ├── World/                   Atmosphere, Lights, Ground, DemoProps, ShowcaseGem (teinte du mode)...
@@ -189,10 +199,10 @@ src/
 ├── components3d/Kart/, Track/, Items/
 ├── game/physics/, kart/, race/, battle/, rocketGol/, items/, camera/
 ├── input/                  + navigation des menus à la manette, remappage des touches
-└── net/                    client Colyseus (création / connexion aux rooms, matchmaking)
+└── net/                    client WebSocket vers smkw-api (création / connexion aux rooms, matchmaking)
 ```
 
-`smkw-api/` (phase multijoueur) : `src/rooms/` (une room par mode), `src/schema/`, `src/simulation/`, `src/matchmaking/`.
+`smkw-api/` (Rust, phase multijoueur) : `src/rooms/` (une room par mode), `src/protocol/` (messages serde), `src/simulation/` (portage de `game/race`), `src/matchmaking/`. Aujourd'hui : `src/main.rs` et `src/config.rs` seulement.
 
 ---
 
@@ -209,8 +219,10 @@ src/
 | Nouveau véhicule | GLB dans `assets/models` + entrée dans `VEHICLES` et `vehicleAssets.js` + `vehicles.<id>.name` dans chaque locale |
 | Nouvelle sélection (roues, ailes...) | `createSelectionStore` + `createSelectionController` + `SelectionScreen` (voir [elements/selection-system.md](elements/selection-system.md)) |
 | Commandes du kart | Les actions de course existent déjà (assignables) : un contrôleur `game/kart/` abonné via `subscribeToInput` les lit |
-| Réseau | `net/` : `hostOnlineMatch` / `joinOnlineMatch` deviennent des appels Colyseus ; `getStartBlocker` lève `serverRequired` une fois connecté |
+| Réseau | `net/` : `hostOnlineMatch` / `joinOnlineMatch` deviennent des messages WebSocket vers smkw-api (Rust) ; `getStartBlocker` lève `serverRequired` une fois connecté |
 | Gameplay d'un mode | Lire `sessionStore.match` (modeId, playType, players) au démarrage de la scène de course |
+| Réglage de conduite (drift, turbo, chocs, stats) | `config/kartTuning.js` uniquement ; le contrôleur (`game/race/kartPhysics.js`, `kartDrift.js`, `kartBoost.js`, `kartCollisions.js`) ne contient aucune valeur (voir [elements/kart-driving.md](elements/kart-driving.md)) |
+| Nouvelle source de turbo (pad, objet) | Entrée dans `BOOSTS` + `applyBoost(kart, id)` : la politique de cumul est commune |
 | Caméra de poursuite | `components3d/Camera/chaseCamera.js` (une par case de l'écran partagé) |
 | Disposition de l'écran partagé | `config/splitScreen.js` + `GRID_CLASSES` dans `SplitScreenHud.jsx` (mêmes grilles) |
 | Modèles GLB / KTX2 | `assets/models`, `assets/textures` ; `vite.config.js` et `<Suspense>` déjà prêts |

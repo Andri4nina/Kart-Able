@@ -22,6 +22,7 @@ export function sampleTrack(path, distance) {
     x: path.x[i] + (path.x[j] - path.x[i]) * f,
     z: path.z[i] + (path.z[j] - path.z[i]) * f,
     width: path.width[i] + (path.width[j] - path.width[i]) * f,
+    y: path.y[i] + (path.y[j] - path.y[i]) * f,
     tx: tx / norm,
     tz: tz / norm,
   }
@@ -40,7 +41,7 @@ export function getStartSlot(path, index) {
   const point = sampleTrack(path, -back)
   const spacing = Math.min(GRID.maxColumnSpacing, (point.width - 3) / GRID.columns)
   const lateral = (column - (GRID.columns - 1) / 2) * spacing
-  return { x: point.x - point.tz * lateral, z: point.z + point.tx * lateral, yaw: yawOf(point.tx, point.tz) }
+  return { x: point.x - point.tz * lateral, y: point.y, z: point.z + point.tx * lateral, yaw: yawOf(point.tx, point.tz) }
 }
 
 // Portes de checkpoint régulières ; la porte 0 est la ligne de départ / arrivée.

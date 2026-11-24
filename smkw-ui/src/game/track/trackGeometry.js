@@ -1,8 +1,10 @@
 import { getTrack } from '../../config/tracks'
+import { distanceToLakeEdge } from './lakes'
+import { buildHeightField } from './trackHeight'
 import { buildTrackPath } from './trackPath'
 import { getCheckpointGates, getTrackBounds } from './trackLayout'
 
-// Géométrie calculée d'un circuit (chemin, portes, emprise), une seule fois par circuit.
+// Géométrie calculée d'un circuit (chemin, portes, emprise, relief), une seule fois par circuit.
 const cache = new Map()
 
 export function getTrackGeometry(trackId) {
@@ -10,24 +12,15 @@ export function getTrackGeometry(trackId) {
     const track = getTrack(trackId)
     if (!track) return null
     const path = buildTrackPath(track.path)
-    cache.set(trackId, Object.freeze({ track, path, gates: getCheckpointGates(path), bounds: getTrackBounds(path) }))
+    const bounds = getTrackBounds(path)
+    // relief : grille de hauteurs (trackHeight.js), null pour un circuit plat.
+    cache.set(trackId, Object.freeze({ track, path, gates: getCheckpointGates(path), bounds, relief: buildHeightField(track, path, bounds) }))
   }
   return cache.get(trackId)
 }
 
-// Distance signée entre le bord d'une ellipse (lac) et un point (négative dans l'eau) : approximation
-// suffisante pour les marges et la chute dans l'eau (rayon local de l'ellipse vers le point).
-export function distanceToLake(lake, x, z) {
-  const dx = x - lake.x
-  const dz = z - lake.z
-  const cos = Math.cos(-lake.angle)
-  const sin = Math.sin(-lake.angle)
-  const lx = dx * cos - dz * sin
-  const lz = dx * sin + dz * cos
-  const angle = Math.atan2(lz / lake.rz, lx / lake.rx)
-  const edge = Math.hypot(lake.rx * Math.cos(angle), lake.rz * Math.sin(angle))
-  return Math.hypot(lx, lz) - edge
-}
+// Distance signée au bord d'un lac (négative dans l'eau) : voir lakes.js.
+export const distanceToLake = distanceToLakeEdge
 
 // Contrôle de conception (tests, outils) : la route ne se recoupe pas et reste hors de l'eau.
 // Renvoie la plus petite marge entre deux portions éloignées et entre la route et les lacs.

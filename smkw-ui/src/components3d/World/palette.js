@@ -8,6 +8,8 @@ export const PALETTE = Object.freeze({
   red: '#e63946',
   yellow: '#ffc93c',
   orange: '#ff7a1a',
+  blue: '#3aa0ff',
+  purple: '#c45cff',
   white: '#f5f7fa',
   rubber: '#23262d',
   hemiSky: '#eaf6ff',

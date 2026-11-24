@@ -255,6 +255,7 @@
     "lap": "Lap",
     "time": "Time",
     "speed": "Speed",
+    "miniTurbo": "Mini-turbo",
     "kmh": "km/h",
     "position": "Position {{position}} of {{total}}",
     "ordinal": {
@@ -267,7 +268,9 @@
     "exit": "Back to menu",
     "demo": "Demo HUD · {{mode}} · kart in phase 2",
     "playerView": "{{player}} view",
-    "overview": "Overview"
+    "overview": "Overview",
+    "itemRolling": "Rolling",
+    "itemCharges": "×{{count}}"
   },
   "input": {
     "keyboard1": "Keyboard 1",
@@ -412,6 +415,9 @@
   "cups": {
     "kairos": {
       "name": "Kairos Cup"
+    },
+    "summit": {
+      "name": "Summit Cup"
     }
   },
   "tracks": {
@@ -430,6 +436,22 @@
     "turquoiseCoast": {
       "name": "Turquoise Coast",
       "description": "Along the sea, then an S-hairpin before the line: the longest of the cup."
+    },
+    "sunsetCanyon": {
+      "name": "Sunset Canyon",
+      "description": "Climb between ochre cliffs, then race back down towards the oasis."
+    },
+    "alpinePass": {
+      "name": "Alpine Pass",
+      "description": "Twenty metres of climbing to the pass, then a long descent through the pines."
+    },
+    "cloudRidge": {
+      "name": "Cloud Ridge",
+      "description": "A string of bumps above the lake: take them fast and the kart goes light."
+    },
+    "duneRun": {
+      "name": "Dune Run",
+      "description": "Rolling dunes and wide corners: keep your speed through the bumps."
     }
   },
   "vehicles": {
@@ -491,5 +513,27 @@
     "b15": "D-pad right",
     "b16": "Home / PS",
     "other": "Button {{number}}"
+  },
+  "race": {
+    "go": "Go!",
+    "lights": "Start lights: {{count}} of {{total}}",
+    "finished": "Finish"
+  },
+  "items": {
+    "nitro": {
+      "name": "Nitro"
+    },
+    "tripleNitro": {
+      "name": "Triple nitro"
+    },
+    "oilSlick": {
+      "name": "Oil slick"
+    },
+    "shockOrb": {
+      "name": "Shock orb"
+    },
+    "bubble": {
+      "name": "Bubble"
+    }
   }
 }

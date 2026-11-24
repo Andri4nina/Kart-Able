@@ -4,7 +4,11 @@ import { getTrack } from './tracks'
 // ses circuits dans config/tracks.js et les textes cups.<id>.name dans chaque locale.
 export const TRACKS_PER_CUP = 4
 
-export const CUPS = Object.freeze([{ id: 'kairos', trackIds: ['kairosMeadow', 'mirrorLake', 'echoWoods', 'turquoiseCoast'] }])
+export const CUPS = Object.freeze([
+  { id: 'kairos', trackIds: ['kairosMeadow', 'mirrorLake', 'echoWoods', 'turquoiseCoast'] },
+  // Coupe des hauteurs : montées, descentes et crêtes qui font décoller.
+  { id: 'summit', trackIds: ['sunsetCanyon', 'alpinePass', 'cloudRidge', 'duneRun'] },
+])
 
 // Tous les circuits sélectionnables, coupe par coupe (une rangée de la grille par coupe).
 export const CUP_TRACK_IDS = Object.freeze(CUPS.flatMap((cup) => cup.trackIds))

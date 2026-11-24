@@ -4,7 +4,8 @@ import { create } from 'zustand'
 // seulement quand une valeur change (jamais un re-render par frame).
 // - phase : null hors course, puis 'countdown' | 'racing' | 'results' ;
 // - lightsOn : feux de départ allumés (0 à 5) ; go : « Partez ! » affiché ;
-// - standings : par joueur local { position, lap, finished } ; total : karts en course ;
+// - standings : par joueur local { position, lap, finished, item, charges, rolling, shield } ;
+//   total : karts en course ;
 // - results : classement final (écran des résultats), null avant.
 const INITIAL = { phase: null, lightsOn: 0, go: false, total: 0, standings: {}, results: null }
 

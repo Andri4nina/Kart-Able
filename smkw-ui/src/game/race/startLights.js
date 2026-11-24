@@ -15,8 +15,9 @@ export function getLightsOn(sequence, time) {
 }
 
 // Départ turbo : accélérer (nouvel appui) peu après l'extinction des feux. Un appui maintenu
-// pendant les feux ne compte pas : seul le réflexe est récompensé.
+// pendant les feux ne compte pas : seul le réflexe est récompensé. Renvoie 1 si le départ
+// turbo est gagné (turbo `start` de config/kartTuning.js), 0 sinon.
 export function getStartBoost(raceTime, pressedNow, pressedBefore) {
   if (!pressedNow || pressedBefore || raceTime < 0 || raceTime > START_LIGHTS.perfectWindow) return 0
-  return START_LIGHTS.perfectBoost
+  return 1
 }

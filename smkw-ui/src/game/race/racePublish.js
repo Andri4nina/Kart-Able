@@ -2,6 +2,7 @@ import { START_LIGHTS } from '../../config/race'
 import { useRaceStore } from '../../stores/raceStore'
 import { useTelemetryStore } from '../../stores/telemetryStore'
 import { getDisplayedLap } from '../track/lapRules'
+import { getDriftGauge } from './kartDrift'
 import { getBestLap } from './raceProgress'
 import { RACE_PHASES } from './raceWorld'
 import { getLightsOn } from './startLights'
@@ -16,6 +17,8 @@ function standingsChanged(standings, world) {
     const entry = standings[kart.id]
     if (!entry || entry.position !== kart.position || entry.finished !== kart.finished) return true
     if (entry.lap !== getDisplayedLap(kart.progress, world.laps)) return true
+    if (entry.item !== kart.item || entry.charges !== kart.itemCharges || entry.rolling !== kart.itemRoll > 0) return true
+    if (entry.shield !== kart.shield > 0) return true
   }
   return false
 }
@@ -24,7 +27,15 @@ function buildStandings(world) {
   return Object.fromEntries(
     world.humans.map((kart) => [
       kart.id,
-      { position: kart.position, lap: getDisplayedLap(kart.progress, world.laps), finished: kart.finished },
+      {
+        position: kart.position,
+        lap: getDisplayedLap(kart.progress, world.laps),
+        finished: kart.finished,
+        item: kart.item,
+        charges: kart.itemCharges,
+        rolling: kart.itemRoll > 0,
+        shield: kart.shield > 0,
+      },
     ]),
   )
 }
@@ -50,6 +61,9 @@ export function publishRace(world) {
     if (!entry) continue
     entry.speed = Math.abs(kart.speed) * MS_TO_KMH
     entry.time = kart.finished ? kart.finishTime : Math.max(0, world.raceTime)
+    entry.driftTier = kart.driftTier
+    entry.driftGauge = kart.driftDir ? getDriftGauge(kart.driftCharge) : -1
+    entry.boost = kart.boost
   }
   telemetry.publish(Math.max(0, world.raceTime))
 

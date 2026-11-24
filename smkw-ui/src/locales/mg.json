@@ -255,6 +255,7 @@
     "lap": "Fihodinana",
     "time": "Fotoana",
     "speed": "Hafainganana",
+    "miniTurbo": "Turbo kely",
     "kmh": "km/h",
     "position": "Laharana {{position}} amin'ny {{total}}",
     "ordinal": {
@@ -264,7 +265,9 @@
     "exit": "Hiverina amin'ny menio",
     "demo": "HUD fanandramana · {{mode}} · kart amin'ny dingana 2",
     "playerView": "Fijerin'i {{player}}",
-    "overview": "Topimaso ankapobeny"
+    "overview": "Topimaso ankapobeny",
+    "itemRolling": "Misafidy",
+    "itemCharges": "×{{count}}"
   },
   "input": {
     "keyboard1": "Fitendry 1",
@@ -409,6 +412,9 @@
   "cups": {
     "kairos": {
       "name": "Kairos Cup"
+    },
+    "summit": {
+      "name": "Summit Cup"
     }
   },
   "tracks": {
@@ -427,6 +433,22 @@
     "turquoiseCoast": {
       "name": "Morontsiraka Manga",
       "description": "Manaraka ny ranomasina, avy eo fiolahana S alohan'ny tsipika: ny lava indrindra amin'ny kiopy."
+    },
+    "sunsetCanyon": {
+      "name": "Hantsana Masoandro",
+      "description": "Miakatra eo anelanelan'ny hantsana, dia midina haingana mankany amin'ny oazy."
+    },
+    "alpinePass": {
+      "name": "Lalan-tendrombohitra",
+      "description": "Roapolo metatra miakatra ho any an-tampony, ary fidinana lava anelanelan'ny kesika."
+    },
+    "cloudRidge": {
+      "name": "Tampon-drahona",
+      "description": "Fiakarana sy fidinana mifanesy eo ambonin'ny farihy : alaivo haingana dia maivana ny kart."
+    },
+    "duneRun": {
+      "name": "Hazakazaka Dongom-pasika",
+      "description": "Dongom-pasika miolikolika sy fiolahana malalaka : tazony ny hafainganam-pandehanao."
     }
   },
   "vehicles": {
@@ -488,5 +510,27 @@
     "b15": "D-pad havanana",
     "b16": "Home / PS",
     "other": "Bokotra {{number}}"
+  },
+  "race": {
+    "go": "Mandehana !",
+    "lights": "Jiro fiaingana : {{count}} amin'ny {{total}}",
+    "finished": "Tonga"
+  },
+  "items": {
+    "nitro": {
+      "name": "Nitro"
+    },
+    "tripleNitro": {
+      "name": "Nitro telo"
+    },
+    "oilSlick": {
+      "name": "Menaka mandriaka"
+    },
+    "shockOrb": {
+      "name": "Baolina mamely"
+    },
+    "bubble": {
+      "name": "Bobongà"
+    }
   }
 }
