@@ -47,12 +47,15 @@ export function createRaceKart(racer, slot, geometry, { device, random }) {
     vz: 0,
     speed: 0,
     topFactor: racer.skill ?? 1,
-    // Dérapage (kartDrift.js) : saut, sens, charge, palier, drift armé, touche tenue.
+    // Dérapage (kartDrift.js) : saut, sens, charge, palier, saut armé, sens choisi en l'air,
+    // délai après l'atterrissage, touche tenue.
     hop: 0,
     driftDir: 0,
     driftCharge: 0,
     driftTier: 0,
     driftArmed: false,
+    driftPick: 0,
+    driftGrace: 0,
     driftHeld: false,
     // Turbo (kartBoost.js) et chocs (kartCollisions.js) : secousse restante, nombre de chocs.
     boost: 0,
@@ -61,15 +64,21 @@ export function createRaceKart(racer, slot, geometry, { device, random }) {
     boostSource: null,
     bump: 0,
     hits: 0,
+    padCooldown: 0,
     // Objets (game/items) : objet en main et charges, tirage en cours, bulle, tête-à-queue.
     item: null,
     itemCharges: 0,
     itemRoll: 0,
+    itemRollTotal: 0,
+    itemLucky: false,
     itemPending: null,
     itemHeld: false,
     shield: 0,
     spin: 0,
     botItemWait: -1,
+    botDriftTime: 0,
+    botOffRoad: 0,
+    botOverturn: 0,
     sinking: 0,
     // Position sur le tracé
     trackIndex: nearestIndex(geometry.path, slot.x, slot.z),

@@ -9,7 +9,7 @@ import { getStartBoost } from './startLights'
 // (`readControls`), coupées pendant un tête-à-queue ; départ turbo au réflexe.
 export function chooseControls(world, kart, readControls) {
   if (kart.isBot || kart.finished || kart.autopilot) {
-    driveBot(kart, world.geometry.path, kart.controls)
+    driveBot(kart, world.geometry, kart.controls, world.dt)
     decideBotItem(world, kart, kart.controls)
   } else readControls(kart, kart.controls)
   applySpinControls(kart, kart.controls)

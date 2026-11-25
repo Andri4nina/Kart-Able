@@ -1,5 +1,4 @@
 import { WALL } from '../../config/kartTuning'
-import { RACE } from '../../config/race'
 import { clearBoost } from './kartBoost'
 import { cancelDrift } from './kartDrift'
 import { distanceToLake } from '../track/trackGeometry'
@@ -31,12 +30,14 @@ export function updateTrackIndex(path, kart) {
   kart.offRoad = Math.abs(kart.lateral) > path.width[best] / 2 + CURB
 }
 
-// Barrière invisible à RACE.fence mètres du bord : le kart y est retenu, rebondit un peu et,
+// Barrière invisible (trackFences.js : à RACE.fence m du bord, ouverte vers l'eau près des
+// lacs) : le kart y est retenu, rebondit un peu et,
 // sur un choc franc, perd de la vitesse selon sa résistance et est secoué (les portes de
 // checkpoint couvrent toute cette largeur).
-export function applyFence(path, kart) {
+export function applyFence(geometry, kart) {
+  const { path, fences } = geometry
   const i = kart.trackIndex
-  const limit = path.width[i] / 2 + RACE.fence
+  const limit = path.width[i] / 2 + (kart.lateral > 0 ? fences.right[i] : fences.left[i])
   if (Math.abs(kart.lateral) <= limit) return
   const side = Math.sign(kart.lateral)
   const excess = kart.lateral - side * limit

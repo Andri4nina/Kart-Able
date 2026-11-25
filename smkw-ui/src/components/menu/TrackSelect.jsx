@@ -1,7 +1,7 @@
 import { Trophy } from 'lucide-react'
 import { motion } from 'motion/react'
 import { pageItem } from '../../animations/variants'
-import { CUPS } from '../../config/cups'
+import { cupItemId, CUPS, getCupFromItem } from '../../config/cups'
 import { continueFromTrackSelect, handleTrackInput } from '../../game/trackSelect'
 import { getDisplayedId, SELECTION_STATUS } from '../../game/selection/selectionRules'
 import { usePlayerInput } from '../../input/usePlayerInput'
@@ -10,17 +10,23 @@ import { useLocalPlayersStore } from '../../stores/localPlayersStore'
 import { useTrackSelectionStore } from '../../stores/trackSelectionStore'
 import { SelectionPanel } from '../selection/SelectionPanel'
 import { SelectionRoster } from '../selection/SelectionRoster'
+import { CupCard } from '../tracks/CupCard'
+import { CupPreview } from '../tracks/CupPreview'
 import { TrackCard } from '../tracks/TrackCard'
 import { TrackPreview } from '../tracks/TrackPreview'
 import { Button } from '../ui/Button'
 import { MenuPage } from './MenuPage'
 
 // Fonctions stables (niveau module) : le panneau mémoïsé ne se re-rend pas pour rien.
-const renderTrackCard = ({ itemId, cursors }) => <TrackCard trackId={itemId} cursors={cursors} />
+const renderTrackCard = ({ itemId, cursors }) => {
+  const cup = getCupFromItem(itemId)
+  return cup ? <CupCard cupId={cup.id} cursors={cursors} /> : <TrackCard trackId={itemId} cursors={cursors} />
+}
 const renderTrackInfo = () => null
 
 // Choix de la coupe et du circuit (modes de course), après les véhicules : P1 choisit pour
-// tout le monde. Une rangée de 4 circuits par coupe, aperçu du circuit présélectionné.
+// tout le monde. Une rangée par coupe : la coupe complète (ses 4 circuits à la suite, choisie
+// par défaut) puis chaque circuit (une course). Aperçu de la coupe ou du circuit présélectionné.
 // Ensuite : le lobby.
 export function TrackSelect() {
   const { t } = useTranslation()
@@ -28,7 +34,11 @@ export function TrackSelect() {
   const selection = useTrackSelectionStore((state) => (leader ? state.selections[leader.id] : null))
   usePlayerInput(handleTrackInput)
 
-  const trackId = getDisplayedId(selection)
+  const choiceId = getDisplayedId(selection)
+  const previewCup = getCupFromItem(choiceId)
+  let preview = null
+  if (previewCup) preview = <CupPreview cupId={previewCup.id} />
+  else if (choiceId) preview = <TrackPreview trackId={choiceId} />
   const confirmed = selection?.status === SELECTION_STATUS.CONFIRMED
   const slots = leader ? [leader] : []
 
@@ -57,19 +67,19 @@ export function TrackSelect() {
                 {t(`cups.${cup.id}.name`)}
               </h3>
               <SelectionRoster
-                itemIds={cup.trackIds}
+                itemIds={[cupItemId(cup.id), ...cup.trackIds]}
                 slots={slots}
                 useStore={useTrackSelectionStore}
                 unique={false}
                 label={t('trackSelect.roster', { cup: t(`cups.${cup.id}.name`) })}
-                className="grid-cols-2 sm:grid-cols-4"
+                className="grid-cols-3 sm:grid-cols-5"
                 renderCard={renderTrackCard}
               />
             </motion.section>
           ))}
         </div>
         <div className="flex flex-col gap-3">
-          {trackId ? <TrackPreview trackId={trackId} /> : null}
+          {preview}
           {leader ? <SelectionPanel slot={leader} useStore={useTrackSelectionStore} unique={false} renderInfo={renderTrackInfo} /> : null}
         </div>
       </div>

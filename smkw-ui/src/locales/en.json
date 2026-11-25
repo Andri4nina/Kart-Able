@@ -185,7 +185,8 @@
     "allReady": "Everyone is ready: go!",
     "track": "Track",
     "trackValue": "{{track}} · {{cup}}",
-    "trackPending": "The track hasn't been chosen yet."
+    "trackPending": "The track hasn't been chosen yet.",
+    "cupValue": "{{cup}}: full cup ({{count}} tracks)"
   },
   "settings": {
     "title": "Settings",
@@ -270,7 +271,8 @@
     "playerView": "{{player}} view",
     "overview": "Overview",
     "itemRolling": "Rolling",
-    "itemCharges": "×{{count}}"
+    "itemCharges": "×{{count}}",
+    "luckyBox": "Golden box"
   },
   "input": {
     "keyboard1": "Keyboard 1",
@@ -409,8 +411,11 @@
     "width": "Width",
     "widthRange": "{{min}} to {{max}} m",
     "checkpoints": "Checkpoints",
-    "pending": "Pick a track and confirm it.",
-    "confirmed": "Track chosen: press START to continue."
+    "pending": "Pick a full cup or a track, then confirm.",
+    "confirmed": "Choice made: START to continue.",
+    "fullCup": "Full cup",
+    "cupTracks": "{{count}} tracks",
+    "cupDescription": "All {{count}} tracks in a row, with points for every race: the best total wins the cup."
   },
   "cups": {
     "kairos": {
@@ -535,5 +540,22 @@
     "bubble": {
       "name": "Bubble"
     }
+  },
+  "results": {
+    "title": "Results",
+    "cupFinal": "Final standings",
+    "cupRound": "{{cup}}: race {{round}} of {{total}}",
+    "hint": "START or A to continue",
+    "nextRace": "Next race",
+    "vote": "Vote for what is next"
+  },
+  "vote": {
+    "title": "Next track",
+    "subtitle": "Each player votes for a track; the most picked one is raced (tie: random draw).",
+    "voters": "Player votes",
+    "voted": "voted",
+    "choosing": "choosing",
+    "elected": "Track elected",
+    "votes": "{{count}} votes"
   }
 }

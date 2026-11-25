@@ -6,6 +6,7 @@ import { createItemState, updateItems } from '../items/itemSystem'
 import { resolveKartCollisions } from './kartCollisions'
 import { stepKartPhysics } from './kartPhysics'
 import { chooseControls } from './raceControls'
+import { updateTrackFeatures } from './kartFeatures'
 import { createRaceKart } from './raceKart'
 import { placeOnGround, updateKartVertical } from './kartVertical'
 import { updatePace } from './racePace'
@@ -30,7 +31,7 @@ export function createRaceWorld(match, seed, resolveDevice) {
     seed,
     random,
     dt: 0,
-    items: createItemState(geometry),
+    items: createItemState(geometry, random),
     karts,
     humans: karts.filter((kart) => !kart.isBot),
     kartsById: new Map(karts.map((kart) => [kart.id, kart])),
@@ -62,7 +63,8 @@ function moveKart(world, kart, dt) {
   stepKartPhysics(kart, kart.controls, dt)
   updateKartVertical(kart, world.geometry, dt)
   updateTrackIndex(path, kart)
-  applyFence(path, kart)
+  applyFence(world.geometry, kart)
+  updateTrackFeatures(world.geometry, kart, dt)
   if (kart.offRoad && isInWater(track.lakes, kart.x, kart.z)) {
     kart.sinking = RACE.respawnDelay
     kart.vx = 0

@@ -3,7 +3,7 @@ import { motion } from 'motion/react'
 import { pageItem } from '../../animations/variants'
 import { useTranslation } from '../../i18n/useTranslation'
 import { Notice } from './CapacityBanner'
-import { getTrackCup } from '../../config/cups'
+import { getCupFromItem, getTrackCup } from '../../config/cups'
 import { getModeVisual } from './modeVisuals'
 
 function SummaryRow({ icon: Icon, label, value }) {
@@ -21,6 +21,13 @@ function SummaryRow({ icon: Icon, label, value }) {
 // Récapitulatif du lobby : mode, type de partie, circuit (coupe), nombre de joueurs, code (réseau).
 export function LobbySummary({ setup, trackId = null, playerCount, limit, isOnline }) {
   const { t } = useTranslation()
+  // trackId : choix de l'écran des circuits, coupe complète (`cup:<id>`) ou circuit seul.
+  const cup = getCupFromItem(trackId)
+  const courseValue = cup
+    ? t('lobby.cupValue', { cup: t(`cups.${cup.id}.name`), count: cup.trackIds.length })
+    : trackId
+      ? t('lobby.trackValue', { track: t(`tracks.${trackId}.name`), cup: t(`cups.${getTrackCup(trackId)?.id}.name`) })
+      : null
   const { icon: ModeIcon, accent } = getModeVisual(setup.modeId)
 
   return (
@@ -37,13 +44,7 @@ export function LobbySummary({ setup, trackId = null, playerCount, limit, isOnli
       <p className="text-sm text-white/70">{t(`modes.${setup.modeId}.description`)}</p>
       <div>
         <SummaryRow icon={isOnline ? Globe : Gamepad2} label={t('lobby.type')} value={t(`playType.${setup.playType}.name`)} />
-        {trackId ? (
-          <SummaryRow
-            icon={Route}
-            label={t('lobby.track')}
-            value={t('lobby.trackValue', { track: t(`tracks.${trackId}.name`), cup: t(`cups.${getTrackCup(trackId)?.id}.name`) })}
-          />
-        ) : null}
+        {courseValue ? <SummaryRow icon={Route} label={t('lobby.track')} value={courseValue} /> : null}
         <SummaryRow icon={Users} label={t('lobby.players')} value={t('players.count', { count: playerCount, max: limit })} />
         {isOnline ? <SummaryRow icon={Hash} label={t('lobby.code')} value={setup.online.code || t('lobby.codePending')} /> : null}
       </div>

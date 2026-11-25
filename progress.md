@@ -313,3 +313,44 @@ Voir la fiche. Astuce : après un rechargement à chaud, l'app importe `raceSess
 - Rampes et pads de turbo (vrais sauts), pièces.
 - Performance à 32 karts en écran partagé : fusion des maillages des véhicules, LOD des pilotes lointains.
 - IA : drift.
+
+---
+
+## 2026-11-24 — Phase 2C : drift classique, effets, cases à suspense, circuits exigeants
+
+Demande : drift sur le modèle Wii (plus joli), nitro façon voiture-fusée, herbe écrasée et chute à l'eau, nouvelles cases à objets avec tirage à suspense, circuits plus exigeants. Fiche : docs/phases/PHASE_2C_DRIFT_FX_TRACKS.md.
+
+### Fait
+- kartDrift.js (sens choisi en l'air, landGrace), kartDriftRates.js, DRIFT à 2 paliers, BOOSTS item/pad ; kartPose.js (glisse selon braquage, roulis, écrasement).
+- components3d/Effects/* (particules communes), KartEffects.jsx + kartFlame.js (réacteurs).
+- grassTrample.js + grassShaders.js ; trackFences.js (barrière ouverte vers l'eau) ; trackFeatures.js, kartFeatures.js, botLine.js, TrackFeatures.jsx (pads, rochers).
+- Cases : boxPose.js, itemResources.js, ItemInstances (couleur par instance), cases dorées, roulette aléatoire (useItemRoulette.js, ItemSlot.jsx).
+- tracks.js : 8 tracés retouchés, pads, obstacles, itemRows.
+
+### Tests
+Outils de mise au point (hors dépôt) : mesure des tracés (rayons, écarts, eau) et simulation de courses complètes en Node (bundle rolldown des modules purs). Dans le panneau navigateur, les captures en temps manuel (`advanceTime`) restent figées : capturer en temps réel (`resumeRealtime`).
+
+### TODO
+- IA : drift.
+- Écran de résultats, meilleur tour.
+- Rampes (vrais sauts), raccourcis, pièces.
+- Performance 32 karts en écran partagé.
+
+---
+
+## 2026-11-24 — Phase 2D : bots qui driftent, coupe complète, résultats et vote
+
+Fiche : docs/phases/PHASE_2D_CUP_VOTE_BOTS.md.
+
+### Fait
+- game/race/botDrift.js (appelé par botDriver) ; DRIFT tiers 0,7 / 1,7.
+- config/cups.js (TRACK_SELECT_IDS, cup:<id>, resolveCourse), config/race.js (CUP_POINTS, TRACK_VOTE) ; match : cupId, playlist, round, cupPoints.
+- game/raceSequence.js (règles), game/raceFlow.js (enchaînement, entrées), stores raceFlowStore / trackVoteStore ; createSelectionStore accepte une fonction d'éléments.
+- UI : CupCard, CupPreview, TrackSelect (5 colonnes), LobbySummary, RaceFlowOverlay / RaceResults / TrackVote / TrackVoteReveal ; textes fr / en / mg.
+
+### Tests
+Pour finir une course vite en test : marquer les karts humains `finished` dans le monde de course, avancer de ~5 s (résultats), attendre `RACE.resultsInputDelay`, puis `simulatePlayerInput('keyboard-1', 'start')`.
+
+### TODO
+- Vote : proposer aussi une coupe ; trophée de fin de coupe.
+- Performance 32 karts en écran partagé ; rampes, raccourcis, pièces.

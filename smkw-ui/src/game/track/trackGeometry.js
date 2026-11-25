@@ -1,5 +1,7 @@
 import { getTrack } from '../../config/tracks'
 import { distanceToLakeEdge } from './lakes'
+import { buildFences } from './trackFences'
+import { placeTrackFeatures } from './trackFeatures'
 import { buildHeightField } from './trackHeight'
 import { buildTrackPath } from './trackPath'
 import { getCheckpointGates, getTrackBounds } from './trackLayout'
@@ -13,8 +15,10 @@ export function getTrackGeometry(trackId) {
     if (!track) return null
     const path = buildTrackPath(track.path)
     const bounds = getTrackBounds(path)
-    // relief : grille de hauteurs (trackHeight.js), null pour un circuit plat.
-    cache.set(trackId, Object.freeze({ track, path, gates: getCheckpointGates(path), bounds, relief: buildHeightField(track, path, bounds) }))
+    // relief : grille de hauteurs (trackHeight.js), null pour un circuit plat ; fences :
+    // barrière invisible par côté (trackFences.js) ; features : pads et obstacles.
+    const features = placeTrackFeatures(track, path)
+    cache.set(trackId, Object.freeze({ track, path, gates: getCheckpointGates(path), bounds, relief: buildHeightField(track, path, bounds), fences: buildFences(track, path), ...features }))
   }
   return cache.get(trackId)
 }

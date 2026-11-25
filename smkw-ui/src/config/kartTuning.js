@@ -30,33 +30,39 @@ export const STAT_CURVES = Object.freeze({
   offRoad: 0.5,
 })
 
-// Dérapage façon kart arcade : appui sur Drift = petit saut ; à l'atterrissage, la direction
-// tenue fixe le sens du dérapage. Le turbo dépend de la qualité du drift (braquer vers
-// l'intérieur charge plus vite, vers l'extérieur plus lentement) et de la vitesse.
+// Dérapage manuel, même principe que les karts des jeux de kart classiques (génération Wii) :
+// - appui sur Drift en roulant = petit saut ; la direction tenue PENDANT le saut (ou juste à
+//   l'atterrissage, `landGrace`) fixe le sens du dérapage, qui ne change plus ensuite ;
+// - sans direction à l'atterrissage : simple saut, il faut relâcher et réappuyer ;
+// - le kart tourne toujours vers l'intérieur : braquer dedans resserre, dehors élargit ;
+// - deux paliers d'étincelles, bleu puis orange (super mini-turbo) ; braquer vers l'intérieur
+//   charge plus vite, vers l'extérieur plus lentement ; relâcher Drift déclenche le turbo.
 export const DRIFT = Object.freeze({
-  hopTime: 0.24, // durée du saut (s)
-  hopHeight: 0.32, // hauteur du saut (affichage)
-  entryKick: 0.12, // poussée vers l'extérieur à l'entrée du drift (fraction de la vitesse)
-  steerThreshold: 0.35, // braquage minimal pour choisir un sens
+  hopTime: 0.22, // durée du saut (s)
+  hopHeight: 0.38, // hauteur du saut (affichage)
+  landGrace: 0.12, // s après l'atterrissage pendant lesquelles on peut encore choisir un sens
+  entryKick: 0.14, // poussée vers l'extérieur à l'entrée du drift (fraction de la vitesse)
+  steerThreshold: 0.3, // braquage minimal pour choisir un sens
   minSpeed: 0.4, // fraction de la vitesse max pour lancer / garder (cancelSpeed) un drift
   cancelSpeed: 0.28,
   // Rotation : toujours vers l'intérieur, serrée (inside) ou large (outside) selon le braquage,
   // en fraction du braquage normal à pleine vitesse (turnRate * fullSpeedTurn).
-  fullSpeedTurn: 0.78,
-  turnInside: 1.55,
-  turnOutside: 0.6,
-  turnNeutral: 1.1,
+  fullSpeedTurn: 0.8,
+  turnInside: 1.6,
+  turnOutside: 0.5,
+  turnNeutral: 1.05,
   // Qualité de charge : braquage extérieur .. neutre .. intérieur.
-  chargeOutside: 0.45,
-  chargeInside: 1.3,
-  // Angle visuel de glisse du kart (rad), atteint progressivement.
-  slipAngle: 0.6,
-  slipRate: 6,
-  // Paliers : charge à atteindre (s pondérées) et turbo obtenu.
+  chargeOutside: 0.4,
+  chargeInside: 1.45,
+  // Angle visuel de glisse du kart (rad) : plus marqué en braquant dedans, moins dehors.
+  slipAngle: 0.62,
+  slipInside: 0.85,
+  slipOutside: 0.4,
+  slipRate: 7,
+  // Paliers : charge à atteindre (s pondérées) et turbo obtenu. Bleu, puis orange.
   tiers: Object.freeze([
-    { charge: 0.9, boost: 'miniTurbo1' },
-    { charge: 1.9, boost: 'miniTurbo2' },
-    { charge: 3.1, boost: 'miniTurbo3' },
+    { charge: 0.7, boost: 'miniTurbo1' },
+    { charge: 1.7, boost: 'miniTurbo2' },
   ]),
 })
 
@@ -65,11 +71,13 @@ export const DRIFT = Object.freeze({
 // faible prolonge seulement la durée restante, jusqu'à `maxStack` secondes. Jamais de cumul
 // des multiplicateurs.
 export const BOOSTS = Object.freeze({
-  miniTurbo1: { duration: 0.6, speed: 1.22, accel: 2.4, effect: 'blue' },
-  miniTurbo2: { duration: 1.1, speed: 1.27, accel: 2.6, effect: 'orange' },
-  miniTurbo3: { duration: 1.7, speed: 1.32, accel: 2.8, effect: 'purple' },
+  miniTurbo1: { duration: 0.7, speed: 1.24, accel: 2.5, effect: 'blue' },
+  miniTurbo2: { duration: 1.35, speed: 1.3, accel: 2.8, effect: 'orange' },
   start: { duration: 0.9, speed: 1.28, accel: 3, effect: 'orange' },
-  item: { duration: 1.3, speed: 1.35, accel: 3.2, effect: 'orange' },
+  // Nitro (objet) : longue poussée, flamme de réacteur (KartEffects).
+  item: { duration: 1.5, speed: 1.36, accel: 3.4, effect: 'nitro' },
+  // Pad d'accélération posé sur la route (config/tracks.js `pads`).
+  pad: { duration: 0.85, speed: 1.3, accel: 3.2, effect: 'nitro' },
 })
 export const BOOST_MAX_STACK = 2.4
 export const OVER_SPEED_DRAG = 22 // m/s² pour revenir à la vitesse max (fin de turbo, hors-piste)

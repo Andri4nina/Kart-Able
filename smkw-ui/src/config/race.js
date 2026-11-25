@@ -10,6 +10,9 @@ export const RACE = Object.freeze({
   // Les karts ne s'éloignent pas de plus de `fence` mètres du bord de la route (barrière
   // invisible) : les portes de checkpoint (débord de 12 m) les couvrent toujours.
   fence: 10,
+  // Bord de lac à moins de `reach` m de la route : la barrière s'ouvre jusqu'à `into` m dans
+  // l'eau (on peut y tomber). reach + into <= débord des portes de checkpoint (12 m).
+  waterFence: { reach: 8, into: 4 },
   // Chute dans l'eau : durée avant de réapparaître sur la route.
   respawnDelay: 1.2,
   // Après l'arrivée du dernier joueur, délai avant l'écran des résultats.
@@ -18,6 +21,15 @@ export const RACE = Object.freeze({
   resultsInputDelay: 1.2,
   // Échelle du compteur (km/h pour une barre pleine).
   speedometerMax: 140,
+})
+
+// Points de coupe par place (1er, 2e, ...) ; au-delà, 0. Classement de coupe : total des
+// points sur les courses de la coupe.
+export const CUP_POINTS = Object.freeze([15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
+
+// Après une course : vote des joueurs pour le circuit suivant (parmi les autres circuits).
+export const TRACK_VOTE = Object.freeze({
+  revealMs: 2200, // affichage du circuit élu avant le départ
 })
 
 // Feux de départ façon Formule 1 : cinq feux rouges s'allument un par un, puis s'éteignent

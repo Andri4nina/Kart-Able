@@ -185,7 +185,8 @@
     "allReady": "Tout le monde est prêt : départ !",
     "track": "Circuit",
     "trackValue": "{{track}} · {{cup}}",
-    "trackPending": "Le circuit n'est pas encore choisi."
+    "trackPending": "Le circuit n'est pas encore choisi.",
+    "cupValue": "{{cup}} : coupe complète ({{count}} circuits)"
   },
   "settings": {
     "title": "Paramètres",
@@ -268,7 +269,8 @@
     "playerView": "Vue de {{player}}",
     "overview": "Vue d'ensemble",
     "itemRolling": "Tirage en cours",
-    "itemCharges": "×{{count}}"
+    "itemCharges": "×{{count}}",
+    "luckyBox": "Case dorée"
   },
   "input": {
     "keyboard1": "Clavier 1",
@@ -407,8 +409,11 @@
     "width": "Largeur",
     "widthRange": "{{min}} à {{max}} m",
     "checkpoints": "Points de passage",
-    "pending": "Choisis un circuit et confirme-le.",
-    "confirmed": "Circuit choisi : START pour continuer."
+    "pending": "Choisis une coupe complète ou un circuit, puis confirme.",
+    "confirmed": "Choix fait : START pour continuer.",
+    "fullCup": "Coupe complète",
+    "cupTracks": "{{count}} circuits",
+    "cupDescription": "Les {{count}} circuits à la suite, avec des points à chaque course : le meilleur total remporte la coupe."
   },
   "cups": {
     "kairos": {
@@ -533,5 +538,22 @@
     "bubble": {
       "name": "Bulle"
     }
+  },
+  "results": {
+    "title": "Résultats",
+    "cupFinal": "Classement final",
+    "cupRound": "{{cup}} : course {{round}} sur {{total}}",
+    "hint": "START ou A pour continuer",
+    "nextRace": "Course suivante",
+    "vote": "Voter pour la suite"
+  },
+  "vote": {
+    "title": "Circuit suivant",
+    "subtitle": "Chaque joueur vote pour un circuit ; le plus choisi sera couru (égalité : tirage au sort).",
+    "voters": "Votes des joueurs",
+    "voted": "a voté",
+    "choosing": "choisit",
+    "elected": "Circuit élu",
+    "votes": "{{count}} voix"
   }
 }

@@ -5,11 +5,22 @@ import { placeItemBoxes } from './itemPlacement'
 import { canReceiveItem, consumeCharge, giveItem, rollItem } from './itemRules'
 
 // Gestionnaire des objets d'une course (calcul pur, un pas fixe à la fois) : cases à objets
-// (ramassage, réapparition), roulette, inventaire, activation, objets posés et projectiles.
+// (ramassage, réapparition, cases dorées au hasard), roulette à durée aléatoire, inventaire, activation, objets posés et projectiles.
 // Indépendant du rendu : la scène et le HUD lisent `world.items` et l'état des karts.
 
-export function createItemState(geometry) {
-  return { boxes: placeItemBoxes(geometry.track, geometry.path), ...createItemEntities() }
+export function createItemState(geometry, random) {
+  const boxes = placeItemBoxes(geometry.track, geometry.path)
+  for (const box of boxes) box.lucky = random() < ITEM_BOXES.luckyChance
+  return { boxes, ...createItemEntities() }
+}
+
+// Tirage à suspense : durée au hasard (plus longue pour une case dorée).
+function startRoll(world, kart, lucky) {
+  const { min, max } = ITEM_BOXES.roulette
+  kart.itemRoll = min + world.random() * (max - min) + (lucky ? ITEM_BOXES.luckyRoulette : 0)
+  kart.itemRollTotal = kart.itemRoll
+  kart.itemLucky = lucky
+  kart.itemPending = rollItem(kart.position, world.karts.length, world.random(), lucky)
 }
 
 function updateBoxes(world, dt) {
@@ -17,7 +28,10 @@ function updateBoxes(world, dt) {
   for (const box of world.items.boxes) {
     if (!box.active) {
       box.timer -= dt
-      if (box.timer <= 0) box.active = true
+      if (box.timer <= 0) {
+        box.active = true
+        box.lucky = world.random() < ITEM_BOXES.luckyChance
+      }
       continue
     }
     for (const kart of world.karts) {
@@ -28,10 +42,7 @@ function updateBoxes(world, dt) {
       box.active = false
       box.timer = ITEM_BOXES.respawn
       // Case cassée même les mains pleines ; l'objet seulement si l'emplacement est libre.
-      if (canReceiveItem(kart)) {
-        kart.itemRoll = ITEM_BOXES.roulette
-        kart.itemPending = rollItem(kart.position, world.karts.length, world.random())
-      }
+      if (canReceiveItem(kart)) startRoll(world, kart, box.lucky)
       break
     }
   }

@@ -18,7 +18,7 @@ function standingsChanged(standings, world) {
     if (!entry || entry.position !== kart.position || entry.finished !== kart.finished) return true
     if (entry.lap !== getDisplayedLap(kart.progress, world.laps)) return true
     if (entry.item !== kart.item || entry.charges !== kart.itemCharges || entry.rolling !== kart.itemRoll > 0) return true
-    if (entry.shield !== kart.shield > 0) return true
+    if (entry.shield !== kart.shield > 0 || entry.lucky !== kart.itemLucky) return true
   }
   return false
 }
@@ -34,6 +34,9 @@ function buildStandings(world) {
         item: kart.item,
         charges: kart.itemCharges,
         rolling: kart.itemRoll > 0,
+        // Durée totale du tirage en cours (la roulette du HUD ralentit jusqu'au résultat).
+        rollTime: kart.itemRollTotal,
+        lucky: kart.itemLucky,
         shield: kart.shield > 0,
       },
     ]),

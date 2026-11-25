@@ -1,12 +1,13 @@
 import { BufferAttribute, BufferGeometry, Color, DoubleSide, ShaderMaterial, UniformsLib, UniformsUtils, Vector2 } from 'three'
 import { createRandom } from '../../game/track/noise'
+import { FRAGMENT, VERTEX } from './grassShaders'
 import { trackTime } from './trackClock'
 
 // Herbe des circuits, d'après l'herbe du portfolio (Grass / GrassMaterial) : une petite grille
 // de brins qui « boucle » autour de la caméra dans le vertex shader (mod sur la position), donc
 // un champ dense partout sans couvrir tout le monde. Chaque brin est un triangle face caméra,
 // couché là où la texture de données dit « pas d'herbe » (route, sable, eau).
-// Version allégée : pas de traînée de pas ni de neige. En écran partagé, la caméra de chaque
+// Version allégée : pas de neige. Les karts couchent l'herbe (uTrample, grassTrample.js). En écran partagé, la caméra de chaque
 // case est poussée dans uCameraOffset avant son rendu (onBeforeRender, voir TrackGrass).
 // Les brins sont posés sur le relief (texture de hauteurs uHeight, voir trackField.js).
 
@@ -34,56 +35,8 @@ export function buildGrassGeometry({ count, spacing, seed }) {
   return { geometry, patchSize: count * spacing }
 }
 
-const VERTEX = /* glsl */ `
-  #include <common>
-  #include <fog_pars_vertex>
-  attribute vec3 aCenter;
-  uniform sampler2D uField;
-  uniform sampler2D uHeight;
-  uniform vec2 uHeightRange;
-  uniform vec2 uFieldOrigin;
-  uniform float uFieldSize;
-  uniform vec2 uCameraOffset;
-  uniform float uPatchSize;
-  uniform float uTime;
-  varying float vTip;
-  varying float vVariation;
-  void main() {
-    float halfPatch = uPatchSize * 0.5;
-    vec2 wrapped = mod(aCenter.xz - uCameraOffset + halfPatch, uPatchSize) - halfPatch;
-    vec3 center = vec3(wrapped.x + uCameraOffset.x, 0.0, wrapped.y + uCameraOffset.y);
-    vec2 fieldUv = (center.xz - uFieldOrigin) / uFieldSize;
-    vec4 cell = texture2D(uField, fieldUv);
-    center.y = uHeightRange.x + texture2D(uHeight, fieldUv).r * uHeightRange.y;
-    float visible = smoothstep(0.15, 0.45, cell.g) * (1.0 - smoothstep(0.02, 0.2, cell.r)) * (1.0 - step(0.02, cell.b));
-    vec3 right = vec3(viewMatrix[0][0], viewMatrix[1][0], viewMatrix[2][0]);
-    float sway = sin(uTime * 1.7 + center.x * 0.35 + center.z * 0.21) * 0.12 * position.y;
-    vec3 world = center + (right * position.x + vec3(sway, position.y, sway * 0.5)) * visible;
-    vTip = clamp(position.y / 0.75, 0.0, 1.0);
-    vVariation = fract(sin(dot(floor(center.xz * 0.25), vec2(12.9898, 78.233))) * 43758.5453);
-    vec4 mvPosition = viewMatrix * vec4(world, 1.0);
-    gl_Position = projectionMatrix * mvPosition;
-    #include <fog_vertex>
-  }
-`
-
-const FRAGMENT = /* glsl */ `
-  #include <common>
-  #include <fog_pars_fragment>
-  uniform vec3 uTipColor;
-  uniform vec3 uBaseColor;
-  varying float vTip;
-  varying float vVariation;
-  void main() {
-    vec3 color = mix(uBaseColor, uTipColor, vTip) * (0.9 + vVariation * 0.2);
-    gl_FragColor = vec4(color, 1.0);
-    #include <colorspace_fragment>
-    #include <fog_fragment>
-  }
-`
-
 // `uCameraOffset` est poussé avant le rendu de chaque case (voir TrackGrass).
-export function createGrassMaterial(field, theme, patchSize) {
+export function createGrassMaterial(field, theme, patchSize, trample) {
   const material = new ShaderMaterial({
     vertexShader: VERTEX,
     fragmentShader: FRAGMENT,
@@ -94,6 +47,7 @@ export function createGrassMaterial(field, theme, patchSize) {
       ...UniformsUtils.clone(UniformsLib.fog),
       uField: { value: field.texture },
       uHeight: { value: field.heightTexture },
+      uTrample: { value: trample.texture },
       uHeightRange: { value: new Vector2(field.heightRange[0], field.heightRange[1]) },
       uFieldOrigin: { value: new Vector2(field.origin[0], field.origin[1]) },
       uFieldSize: { value: field.size },

@@ -21,7 +21,7 @@ export function RacerKart({ racer, slot }) {
   const driverRef = useRef(null)
   // Objets stables modifiés en place chaque frame (aucune allocation, aucun re-render).
   const [driverInput] = useState(() => ({ steer: 0, cheer: 0, panic: 0 }))
-  const [visual] = useState(() => ({ slip: 0, roll: 0, pitch: 0, phase: 0, idle: 0 }))
+  const [visual] = useState(() => ({ slip: 0, roll: 0, pitch: 0, phase: 0, idle: 0, land: 0, hopping: false }))
   const reducedMotion = useReducedMotion()
   const seat = getVehicleSeat(racer.vehicleId)
 

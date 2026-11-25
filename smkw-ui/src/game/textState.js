@@ -5,9 +5,11 @@ import { useInputDevicesStore } from '../stores/inputDevicesStore'
 import { useLocaleStore } from '../stores/localeStore'
 import { useMatchSetupStore } from '../stores/matchSetupStore'
 import { selectCurrentScreen, useNavigationStore } from '../stores/navigationStore'
+import { useRaceFlowStore } from '../stores/raceFlowStore'
 import { useSessionStore } from '../stores/sessionStore'
 import { useSettingsStore } from '../stores/settingsStore'
 import { useTrackSelectionStore } from '../stores/trackSelectionStore'
+import { useTrackVoteStore } from '../stores/trackVoteStore'
 import { describeHud, describeRace } from './race/raceText'
 import { collectButtons, collectProps, describeTrack, round, summarizeLocalPlayers } from './textStateParts'
 
@@ -52,6 +54,14 @@ export function buildTextState({ camera, scene, timeControl }) {
     trackSelection: Object.values(useTrackSelectionStore.getState().selections)[0] ?? null,
     hud: screen === SCREENS.GAME ? describeHud(match) : null,
     race: describeRace(),
+    // Enchaînement après la course : coupe (course n / total), étape (résultats, vote, annonce).
+    raceFlow: match?.trackId
+      ? {
+          cup: match.cupId ? { id: match.cupId, round: match.round + 1, of: match.playlist.length } : null,
+          ...useRaceFlowStore.getState(),
+          votes: Object.fromEntries(Object.entries(useTrackVoteStore.getState().selections).map(([id, selection]) => [id, selection.confirmedId ?? `(${selection.preselectedId})`])),
+        }
+      : null,
     camera: { position: roundVector(camera.position), fov: round(camera.fov, 1) },
     scene: {
       showcaseGem: gem

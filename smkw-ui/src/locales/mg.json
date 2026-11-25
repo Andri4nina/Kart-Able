@@ -185,7 +185,8 @@
     "allReady": "Vonona daholo: mandeha!",
     "track": "Lalana",
     "trackValue": "{{track}} · {{cup}}",
-    "trackPending": "Mbola tsy voafidy ny lalana."
+    "trackPending": "Mbola tsy voafidy ny lalana.",
+    "cupValue": "{{cup}} : kaopy feno (lalana {{count}})"
   },
   "settings": {
     "title": "Fikirana",
@@ -267,7 +268,8 @@
     "playerView": "Fijerin'i {{player}}",
     "overview": "Topimaso ankapobeny",
     "itemRolling": "Misafidy",
-    "itemCharges": "×{{count}}"
+    "itemCharges": "×{{count}}",
+    "luckyBox": "Boaty volamena"
   },
   "input": {
     "keyboard1": "Fitendry 1",
@@ -406,8 +408,11 @@
     "width": "Sakany",
     "widthRange": "{{min}} hatramin'ny {{max}} m",
     "checkpoints": "Toerana fandalovana",
-    "pending": "Misafidiana lalana dia hamafiso.",
-    "confirmed": "Voafidy ny lalana: tsindrio START hanohizana."
+    "pending": "Fidio ny kaopy feno na lalana iray, dia hamafiso.",
+    "confirmed": "Vita ny safidy : START hanohizana.",
+    "fullCup": "Kaopy feno",
+    "cupTracks": "Lalana {{count}}",
+    "cupDescription": "Ireo lalana {{count}} mifanesy, misy isa isaky ny hazakazaka : izay manana isa betsaka indrindra no mahazo ny kaopy."
   },
   "cups": {
     "kairos": {
@@ -532,5 +537,22 @@
     "bubble": {
       "name": "Bobongà"
     }
+  },
+  "results": {
+    "title": "Valiny",
+    "cupFinal": "Laharana farany",
+    "cupRound": "{{cup}} : hazakazaka {{round}} amin'ny {{total}}",
+    "hint": "START na A hanohizana",
+    "nextRace": "Hazakazaka manaraka",
+    "vote": "Mifidiana ny manaraka"
+  },
+  "vote": {
+    "title": "Lalana manaraka",
+    "subtitle": "Mifidy lalana iray ny mpilalao tsirairay ; izay be mpifidy indrindra no hazakazahina (mitovy : antsapaka).",
+    "voters": "Safidin'ny mpilalao",
+    "voted": "nifidy",
+    "choosing": "misafidy",
+    "elected": "Lalana voafidy",
+    "votes": "Vato {{count}}"
   }
 }

@@ -29,6 +29,8 @@ export const ITEM_DISTRIBUTION = Object.freeze({
   front: { oilSlick: 45, bubble: 30, nitro: 20, shockOrb: 5, tripleNitro: 0 },
   middle: { oilSlick: 25, bubble: 15, nitro: 25, shockOrb: 25, tripleNitro: 10 },
   back: { oilSlick: 5, bubble: 10, nitro: 25, shockOrb: 25, tripleNitro: 35 },
+  // Case dorée : tirage généreux, quelle que soit la place.
+  lucky: { oilSlick: 0, bubble: 25, nitro: 10, shockOrb: 30, tripleNitro: 35 },
 })
 
 // Cases à objets : rangées en travers de la route, aux fractions du tour indiquées (un circuit
@@ -40,5 +42,11 @@ export const ITEM_BOXES = Object.freeze({
   perRow: 6,
   respawn: 1.1, // s avant réapparition
   radius: 1.5, // distance de ramassage (m)
-  roulette: 1.3, // s de tirage avant d'obtenir l'objet
+  // Tirage à suspense : durée tirée au hasard à chaque case (la roulette ralentit jusqu'au
+  // résultat, voir components/ui/hud/ItemSlot.jsx).
+  roulette: { min: 1.1, max: 2.3 },
+  // Case dorée : à chaque réapparition, une case a cette chance de devenir dorée (tirage
+  // ITEM_DISTRIBUTION.lucky, roulette plus longue).
+  luckyChance: 0.12,
+  luckyRoulette: 0.6, // s ajoutées au tirage d'une case dorée
 })

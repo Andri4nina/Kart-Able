@@ -21,6 +21,9 @@ export function describeRace() {
     lightsOn: getLightsOn(world.start, world.time),
     laps: world.laps,
     itemBoxes: `${world.items.boxes.filter((box) => box.active).length}/${world.items.boxes.length}`,
+    luckyBoxes: world.items.boxes.filter((box) => box.active && box.lucky).length,
+    pads: world.geometry.pads.length,
+    obstacles: world.geometry.obstacles.length,
     hazards: world.items.hazards.filter((entry) => entry.ttl > 0).length,
     projectiles: world.items.projectiles.filter((entry) => entry.ttl > 0).length,
     karts: world.ranking.map((kart) => ({

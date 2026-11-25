@@ -11,9 +11,11 @@ const update = (selections, playerId, patch) =>
 
 // Fabrique d'un store de sélection par joueur, indépendant pour chaque joueur :
 // selections[playerId] = { status: 'selecting' | 'confirmed', preselectedId, confirmedId, lastMove, rejections }
-// `itemIds` : éléments sélectionnables, `unique` : un élément confirmé est réservé (règle
+// `itemIds` : éléments sélectionnables (tableau, ou fonction qui les renvoie quand ils changent
+// d'une fois à l'autre, ex. vote du circuit suivant), `unique` : un élément confirmé est réservé (règle
 // appliquée ici, pas seulement à l'écran), `defaultFor(playerIndex)` : présélection initiale.
 export function createSelectionStore({ itemIds, unique, defaultFor }) {
+  const getItemIds = typeof itemIds === 'function' ? itemIds : () => itemIds
   return create((set, get) => ({
     selections: {},
 
@@ -34,7 +36,7 @@ export function createSelectionStore({ itemIds, unique, defaultFor }) {
       set((state) => {
         const selection = state.selections[playerId]
         if (!selection || selection.status === SELECTION_STATUS.CONFIRMED) return state
-        const next = findNextAvailable(state.selections, playerId, selection.preselectedId, delta, itemIds, unique)
+        const next = findNextAvailable(state.selections, playerId, selection.preselectedId, delta, getItemIds(), unique)
         if (next === selection.preselectedId) return state
         return { selections: update(state.selections, playerId, { preselectedId: next, lastMove: Math.sign(delta) }) }
       }),

@@ -9,15 +9,17 @@ function weightAt(id, rank) {
   return middle[id] + (back[id] - middle[id]) * ((rank - 0.5) / 0.5)
 }
 
-// Objet tiré pour un kart à la place `position` sur `total`, `roll` dans [0, 1[.
-export function rollItem(position, total, roll) {
+// Objet tiré pour un kart à la place `position` sur `total`, `roll` dans [0, 1[ ; une case
+// dorée (`lucky`) tire dans ITEM_DISTRIBUTION.lucky, quelle que soit la place.
+export function rollItem(position, total, roll, lucky = false) {
   const rank = total > 1 ? (position - 1) / (total - 1) : 0
   const ids = Object.keys(ITEMS)
+  const weight = (id) => Math.max(0, lucky ? ITEM_DISTRIBUTION.lucky[id] ?? 0 : weightAt(id, rank))
   let sum = 0
-  for (const id of ids) sum += Math.max(0, weightAt(id, rank))
+  for (const id of ids) sum += weight(id)
   let target = roll * sum
   for (const id of ids) {
-    target -= Math.max(0, weightAt(id, rank))
+    target -= weight(id)
     if (target < 0) return id
   }
   return ids[0]
@@ -39,5 +41,6 @@ export function consumeCharge(kart) {
   if (kart.itemCharges <= 0) {
     kart.item = null
     kart.itemCharges = 0
+    kart.itemLucky = false
   }
 }

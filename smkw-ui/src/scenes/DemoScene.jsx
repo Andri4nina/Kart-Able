@@ -1,3 +1,4 @@
+import { RaceParticles } from '../components3d/Effects/RaceParticles'
 import { RaceItems } from '../components3d/Items/RaceItems'
 import { StartGrid } from '../components3d/Racers/StartGrid'
 import { SelectionPreviewStage } from '../components3d/SelectionPreview/SelectionPreviewStage'
@@ -21,6 +22,7 @@ export function DemoScene() {
         <>
           <TrackWorld trackId={trackId} />
           <RaceItems />
+          <RaceParticles trackId={trackId} />
         </>
       ) : (
         <>

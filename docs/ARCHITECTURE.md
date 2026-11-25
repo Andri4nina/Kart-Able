@@ -182,8 +182,9 @@ src/
 │   │                            characterResources (formes partagées)
 │   ├── Vehicles/                VehicleModel (GLB cloné), normalizeModel, kartPaint, vehicleAssets (fichiers dans assets/models)
 │   ├── SelectionPreview/        SelectionPreviewStage (rangée par joueur), PreviewSlot, previewAnimation
-│   ├── Racers/                  StartGrid, RacerKart (véhicule + pilote animé), kartPose, KartEffects
-│   ├── Items/                   RaceItems : cases à objets, flaques, orbes (maillages instanciés)
+│   ├── Racers/                  StartGrid, RacerKart (véhicule + pilote animé), kartPose, KartEffects, kartFlame (réacteurs)
+│   ├── Items/                   RaceItems : cases à objets (cristal, cases dorées), flaques, orbes (maillages instanciés)
+│   ├── Effects/                 RaceParticles : particules communes (drift, turbo, terre, eau, éclats)
 │   ├── Track/                   Monde du circuit généré : texture de données, terrain, eau, route, marquages,
 │   │                            herbe, végétation et décor en instances, préchargement
 │   ├── World/                   Atmosphere, Lights, Ground, DemoProps, ShowcaseGem (teinte du mode)...

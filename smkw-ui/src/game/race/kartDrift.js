@@ -1,17 +1,15 @@
 import { DRIFT } from '../../config/kartTuning'
 import { applyBoost } from './kartBoost'
+import { chargeQuality } from './kartDriftRates'
 
-// Dérapage façon kart arcade (calcul pur, aucune allocation), comme dans les jeux du genre :
-// 1. appui sur Drift en roulant : petit saut (hop), le drift est « armé » tant qu'il est tenu ;
-// 2. dès que le kart touche le sol avec une direction braquée (pendant le saut ou à n'importe
-//    quel moment ensuite, Drift toujours tenu), le dérapage part de ce côté avec une petite
-//    poussée vers l'extérieur ;
-// 3. le kart tourne toujours vers l'intérieur : la direction resserre ou élargit l'arc ;
-// 4. la jauge se charge selon la qualité : braquer vers l'intérieur charge plus vite, vers
-//    l'extérieur plus lentement ; vitesse basse ou hors-piste : pas de charge ;
-// 5. relâcher Drift : mini-turbo du palier atteint (bleu, orange, violet).
-// Freiner, ralentir trop ou subir un choc fort annule le dérapage sans turbo ; il faut alors
-// relâcher puis réappuyer pour en relancer un.
+export { driftTurnRate } from './kartDriftRates'
+
+// Dérapage manuel façon kart classique (calcul pur, aucune allocation ; règles : DRIFT dans
+// config/kartTuning.js). Appui = saut ; le sens braqué pendant le saut (ou dans `landGrace`
+// après) fixe le drift ; relâcher = mini-turbo du palier atteint. Freiner, ralentir ou un choc
+// fort l'annulent (relâcher puis réappuyer pour en relancer un).
+// État : hop, driftPick (sens choisi en l'air), driftGrace, driftArmed, driftDir, driftCharge,
+// driftTier.
 
 export function getDriftTier(charge) {
   let tier = 0
@@ -30,42 +28,60 @@ export function cancelDrift(kart) {
   kart.driftCharge = 0
   kart.driftTier = 0
   kart.driftArmed = false
+  kart.driftPick = 0
+  kart.driftGrace = 0
 }
 
-function chargeQuality(kart, controls) {
-  const inward = controls.steer * kart.driftDir // -1 extérieur .. 1 intérieur
-  const quality = inward >= 0
-    ? 1 + (DRIFT.chargeInside - 1) * inward
-    : 1 + (1 - DRIFT.chargeOutside) * inward
-  const speedFactor = Math.min(1, kart.speed / (kart.stats.maxSpeed * 0.7))
-  const surface = kart.offRoad && kart.stats.offRoad < 1 ? 0 : 1
-  return quality * speedFactor * surface
-}
-
-function tryStart(kart, controls) {
-  if (Math.abs(controls.steer) < DRIFT.steerThreshold) return
-  kart.driftDir = Math.sign(controls.steer)
+function startDrift(kart, dir) {
+  kart.driftDir = dir
   kart.driftCharge = 0
   kart.driftTier = 0
+  kart.driftArmed = false
+  kart.driftPick = 0
+  kart.driftGrace = 0
   // Petite poussée vers l'extérieur du virage : le kart « décroche » en entrant en drift.
-  const kick = kart.speed * DRIFT.entryKick * kart.driftDir
+  const kick = kart.speed * DRIFT.entryKick * dir
   kart.vx += Math.cos(kart.yaw) * kick
   kart.vz -= Math.sin(kart.yaw) * kick
+}
+
+const steerSide = (controls) => (Math.abs(controls.steer) >= DRIFT.steerThreshold ? Math.sign(controls.steer) : 0)
+
+// Saut en cours ou tout juste posé : choix du sens.
+function updateHop(kart, controls, dt) {
+  if (kart.hop > 0) {
+    const side = steerSide(controls)
+    if (side) kart.driftPick = side
+    kart.hop = Math.max(0, kart.hop - dt)
+    if (kart.hop === 0) kart.driftGrace = DRIFT.landGrace
+    return
+  }
+  if (kart.airborne) return
+  const fastEnough = kart.speed > kart.stats.maxSpeed * DRIFT.minSpeed
+  const side = kart.driftPick || steerSide(controls)
+  if (side && fastEnough) {
+    startDrift(kart, side)
+    return
+  }
+  kart.driftGrace = Math.max(0, kart.driftGrace - dt)
+  if (kart.driftGrace === 0) kart.driftArmed = false
 }
 
 export function updateDrift(kart, controls, dt) {
   const pressed = controls.drift && !kart.driftHeld
   kart.driftHeld = controls.drift
-  if (pressed && !kart.driftDir && kart.hop === 0 && kart.speed > kart.stats.maxSpeed * 0.15) {
+  if (pressed && !kart.driftDir && kart.hop === 0 && !kart.airborne && kart.speed > kart.stats.maxSpeed * 0.15) {
     kart.hop = DRIFT.hopTime
     kart.driftArmed = true
+    kart.driftPick = 0
   }
-  if (kart.hop > 0) kart.hop = Math.max(0, kart.hop - dt)
-  if (!controls.drift && !kart.driftDir) kart.driftArmed = false
-
   if (!kart.driftDir) {
-    const fastEnough = kart.speed > kart.stats.maxSpeed * DRIFT.minSpeed
-    if (kart.driftArmed && kart.hop === 0 && !kart.airborne && fastEnough) tryStart(kart, controls)
+    if (!controls.drift) {
+      kart.driftArmed = false
+      kart.driftPick = 0
+    }
+    if (kart.driftArmed) updateHop(kart, controls, dt)
+    else if (kart.hop > 0) kart.hop = Math.max(0, kart.hop - dt)
     return
   }
   if (controls.brake > 0.5 || kart.speed < kart.stats.maxSpeed * DRIFT.cancelSpeed) {
@@ -80,13 +96,4 @@ export function updateDrift(kart, controls, dt) {
   // Relâché : mini-turbo du palier atteint.
   if (kart.driftTier > 0) applyBoost(kart, DRIFT.tiers[kart.driftTier - 1].boost)
   cancelDrift(kart)
-}
-
-// Vitesse de rotation pendant le dérapage : toujours vers l'intérieur, plus ou moins serrée.
-export function driftTurnRate(kart, controls) {
-  const inward = controls.steer * kart.driftDir
-  const factor = inward >= 0
-    ? DRIFT.turnNeutral + (DRIFT.turnInside - DRIFT.turnNeutral) * inward
-    : DRIFT.turnNeutral + (DRIFT.turnNeutral - DRIFT.turnOutside) * inward
-  return kart.driftDir * kart.stats.turnRate * DRIFT.fullSpeedTurn * factor
 }

@@ -8,6 +8,7 @@ import { useTrackSelectionStore } from '../stores/trackSelectionStore'
 import { useVehicleSelectionStore } from '../stores/vehicleSelectionStore'
 import { buildMatchConfig } from './matchConfig'
 import { getStartBlocker } from './matchRules'
+import { resetRaceFlow } from './raceFlow'
 import { startRace, stopRace } from './race/raceSession'
 import { getConfirmedId } from './selection/selectionRules'
 
@@ -31,6 +32,7 @@ export function startMatch() {
   const picks = getCurrentPicks()
   if (getStartBlocker(setup, slots, picks)) return false
   const match = buildMatchConfig(setup, slots, picks, Math.floor(Math.random() * 2 ** 31))
+  resetRaceFlow()
   useSessionStore.getState().begin(match)
   startRace(match)
   useNavigationStore.getState().navigate(SCREENS.GAME)
@@ -39,6 +41,7 @@ export function startMatch() {
 
 // Les joueurs locaux restent inscrits : une nouvelle partie les retrouve prêts.
 export function exitMatch() {
+  resetRaceFlow()
   stopRace()
   useSessionStore.getState().end()
   useNavigationStore.getState().resetTo(SCREENS.MAIN_MENU)
