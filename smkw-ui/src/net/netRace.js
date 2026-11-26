@@ -6,7 +6,7 @@ import { sendRelay } from './lanSession'
 // Format compact : un tableau par kart (FIELDS).
 const SEND_INTERVAL = 0.05
 const FIELDS = ['x', 'y', 'z', 'yaw', 'vx', 'vz', 'vy', 'speed', 'driftDir', 'driftTier', 'boost', 'hop', 'gliding', 'trick', 'trickStyle', 'spin', 'shield', 'sinking', 'lap', 'nextGate', 'finished', 'finishTime']
-const BOOST_SOURCES = ['miniTurbo1', 'miniTurbo2', 'miniTurbo3', 'start', 'item', 'pad', 'trick']
+const BOOST_SOURCES = ['miniTurbo1', 'miniTurbo2', 'start', 'item', 'pad', 'trick', 'draft']
 let elapsed = 0
 
 const round = (value) => Math.round(value * 1000) / 1000

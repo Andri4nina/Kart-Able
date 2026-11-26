@@ -38,3 +38,9 @@ export function buildKartStats(characterId, vehicleId) {
     offRoad: characterClass?.mechanic?.ignoresOffRoad ? 1 : (vehicle?.offRoad ?? STAT_CURVES.offRoad),
   })
 }
+
+// Cylindrée (config/raceFeel.js SPEED_CLASSES) : vitesse de pointe et accélération.
+export function scaleKartStats(stats, speedClass) {
+  if (!speedClass || (speedClass.speed === 1 && speedClass.accel === 1)) return stats
+  return Object.freeze({ ...stats, maxSpeed: stats.maxSpeed * speedClass.speed, acceleration: stats.acceleration * speedClass.accel })
+}

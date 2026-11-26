@@ -1,4 +1,4 @@
-import { Check, Gamepad2, Languages, MonitorCog, Settings, Volume2, X } from 'lucide-react'
+import { Check, Flag, Gamepad2, Languages, MonitorCog, Settings, Volume2, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
 import { backdropVariants, dialogVariants, swapVariants } from '../../animations/variants'
@@ -7,6 +7,7 @@ import { useNavigationStore } from '../../stores/navigationStore'
 import { ControlsPanel } from '../settings/ControlsPanel'
 import { GraphicsPanel } from '../settings/GraphicsPanel'
 import { LanguagePanel } from '../settings/LanguagePanel'
+import { RacePanel } from '../settings/RacePanel'
 import { SettingsTabs } from '../settings/SettingsTabs'
 import { SoonPanel } from '../settings/SoonPanel'
 import { Button } from '../ui/Button'
@@ -15,6 +16,7 @@ import { IconButton } from '../ui/IconButton'
 // Onglets dans l'ordre du menu Paramètres. `soon` : section annoncée, pas encore disponible.
 const TABS = [
   { id: 'language', icon: Languages },
+  { id: 'race', icon: Flag },
   { id: 'audio', icon: Volume2, soon: true },
   { id: 'graphics', icon: MonitorCog },
   { id: 'controls', icon: Gamepad2 },
@@ -22,6 +24,7 @@ const TABS = [
 
 function TabPanel({ tab }) {
   if (tab.id === 'language') return <LanguagePanel />
+  if (tab.id === 'race') return <RacePanel />
   if (tab.id === 'graphics') return <GraphicsPanel />
   if (tab.id === 'controls') return <ControlsPanel />
   return <SoonPanel icon={tab.icon} />

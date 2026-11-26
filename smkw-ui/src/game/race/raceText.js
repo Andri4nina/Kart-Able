@@ -3,7 +3,7 @@ import { useRaceStore } from '../../stores/raceStore'
 import { useTelemetryStore } from '../../stores/telemetryStore'
 import { getDisplayedLap } from '../track/lapRules'
 import { getRace } from './raceSession'
-import { getLightsOn } from './startLights'
+import { getCountdown } from './startLights'
 
 // Morceaux du payload de render_game_to_text pour la course (voir game/textState.js).
 const round = (value, digits = 2) => Number(value.toFixed(digits))
@@ -18,7 +18,7 @@ export function describeRace() {
     time: round(world.time, 3),
     raceTime: round(world.raceTime, 3),
     goAt: round(world.start.goAt, 3),
-    lightsOn: getLightsOn(world.start, world.time),
+    countdown: getCountdown(world.start, world.time),
     laps: world.laps,
     itemBoxes: `${world.items.boxes.filter((box) => box.active).length}/${world.items.boxes.length}`,
     luckyBoxes: world.items.boxes.filter((box) => box.active && box.lucky).length,
@@ -62,7 +62,7 @@ export function describeHud(match) {
   return {
     demoValues: !match?.trackId,
     raceTimeSeconds: round(telemetry.raceTime, 3),
-    startLights: race.lightsOn,
+    countdown: race.countdown,
     go: race.go,
     results: race.results?.map((entry) => `${entry.position}. ${entry.id}${entry.time === null ? '' : ` ${round(entry.time, 3)}`}`) ?? null,
     viewports: (match?.players ?? []).map((player, order) => {

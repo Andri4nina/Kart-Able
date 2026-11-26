@@ -176,6 +176,7 @@
     "soon": "Cette section arrive bientôt.",
     "tabs": {
       "language": "Langue",
+      "race": "Course",
       "audio": "Audio",
       "graphics": "Graphismes",
       "controls": "Contrôles"
@@ -225,6 +226,11 @@
         "cleared": "Touche retirée de « {{action}} ».",
         "reset": "Touches par défaut rétablies : {{profile}}."
       }
+    },
+    "race": {
+      "speedClass": "Cylindrée",
+      "speedClassHint": "Vitesse des karts et niveau des pilotes ordinateur. En réseau local, celle de l'hôte.",
+      "cc": "{{value}} cc"
     }
   },
   "language": {
@@ -252,7 +258,8 @@
     "overview": "Vue d'ensemble",
     "itemRolling": "Tirage en cours",
     "itemCharges": "×{{count}}",
-    "luckyBox": "Case dorée"
+    "luckyBox": "Case dorée",
+    "draft": "Aspiration"
   },
   "input": {
     "keyboard1": "Clavier 1",
@@ -412,8 +419,12 @@
     "summit": {
       "name": "Summit Cup"
     },
-    "frostbloom": "Frostbloom Cup",
-    "dustrail": "Dustrail Cup"
+    "frostbloom": {
+      "name": "Frostbloom Cup"
+    },
+    "dustrail": {
+      "name": "Dustrail Cup"
+    }
   },
   "tracks": {
     "kairosMeadow": {
@@ -543,8 +554,14 @@
   },
   "race": {
     "go": "Partez !",
-    "lights": "Feux de départ : {{count}} sur {{total}}",
-    "finished": "Arrivée"
+    "countdown": "Départ dans {{value}}",
+    "finished": "Arrivée",
+    "callout": {
+      "newLap": "Tour {{lap}}",
+      "finalLap": "Dernier tour !",
+      "wrongWay": "Sens interdit",
+      "falseStart": "Faux départ"
+    }
   },
   "items": {
     "nitro": {
@@ -561,6 +578,24 @@
     },
     "bubble": {
       "name": "Bulle"
+    },
+    "goldNitro": {
+      "name": "Nitro d'or"
+    },
+    "fakeBox": {
+      "name": "Fausse case"
+    },
+    "bounceOrb": {
+      "name": "Orbe rebondissant"
+    },
+    "comet": {
+      "name": "Comète"
+    },
+    "overdrive": {
+      "name": "Surcharge"
+    },
+    "storm": {
+      "name": "Orage"
     }
   },
   "results": {

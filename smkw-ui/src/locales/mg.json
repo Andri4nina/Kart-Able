@@ -176,6 +176,7 @@
     "soon": "Ho avy tsy ho ela ity fizarana ity.",
     "tabs": {
       "language": "Fiteny",
+      "race": "Hazakazaka",
       "audio": "Feo",
       "graphics": "Sary",
       "controls": "Fanaraha-maso"
@@ -225,6 +226,11 @@
         "cleared": "Nesorina ny bokotra amin'ny « {{action}} ».",
         "reset": "Naverina ny bokotra tany am-boalohany : {{profile}}."
       }
+    },
+    "race": {
+      "speedClass": "Herin'ny motera",
+      "speedClassHint": "Hafainganan'ny kart sy ny haavon'ny mpamily solosaina. Amin'ny tambajotra eo an-toerana, ny an'ny mpampiantrano no mihatra.",
+      "cc": "{{value}} cc"
     }
   },
   "language": {
@@ -251,7 +257,8 @@
     "overview": "Topimaso ankapobeny",
     "itemRolling": "Misafidy",
     "itemCharges": "×{{count}}",
-    "luckyBox": "Boaty volamena"
+    "luckyBox": "Boaty volamena",
+    "draft": "Fisintonana"
   },
   "input": {
     "keyboard1": "Fitendry 1",
@@ -411,8 +418,12 @@
     "summit": {
       "name": "Summit Cup"
     },
-    "frostbloom": "Frostbloom Cup",
-    "dustrail": "Dustrail Cup"
+    "frostbloom": {
+      "name": "Frostbloom Cup"
+    },
+    "dustrail": {
+      "name": "Dustrail Cup"
+    }
   },
   "tracks": {
     "kairosMeadow": {
@@ -542,8 +553,14 @@
   },
   "race": {
     "go": "Mandehana !",
-    "lights": "Jiro fiaingana : {{count}} amin'ny {{total}}",
-    "finished": "Tonga"
+    "countdown": "Hiainga afaka {{value}}",
+    "finished": "Tonga",
+    "callout": {
+      "newLap": "Fihodinana {{lap}}",
+      "finalLap": "Fihodinana farany!",
+      "wrongWay": "Diso lalana",
+      "falseStart": "Niainga aloha loatra"
+    }
   },
   "items": {
     "nitro": {
@@ -560,6 +577,24 @@
     },
     "bubble": {
       "name": "Bobongà"
+    },
+    "goldNitro": {
+      "name": "Nitro volamena"
+    },
+    "fakeBox": {
+      "name": "Boaty sandoka"
+    },
+    "bounceOrb": {
+      "name": "Baolina mitsambikina"
+    },
+    "comet": {
+      "name": "Kometa"
+    },
+    "overdrive": {
+      "name": "Hery tafahoatra"
+    },
+    "storm": {
+      "name": "Tafio-drivotra"
     }
   },
   "results": {

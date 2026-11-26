@@ -1,7 +1,7 @@
 # Objets et cases à objets
 
 - **Type** : système + objet 3D + composant UI
-- **Fichiers** : `smkw-ui/src/config/items.js`, `smkw-ui/src/game/items/` (itemSystem, itemRules, itemBehaviors, itemEntities, itemPlacement, kartHit, botItems), `smkw-ui/src/components3d/Items/` (RaceItems, ItemInstances, itemResources, boxPose), `smkw-ui/src/components3d/Effects/boxEmitters.js`, `smkw-ui/src/components/ui/hud/ItemSlot.jsx`, `useItemRoulette.js`, `itemIcons.js`
+- **Fichiers** : `smkw-ui/src/config/items.js`, `config/itemOdds.js`, `smkw-ui/src/game/items/` (itemSystem, itemRules, itemBehaviors, itemEntities, itemClashes, itemContacts, projectileMotion, itemPlacement, kartHit, botItems), `components3d/Effects/itemAuraEmitters.js`, `smkw-ui/src/components3d/Items/` (RaceItems, ItemInstances, itemResources, boxPose), `smkw-ui/src/components3d/Effects/boxEmitters.js`, `smkw-ui/src/components/ui/hud/ItemSlot.jsx`, `useItemRoulette.js`, `itemIcons.js`
 - **Phase** : 2B (premiers objets, demandés avec les cases), cases et tirage revus en 2C
 
 ## Rôle
@@ -14,14 +14,21 @@ Cases à objets sur les circuits, roulette, inventaire, 5 objets originaux, usag
 - **Case dorée** (hasard) : à chaque réapparition, une case a `luckyChance` (12 %) de devenir dorée (plus grosse, or). Elle tire dans `ITEM_DISTRIBUTION.lucky` quelle que soit la place, et sa roulette dure `luckyRoulette` de plus ; le HUD l'annonce (cadre doré, étincelle).
 - **Roulette à suspense** : durée tirée au hasard (`roulette.min` .. `max`, 1,1 à 2,3 s) ; l'objet est tiré à la prise selon la place (`ITEM_DISTRIBUTION` tête / milieu / fin, interpolé). Dans le HUD, les icônes défilent dans un ordre aléatoire puis ralentissent jusqu'à la fin du tirage (`useItemRoulette`) ; l'objet apparaît avec un rebond et un éclair.
 - **Inventaire** : un emplacement, des charges (triple nitro : 3), usage sur un nouvel appui de l'action `item`.
-- **Objets** (`ITEMS`, comportement par type dans `ITEM_BEHAVIORS`) :
-  - Nitro, Triple nitro (`boost`) : turbo `item` via `applyBoost` ;
-  - Flaque d'huile (`trap`) : posée derrière, 45 s, tête-à-queue au premier qui roule dessus ;
-  - Orbe de choc (`projectile`) : lancé devant, suit la route, frappe le premier kart rencontré ;
-  - Bulle (`shield`) : absorbe le prochain coup (12 s).
-- **Tête-à-queue** (`kartHit.js`) : commandes coupées 1,1 s, vitesse x0,35, drift et turbo perdus ; la bulle l'annule.
-- **Bots** (`botItems.js`) : délai de réflexion, puis turbo en ligne droite, piège si quelqu'un suit de près, orbe si un adversaire est devant à portée, bulle tout de suite.
-- **Pooling** : 48 flaques et 24 orbes préalloués ; rendu en 6 maillages instanciés (cristal, cœur, anneau, halo des cases ; flaques ; orbes).
+- **Objets** (phase 3C, mécaniques de la version Wii de la référence, noms et visuels originaux ; `ITEMS`, comportement par `kind` dans `ITEM_BEHAVIORS`) :
+  - Nitro, Triple nitro (`boost`) ; Nitro d'or (`goldBoost`) : turbos à volonté pendant 7,5 s ;
+  - Flaque d'huile, Fausse case (`trap`) : posées derrière ; la fausse case ressemble à une case (rouge-orangé, point d'interrogation à l'envers) ;
+  - Orbe rebondissant (`straight`) : tout droit, rebondit sur les bords de la route (8 rebonds) ;
+  - Orbe de choc (`homing`) : suit la route et fond sur le kart juste devant au lancer ;
+  - Comète (`leader`) : vole au-dessus de la course jusqu'au premier, souffle de 7 m ;
+  - Bulle (`shield`) : absorbe le prochain coup (12 s) ;
+  - Surcharge (`overdrive`) : 7 s invincible, plus rapide, renverse les karts touchés (étincelles arc-en-ciel) ;
+  - Orage (`storm`) : tous les adversaires en tête-à-queue court, puis réduits 5 s (x0,72 de vitesse, écrasés par les karts normaux).
+- **Tenir derrière soi** (`trail`) : pièges et orbes restent derrière le kart tant que le bouton est tenu ; ils arrêtent un objet venu de derrière (les objets qui se touchent se détruisent : `itemClashes.js`). Relâcher : piège posé, orbe lancé devant, ou derrière en freinant. Pas de nouvel objet tant qu'on en tient un ; perdu en tête-à-queue.
+- **Objets rares** : un seul orage par minute et une comète par 40 s dans la course (sinon triple nitro).
+- **Roulette** : durée fixe 1,6 s comme la référence (+0,6 s pour une case dorée).
+- **Tête-à-queue** (`kartHit.js`) : commandes coupées 1,1 s, vitesse x0,35, drift et turbo perdus ; la bulle l'annule ; la surcharge l'ignore.
+- **Bots** (`botItems.js`) : délai de réflexion ; turbos en ligne droite ; pièges et orbes tenus en bouclier, posés quand un adversaire arrive derrière, lancés quand un adversaire est devant à portée ; orage, bulle, comète tout de suite.
+- **Pooling** : 48 pièges et 24 projectiles préalloués.
 
 Ajouter un objet : une entrée dans `ITEMS` (type existant) + `items.<id>.name` dans chaque locale + une icône dans `itemIcons.js`. Nouveau type : une entrée dans `ITEM_BEHAVIORS`.
 
@@ -39,11 +46,11 @@ Calcul : cases x karts par pas (24 x 32), entités en réserve fixe ; course de 
 ## Conformité règles d'or
 
 - [x] Aucun dégradé linéaire
-- [x] Aucun emoji ; icônes lucide utiles (Rocket, Droplet, Orbit, ShieldCheck ; Sparkles pour la case dorée)
+- [x] Aucun emoji ; icônes lucide utiles (Rocket, Flame, Droplet, Box, CircleDot, Orbit, Crosshair, ShieldCheck, Star, CloudLightning ; Sparkles pour la case dorée)
 - [x] Tailwind uniquement
 - [x] Roulette d'icônes, rebond et éclair coupés en mouvement réduit (MotionConfig)
 - [x] UI / 3D séparées (raceStore, monde de course)
-- [x] Noms et formes originaux (aucun objet repris d'un jeu existant ; case en cristal, pas de cube à point d'interrogation)
+- [x] Noms et formes originaux (mécaniques inspirées de la référence, aucun nom ni modèle repris)
 
 ## Évolutions prévues
 
@@ -52,3 +59,7 @@ Objets de bataille, rangées de cases par circuit réglées à la main, son.
 ## Case à objets (2E)
 
 Nouveau design : cube de verre irisé aux coins arrondis, penché sur un coin et qui tourne, arêtes lumineuses plus claires, point d'interrogation en volume qui flotte au centre, halo au sol. Case dorée : or et blanc, plus grosse. Fichiers : `components3d/Items/itemResources.js`, `boxPose.js`, `RaceItems.jsx`.
+
+## Case à objets (3C)
+
+Verre prismatique : chaque face a sa couleur (couleurs par sommet d'après la normale), arêtes à la teinte qui tourne, point d'interrogation au centre.

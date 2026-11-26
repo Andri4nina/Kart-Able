@@ -1,9 +1,11 @@
 import { RACE } from '../../config/race'
+import { getSpeedClass } from '../../config/raceFeel'
 import { createRandom } from '../track/noise'
 import { getTrackGeometry } from '../track/trackGeometry'
 import { getStartSlot } from '../track/trackLayout'
 import { createItemState, updateItems } from '../items/itemSystem'
 import { resolveKartCollisions } from './kartCollisions'
+import { updateKartAssists } from './kartDraft'
 import { chooseControls } from './raceControls'
 import { createRaceKart } from './raceKart'
 import { moveKart } from './kartMove'
@@ -19,8 +21,9 @@ export const RACE_PHASES = Object.freeze({ COUNTDOWN: 'countdown', RACING: 'raci
 export function createRaceWorld(match, seed, resolveDevice) {
   const geometry = getTrackGeometry(match.trackId)
   const random = createRandom(seed)
+  const speedClass = getSpeedClass(match.speedClass)
   const karts = getRaceRoster(match).map((racer, order) =>
-    createRaceKart(racer, getStartSlot(geometry.path, order), geometry, { device: resolveDevice(racer), random }),
+    createRaceKart(racer, getStartSlot(geometry.path, order), geometry, { device: resolveDevice(racer), random, speedClass }),
   )
   const world = {
     geometry,
@@ -35,7 +38,7 @@ export function createRaceWorld(match, seed, resolveDevice) {
     humans: karts.filter((kart) => !kart.isBot && !kart.remote),
     kartsById: new Map(karts.map((kart) => [kart.id, kart])),
     ranking: [...karts],
-    start: createStartSequence(random),
+    start: createStartSequence(),
     time: 0,
     raceTime: 0,
     phase: RACE_PHASES.COUNTDOWN,
@@ -71,6 +74,7 @@ export function stepRaceWorld(world, delta, readControls) {
     resolveKartCollisions(world.karts)
     updateItems(world, delta / steps)
   }
+  updateKartAssists(world, delta)
   updateRanking(world)
   updateEnd(world)
 }

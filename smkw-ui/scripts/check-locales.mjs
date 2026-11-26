@@ -86,7 +86,7 @@ for (const dir of COMPONENT_DIRS) {
         const inline = code.match(INLINE_TEXT)
         if (inline && !code.includes('=>') && inline[1].trim()) problems.push(`${where}  texte en dur "${inline[1].trim()}" (utiliser t())`)
         const lone = code.match(LONE_TEXT_LINE)
-        if (lone && !JS_KEYWORDS.has(lone[1].trim())) problems.push(`${where}  texte en dur "${lone[1].trim()}" (utiliser t())`)
+        if (lone && !JS_KEYWORDS.has(lone[1].trim()) && !JS_KEYWORDS.has(lone[1].trim().split(/\s+/)[0])) problems.push(`${where}  texte en dur "${lone[1].trim()}" (utiliser t())`)
       })
   }
 }

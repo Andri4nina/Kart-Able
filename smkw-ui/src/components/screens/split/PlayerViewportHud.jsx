@@ -4,11 +4,13 @@ import { useTranslation } from '../../../i18n/useTranslation'
 import { useRaceStore } from '../../../stores/raceStore'
 import { CharacterAvatar } from '../../players/CharacterAvatar'
 import { getPlayerColors } from '../../players/playerVisuals'
+import { DraftGauge } from '../../ui/hud/DraftGauge'
 import { DriftGauge } from '../../ui/hud/DriftGauge'
 import { FinishBanner } from '../../ui/hud/FinishBanner'
 import { ItemSlot } from '../../ui/hud/ItemSlot'
 import { LapPanel } from '../../ui/hud/LapPanel'
 import { PositionBadge } from '../../ui/hud/PositionBadge'
+import { RaceCallout } from '../../ui/hud/RaceCallout'
 import { Speedometer } from '../../ui/hud/Speedometer'
 
 // Étiquette du joueur : numéro sur sa couleur, puis visage et nom du personnage
@@ -51,6 +53,7 @@ export function PlayerViewportHud({ player, position, total, framed }) {
       className={`relative min-h-0 min-w-0 overflow-hidden [container-type:size] ${frame}`}
     >
       <FinishBanner playerId={player.id} />
+      <RaceCallout playerId={player.id} />
       <div className="absolute inset-0 flex flex-col justify-between gap-2 p-2.5 @md:p-4 @3xl:p-6">
         <motion.div variants={hudFrom.left} className="flex flex-col items-start gap-2">
           <PlayerTag player={player} colors={colors} />
@@ -60,6 +63,7 @@ export function PlayerViewportHud({ player, position, total, framed }) {
             </div>
           </div>
           <DriftGauge playerId={player.id} />
+          <DraftGauge playerId={player.id} />
         </motion.div>
 
         <div className="flex items-end justify-between gap-2">

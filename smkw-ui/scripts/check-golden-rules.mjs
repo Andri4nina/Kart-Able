@@ -9,7 +9,7 @@ const REPO_ROOT = resolve(UI_ROOT, '..')
 
 const CODE_EXTENSIONS = new Set(['.js', '.jsx', '.ts', '.tsx', '.css', '.html', '.svg', '.json'])
 const TEXT_EXTENSIONS = new Set([...CODE_EXTENSIONS, '.md', '.json'])
-const IGNORED_DIRS = new Set(['node_modules', 'dist', '.git', 'graphify-out', 'output'])
+const IGNORED_DIRS = new Set(['node_modules', 'dist', '.git', 'graphify-out', 'output', 'target', 'gen']) // target, gen : builds Rust / Tauri
 
 const GRADIENT_PATTERNS = [
   { regex: /linear-gradient\s*\(/i, label: 'linear-gradient()' },

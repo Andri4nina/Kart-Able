@@ -1,7 +1,6 @@
-import { AdditiveBlending, BoxGeometry, CatmullRomCurve3, CylinderGeometry, DoubleSide, IcosahedronGeometry, MeshBasicMaterial, MeshStandardMaterial, RingGeometry, SphereGeometry, TubeGeometry, Vector3 } from 'three'
+import { AdditiveBlending, BoxGeometry, BufferAttribute, CatmullRomCurve3, Color, CylinderGeometry, DoubleSide, IcosahedronGeometry, MeshBasicMaterial, MeshStandardMaterial, RingGeometry, SphereGeometry, TubeGeometry, Vector3 } from 'three'
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js'
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js'
-import { PALETTE } from '../World/palette'
 
 // Formes et matériaux partagés des objets en course (créés une fois, jamais par frame).
 // Case à objets : cube de verre irisé aux coins arrondis (teinte par instance qui change avec
@@ -32,8 +31,31 @@ function questionMark() {
   return mergeGeometries([hook.toNonIndexed(), dot.toNonIndexed()])
 }
 
+// Verre prismatique : chaque face a sa couleur (arc-en-ciel), d'après sa normale, comme les
+// cases à objets de la référence. Couleurs par sommet (aucun dégradé dessiné : aplat par face,
+// fondu seulement sur les arrondis).
+const FACE_HUES = [0, 0.16, 0.33, 0.5, 0.62, 0.8]
+function prismGlass() {
+  const geometry = new RoundedBoxGeometry(BOX, BOX, BOX, 3, 0.16)
+  const normals = geometry.getAttribute('normal')
+  const colors = new Float32Array(normals.count * 3)
+  const color = new Color()
+  for (let i = 0; i < normals.count; i += 1) {
+    const x = normals.getX(i)
+    const y = normals.getY(i)
+    const z = normals.getZ(i)
+    const ax = Math.abs(x)
+    const ay = Math.abs(y)
+    const az = Math.abs(z)
+    const face = ax >= ay && ax >= az ? (x > 0 ? 0 : 1) : ay >= az ? (y > 0 ? 2 : 3) : z > 0 ? 4 : 5
+    color.setHSL(FACE_HUES[face], 1, 0.56).toArray(colors, i * 3)
+  }
+  geometry.setAttribute('color', new BufferAttribute(colors, 3))
+  return geometry
+}
+
 export const ITEM_GEOMETRIES = {
-  boxGlass: new RoundedBoxGeometry(BOX, BOX, BOX, 3, 0.16),
+  boxGlass: prismGlass(),
   boxFrame: boxFrame(),
   boxGlyph: questionMark(),
   boxHalo: new RingGeometry(0.85, 1.15, 32).rotateX(-Math.PI / 2),
@@ -42,10 +64,11 @@ export const ITEM_GEOMETRIES = {
 }
 
 export const ITEM_MATERIALS = {
-  boxGlass: new MeshStandardMaterial({ color: '#ffffff', emissive: '#2a2a2a', emissiveIntensity: 1, transparent: true, opacity: 0.64, roughness: 0.06, metalness: 0.15, depthWrite: false }),
+  boxGlass: new MeshStandardMaterial({ color: '#ffffff', vertexColors: true, emissive: '#151515', emissiveIntensity: 1, transparent: true, opacity: 0.74, roughness: 0.06, metalness: 0.15, depthWrite: false }),
   boxFrame: new MeshBasicMaterial({ color: '#ffffff', toneMapped: false }),
   boxGlyph: new MeshBasicMaterial({ color: '#ffffff', toneMapped: false }),
   boxHalo: new MeshBasicMaterial({ color: '#ffffff', blending: AdditiveBlending, transparent: true, opacity: 0.55, depthWrite: false, side: DoubleSide, toneMapped: false }),
   slick: new MeshStandardMaterial({ color: '#15151c', roughness: 0.05, metalness: 0.4 }),
-  orb: new MeshStandardMaterial({ color: PALETTE.purple, emissive: PALETTE.purple, emissiveIntensity: 1, flatShading: true }),
+  // Projectiles : teinte par instance (couleur de l'objet, config/items.js).
+  orb: new MeshStandardMaterial({ color: '#ffffff', emissive: '#3a3a3a', emissiveIntensity: 1, flatShading: true }),
 }

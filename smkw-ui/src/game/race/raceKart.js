@@ -1,5 +1,6 @@
+import { createItemFields } from '../items/itemRules'
 import { createLapProgress } from '../track/lapRules'
-import { buildKartStats } from './kartStats'
+import { buildKartStats, scaleKartStats } from './kartStats'
 import { updateTrackIndex } from './trackTracking'
 
 // État d'un kart en course (objet mutable, modifié en place par raceWorld : aucune allocation
@@ -19,7 +20,8 @@ function nearestIndex(path, x, z) {
   return best
 }
 
-export function createRaceKart(racer, slot, geometry, { device, random }) {
+export function createRaceKart(racer, slot, geometry, { device, random, speedClass }) {
+  const skill = (racer.skill ?? 1) + (racer.isBot ? speedClass.botSkill : 0)
   const kart = {
     id: racer.id,
     isBot: racer.isBot,
@@ -30,8 +32,8 @@ export function createRaceKart(racer, slot, geometry, { device, random }) {
     characterId: racer.characterId,
     vehicleId: racer.vehicleId,
     device: device ?? null,
-    stats: buildKartStats(racer.characterId, racer.vehicleId),
-    skill: racer.skill ?? 1,
+    stats: scaleKartStats(buildKartStats(racer.characterId, racer.vehicleId), speedClass),
+    skill,
     lane: racer.lane ?? 0,
     reaction: racer.isBot ? BOT_REACTION.min + random() * (BOT_REACTION.max - BOT_REACTION.min) : 0,
     autopilot: false,
@@ -49,7 +51,7 @@ export function createRaceKart(racer, slot, geometry, { device, random }) {
     vx: 0,
     vz: 0,
     speed: 0,
-    topFactor: racer.skill ?? 1,
+    topFactor: skill,
     // Dérapage (kartDrift.js) : saut, sens, charge, palier, saut armé, sens choisi en l'air,
     // touche tenue. En l'air (kartAir.js) : deltaplane, figure en cours, fenêtre pour figurer,
     // figure à récompenser, style de figure.
@@ -73,17 +75,18 @@ export function createRaceKart(racer, slot, geometry, { device, random }) {
     boostSource: null,
     bump: 0,
     hits: 0,
+    // Aspiration et sens interdit (kartDraft.js) ; faux départ : moteur calé (s restantes).
+    draft: 0,
+    draftCooldown: 0,
+    drafting: false,
+    wrongWay: false,
+    wrongWayTime: 0,
+    falseStart: false,
+    startPress: 0,
+    stall: 0,
     padCooldown: 0,
-    // Objets (game/items) : objet en main et charges, tirage en cours, bulle, tête-à-queue.
-    item: null,
-    itemCharges: 0,
-    itemRoll: 0,
-    itemRollTotal: 0,
-    itemLucky: false,
-    itemPending: null,
-    itemHeld: false,
-    shield: 0,
-    spin: 0,
+    // Objets (game/items/itemRules.js) : objet en main, tirage, objet tenu, bulle, effets.
+    ...createItemFields(),
     botItemWait: -1, botDriftTime: 0, botOffRoad: 0, botOverturn: 0,
     sinking: 0,
     // Position sur le tracé

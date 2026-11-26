@@ -10,7 +10,7 @@ Joueurs locaux, personnages, véhicules, puis **circuits** (modes qui se courent
 
 ## Ce que voit le joueur (2E)
 
-1. **Les coupes** : une carte par coupe (ses 4 circuits en mini-cartes). On en ouvre une.
+1. **Les coupes** : une carte par coupe avec son emblème (écusson à sa couleur et son symbole : pousse, montagne, flocon, tornade ; `components/tracks/CupEmblem.jsx`, `cupEmblems.js`, tokens `--color-cup-*`). Un clic l'ouvre et affiche ses circuits.
 2. **Les circuits de la coupe** : la carte « Coupe complète » puis ses 4 circuits. Chaque circuit choisi reçoit son numéro de passage. Le panneau **Programme** liste les circuits dans l'ordre (retirables d'un clic). On peut revenir aux coupes pour ajouter des circuits d'une autre coupe : on joue donc 1 circuit, 5 circuits, ou ce qu'on veut, jusqu'à `COURSE.maxRaces` (8).
 3. Programme vide : toute la coupe ouverte est courue (comme avant).
 

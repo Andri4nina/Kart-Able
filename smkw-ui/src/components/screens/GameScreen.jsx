@@ -5,7 +5,7 @@ import { useSessionStore } from '../../stores/sessionStore'
 import { DemoBadge } from '../ui/hud/DemoBadge'
 import { PauseMenu } from './race/PauseMenu'
 import { RaceFlowOverlay } from './race/RaceFlowOverlay'
-import { StartLights } from './race/StartLights'
+import { StartCountdown } from './race/StartCountdown'
 import { HudActions } from '../ui/hud/HudActions'
 import { SplitScreenHud } from './split/SplitScreenHud'
 
@@ -29,7 +29,7 @@ export function GameScreen() {
       exit="exit"
     >
       {players.length > 0 ? <SplitScreenHud players={players} /> : null}
-      {hasTrack ? <StartLights /> : null}
+      {hasTrack ? <StartCountdown /> : null}
       {hasTrack ? <RaceFlowOverlay /> : null}
       {hasTrack ? <PauseMenu /> : null}
       <motion.div variants={hudFrom.right} className="absolute right-2.5 top-2.5 flex flex-col items-end gap-2 sm:right-4 sm:top-4">

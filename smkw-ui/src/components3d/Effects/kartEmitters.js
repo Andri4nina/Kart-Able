@@ -2,7 +2,9 @@ import { Color } from 'three'
 import { DRIFT } from '../../config/kartTuning'
 import { PALETTE } from '../World/palette'
 import { burst, count, pick, place, spec, spread } from './emitterKit'
+import { emitDraft } from './draftEmitters'
 import { emitExhaust } from './exhaustEmitters'
+import { emitItemAura } from './itemAuraEmitters'
 import { emitParticle } from './particlePool'
 import { emitKartTrails, TIER_COLORS } from './trailEmitters'
 
@@ -11,6 +13,7 @@ import { emitKartTrails, TIER_COLORS } from './trailEmitters'
 //   violet ensuite) ; gerbe au déclenchement du mini-turbo ; traînées au sol (trailEmitters) ;
 // - échappement : fumée continue (exhaustEmitters) ;
 // - turbo : braises éjectées par le réacteur (nitro), traînée de fumée ;
+// - aspiration : filets de vent (draftEmitters) ; surcharge, orage (itemAuraEmitters) ;
 // - hors-piste : mottes de terre et d'herbe arrachées ;
 // - chute dans l'eau : grande gerbe ; choc : éclats blancs.
 // `rate` : facteur global (mouvement réduit : moins de particules).
@@ -91,6 +94,8 @@ export function emitKartParticles(world, pools, trails, dt, rate, dirt, memory) 
     const angle = kart.yaw - kart.driftDir * DRIFT.slipAngle
     if (kart.driftDir && !kart.airborne) emitDrift(kart, angle, pools, dt, rate)
     if (kart.boost > 0) emitBoost(kart, kart.yaw, pools, dt, rate)
+    emitDraft(kart, pools, dt, rate)
+    emitItemAura(kart, pools, dt, rate, previous)
     emitOffRoad(kart, angle, pools, dt, rate, dirt)
   }
 }

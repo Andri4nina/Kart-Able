@@ -5,6 +5,7 @@ import { useMatchSetupStore } from '../stores/matchSetupStore'
 import { useNavigationStore } from '../stores/navigationStore'
 import { usePauseStore } from '../stores/pauseStore'
 import { useSessionStore } from '../stores/sessionStore'
+import { useSettingsStore } from '../stores/settingsStore'
 import { useCourseStore } from '../stores/courseStore'
 import { useVehicleSelectionStore } from '../stores/vehicleSelectionStore'
 import { buildMatchConfig } from './matchConfig'
@@ -24,6 +25,7 @@ export function getCurrentPicks() {
     characters: useCharacterSelectionStore.getState().selections,
     vehicles: useVehicleSelectionStore.getState().selections,
     course: { cupId, playlist },
+    speedClass: useSettingsStore.getState().speedClass,
   }
 }
 

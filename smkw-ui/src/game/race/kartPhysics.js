@@ -1,4 +1,5 @@
 import { GLIDE } from '../../config/airTuning'
+import { SHRINK } from '../../config/items'
 import { COLLISION, OVER_SPEED_DRAG, STAT_CURVES } from '../../config/kartTuning'
 import { tickBoost } from './kartBoost'
 import { driftTurnRate, updateDrift } from './kartDrift'
@@ -29,7 +30,9 @@ function updateForward(kart, controls, forward, dt) {
   const { stats } = kart
   const boosting = kart.boost > 0
   const surface = kart.offRoad && !boosting ? stats.offRoad : 1
-  const top = stats.maxSpeed * kart.topFactor * surface * (boosting ? kart.boostSpeed : 1)
+  // Kart réduit par l'orage : moins rapide (SHRINK.speed).
+  const small = kart.shrink > 0 ? SHRINK.speed : 1
+  const top = stats.maxSpeed * kart.topFactor * surface * small * (boosting ? kart.boostSpeed : 1)
   let next = forward
   // Un turbo pousse même sans accélérer.
   const throttle = boosting ? Math.max(controls.throttle, 1) : controls.throttle

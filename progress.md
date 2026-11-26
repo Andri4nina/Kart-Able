@@ -411,3 +411,68 @@ Fiche : docs/phases/PHASE_3A_LAN_DESKTOP_SEO.md ; hébergement : docs/HOSTING.md
 - Objets synchronisés (quand les objets définitifs seront fournis), vote partagé.
 - Fichiers de vérification Google / Bing à déposer dans smkw-ui/public/ (fournis plus tard).
 - Signature des installateurs.
+
+---
+
+## 2026-11-26 — Phase 3B : gameplay des courses
+
+Demande : améliorer le gameplay des courses pour bien s'amuser, en prenant toujours le kart arcade de référence (Wii) comme modèle. Fiche : docs/phases/PHASE_3B_RACE_FEEL.md.
+
+### Fait
+- `config/raceFeel.js` réunit les réglages : DRAFT, FALSE_START, WRONG_WAY, SPEED_CLASSES.
+- Aspiration (`game/race/kartDraft.js`) :
+  - le sillage d'un kart charge un turbo `BOOSTS.draft` ;
+  - temps de recharge après chaque turbo, pas pendant un drift ;
+  - côté 3D : filets de vent (`draftEmitters.js`) ; côté HUD : jauge `DraftGauge`.
+- Faux départ (`isFalseStart`) : appui pendant que les 5 feux sont allumés, moteur calé 1 s.
+- Annonces `RaceCallout` : « Tour N », « Dernier tour ! », « Sens interdit », « Faux départ ».
+- La place rebondit quand elle change.
+- Le champ de vision s'ouvre en turbo (`getChaseFovKick`), sauf en mouvement réduit.
+- Cylindrées 50 / 100 / 150 cc :
+  - réglage dans l'onglet Paramètres > Course (`RacePanel`, `settingsStore.speedClass`) ;
+  - enregistrée dans la partie (`match.speedClass`), celle de l'hôte en réseau local ;
+  - appliquée par `scaleKartStats` et par le niveau des pilotes ordinateur.
+- Scripts de vérification :
+  - `check-golden-rules` ignore les dossiers `target/` et `gen/` (builds Tauri) ;
+  - `check-locales` ignore les lignes qui commencent par un mot-clé JS (`return shown`).
+- Tag v0.3.0 : déjà présent sur GitHub ; la copie locale, corrompue, a été restaurée.
+
+### Tests
+- Simulation Node sans rendu, 16 circuits avec 32 pilotes ordinateur : tous arrivent en 50, 100 et 150 cc. L'aspiration a été ramenée de 8 à environ 2 turbos par kart et par tour.
+- Navigateur intégré, en 150 cc :
+  - faux départ, sens interdit, dernier tour, jauge et turbo d'aspiration, onglet Course ;
+  - aucune erreur dans la console.
+
+### TODO
+- Sons des annonces (quand l'audio arrivera), mode miroir, regard arrière.
+- Objets définitifs (fournis plus tard).
+
+---
+
+## 2026-11-26 — Phase 3C : dérapage, départ, objets et coupes façon Wii
+
+Demande : dérapage fidèle à la référence, cases et objets façon Wii, départ turbo sur le « 3 », une icône par coupe et ses circuits au clic. Fiche : docs/phases/PHASE_3C_WII_DRIFT_ITEMS.md.
+
+### Fait
+- **Drift** : charge au minuteur, x2,5 en braquant dedans. Deux paliers : bleu à 2,27, orange à 4,79 (trois fois plus long). Plus de palier violet. Les bots chargent au rythme « dedans ».
+- **Départ** : `START_COUNTDOWN` (3-2-1), `trackStartPress` / `resolveStart`, `StartCountdown.jsx`. Remplace les feux, `raceStore.lightsOn` devient `countdown`.
+- **Objets** :
+  - config/items.js (11 objets) et itemOdds.js ;
+  - objets tenus (`trail`, `holdItem`, `releaseHeld`) et collisions entre objets (`itemClashes.js`) ;
+  - trajectoires (`projectileMotion.js`) ;
+  - surcharge et orage (`itemContacts.js`, `strikeKart`, `SHRINK`) ;
+  - objets rares limités ;
+  - bots qui tiennent leurs objets en bouclier ;
+  - nouveaux champs du kart dans `createItemFields`.
+- **3D** : cases prismatiques, fausses cases, projectiles colorés, comète en vol, aura de surcharge, kart réduit (kartPose).
+- **Coupes** : `CupEmblem` et `cupEmblems.js`, tokens `--color-cup-*`.
+- **Corrections** :
+  - noms des coupes Frostbloom et Dustrail (structure des locales) ;
+  - `netRace` : ajout de `draft` aux sources de turbo.
+
+### Tests
+- Simulation Node : 16 circuits, tous les karts arrivent, statistiques d'objets et de mini-turbos.
+- Navigateur intégré : compte à rebours, départ turbo, emblèmes, objets tenus et lancés, cases ; aucune erreur dans la console.
+
+### TODO
+- Synchronisation des objets en réseau local, modèles d'objets fournis par l'utilisateur, sons.

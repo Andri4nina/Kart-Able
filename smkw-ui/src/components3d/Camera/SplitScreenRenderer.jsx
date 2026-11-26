@@ -11,7 +11,7 @@ import { SCREENS } from '../../navigation/screens'
 import { selectCurrentScreen, useNavigationStore } from '../../stores/navigationStore'
 import { useSessionStore } from '../../stores/sessionStore'
 import { useSettingsStore } from '../../stores/settingsStore'
-import { fitCellFraming, OVERVIEW_FOV, writeChaseCamera, writeKartChase, writeOverviewCamera } from './chaseCamera'
+import { fitCellFraming, getChaseFovKick, OVERVIEW_FOV, writeChaseCamera, writeKartChase, writeOverviewCamera } from './chaseCamera'
 import { recordSplitView, setSplitViewCount, splitCameras } from './splitViews'
 
 // Priorité > 0 : R3F cesse son rendu automatique tant que ce composant est monté.
@@ -63,8 +63,9 @@ function SplitViews({ match }) {
       const player = players[cell]
       const camera = splitCameras[cell]
       const aspect = width / Math.max(1, height)
-      const { fov, distance } = fitCellFraming(player ? playerFov : OVERVIEW_FOV, aspect, framing)
       const kart = player ? getRaceKart(player.id) : null
+      const kick = kart && !reducedMotion ? getChaseFovKick(cell) : 0
+      const { fov, distance } = fitCellFraming(player ? playerFov + kick : OVERVIEW_FOV, aspect, framing)
       if (kart) writeKartChase(cell, kart, race, dt, reducedMotion, distance, camera.position, lookTarget)
       else if (player) writeChaseCamera(slots[cell], distance, camera.position, lookTarget)
       // Vue d'ensemble : une case plus haute que large recule d'autant pour montrer tout le circuit.

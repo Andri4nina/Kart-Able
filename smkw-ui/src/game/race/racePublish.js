@@ -1,16 +1,20 @@
-import { START_LIGHTS } from '../../config/race'
+import { START_COUNTDOWN } from '../../config/race'
 import { useRaceStore } from '../../stores/raceStore'
 import { useTelemetryStore } from '../../stores/telemetryStore'
 import { getDisplayedLap } from '../track/lapRules'
+import { getDraftLevel } from './kartDraft'
 import { getDriftGauge } from './kartDrift'
 import { getBestLap } from './raceProgress'
 import { RACE_PHASES } from './raceWorld'
-import { getLightsOn } from './startLights'
+import { getCountdown } from './startLights'
 
 // Publication de l'état de la course vers l'interface :
 // - télémétrie (vitesse, temps de chaque joueur) à chaque frame, sans allocation ;
 // - raceStore (phase, feux, classement, résultats) seulement quand une valeur change.
 const MS_TO_KMH = 3.6
+
+// Faux départ affiché tant que le moteur est calé.
+const isStalled = (kart) => kart.falseStart && kart.stall > 0
 
 function standingsChanged(standings, world) {
   for (const kart of world.humans) {
@@ -19,6 +23,7 @@ function standingsChanged(standings, world) {
     if (entry.lap !== getDisplayedLap(kart.progress, world.laps)) return true
     if (entry.item !== kart.item || entry.charges !== kart.itemCharges || entry.rolling !== kart.itemRoll > 0) return true
     if (entry.shield !== kart.shield > 0 || entry.lucky !== kart.itemLucky) return true
+    if (entry.wrongWay !== kart.wrongWay || entry.stalled !== isStalled(kart)) return true
   }
   return false
 }
@@ -38,6 +43,8 @@ function buildStandings(world) {
         rollTime: kart.itemRollTotal,
         lucky: kart.itemLucky,
         shield: kart.shield > 0,
+        wrongWay: kart.wrongWay,
+        stalled: isStalled(kart),
       },
     ]),
   )
@@ -67,18 +74,19 @@ export function publishRace(world) {
     entry.driftTier = kart.driftTier
     entry.driftGauge = kart.driftDir ? getDriftGauge(kart.driftCharge) : -1
     entry.boost = kart.boost
+    entry.draft = kart.drafting ? getDraftLevel(kart) : 0
   }
   telemetry.publish(Math.max(0, world.raceTime))
 
   const race = useRaceStore.getState()
-  const lightsOn = getLightsOn(world.start, world.time)
-  const go = world.phase === RACE_PHASES.RACING && world.raceTime < START_LIGHTS.goShown
+  const countdown = getCountdown(world.start, world.time)
+  const go = world.phase === RACE_PHASES.RACING && world.raceTime < START_COUNTDOWN.goShown
   const results = world.phase === RACE_PHASES.RESULTS && !race.results
   const standings = standingsChanged(race.standings, world)
-  if (race.phase === world.phase && race.lightsOn === lightsOn && race.go === go && !results && !standings) return
+  if (race.phase === world.phase && race.countdown === countdown && race.go === go && !results && !standings) return
   race.publish({
     phase: world.phase,
-    lightsOn,
+    countdown,
     go,
     total: world.karts.length,
     ...(standings ? { standings: buildStandings(world) } : null),

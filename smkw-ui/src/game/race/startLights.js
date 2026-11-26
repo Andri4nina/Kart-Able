@@ -1,23 +1,29 @@
-import { START_LIGHTS } from '../../config/race'
+import { START_COUNTDOWN } from '../../config/race'
 
-// Départ façon Formule 1 (calcul pur) : les feux s'allument un par un, puis s'éteignent tous
-// après un délai tiré au hasard, connu du jeu seulement : impossible d'anticiper le départ.
-export function createStartSequence(random) {
-  const lastLightAt = START_LIGHTS.firstAt + (START_LIGHTS.count - 1) * START_LIGHTS.interval
-  const hold = START_LIGHTS.holdMin + random() * (START_LIGHTS.holdMax - START_LIGHTS.holdMin)
-  return Object.freeze({ goAt: lastLightAt + hold })
+// Compte à rebours du départ (calcul pur) : « 3 » à START_COUNTDOWN.firstAt, puis un chiffre par
+// seconde ; le départ est donné à la fin du « 1 ».
+export function createStartSequence() {
+  return Object.freeze({ goAt: START_COUNTDOWN.firstAt + START_COUNTDOWN.count * START_COUNTDOWN.interval })
 }
 
-// Nombre de feux allumés à l'instant `time` (0 avant le premier et après l'extinction).
-export function getLightsOn(sequence, time) {
-  if (time < START_LIGHTS.firstAt || time >= sequence.goAt) return 0
-  return Math.min(START_LIGHTS.count, 1 + Math.floor((time - START_LIGHTS.firstAt) / START_LIGHTS.interval))
+// Chiffre affiché à l'instant `time` : 3, 2, 1 ; 0 avant le « 3 » et après le départ.
+export function getCountdown(sequence, time) {
+  if (time < START_COUNTDOWN.firstAt || time >= sequence.goAt) return 0
+  return START_COUNTDOWN.count - Math.floor((time - START_COUNTDOWN.firstAt) / START_COUNTDOWN.interval)
 }
 
-// Départ turbo : accélérer (nouvel appui) peu après l'extinction des feux. Un appui maintenu
-// pendant les feux ne compte pas : seul le réflexe est récompensé. Renvoie 1 si le départ
-// turbo est gagné (turbo `start` de config/kartTuning.js), 0 sinon.
-export function getStartBoost(raceTime, pressedNow, pressedBefore) {
-  if (!pressedNow || pressedBefore || raceTime < 0 || raceTime > START_LIGHTS.perfectWindow) return 0
-  return 1
+// Moment de l'appui sur l'accélérateur pendant le compte à rebours, retenu tant qu'il reste
+// enfoncé : chiffre affiché lors de l'appui (3, 2, 1), EARLY avant le « 3 », 0 relâché.
+export const EARLY = START_COUNTDOWN.count + 1
+
+export function trackStartPress(kart, sequence, time, pressedNow, pressedBefore) {
+  if (!pressedNow) kart.startPress = 0
+  else if (!pressedBefore) kart.startPress = getCountdown(sequence, time) || EARLY
+}
+
+// Au départ : 'boost' (appui pendant le « 3 », tenu), 'stall' (appui avant le « 3 », tenu), ou null.
+export function resolveStart(kart) {
+  if (kart.startPress === START_COUNTDOWN.boostOn) return 'boost'
+  if (kart.startPress === EARLY) return 'stall'
+  return null
 }

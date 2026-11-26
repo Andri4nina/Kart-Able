@@ -10,7 +10,7 @@ export function SettingsTabs({ tabs, activeId, onSelect }) {
   const onArrowKeys = useArrowNavigation()
 
   return (
-    <div role="tablist" aria-label={t('settings.title')} onKeyDown={onArrowKeys} className="grid grid-cols-4 gap-1 border-b border-white/10 p-2">
+    <div role="tablist" aria-label={t('settings.title')} onKeyDown={onArrowKeys} className="grid grid-cols-5 gap-1 border-b border-white/10 p-2">
       {tabs.map((tab) => {
         const active = tab.id === activeId
         const Icon = tab.icon

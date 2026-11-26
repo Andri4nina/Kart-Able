@@ -4,10 +4,11 @@ import { DRIFT } from '../../config/kartTuning'
 // le braquage par rapport au sens du drift (-1 extérieur .. 1 intérieur).
 
 export function chargeQuality(kart, controls) {
-  const inward = controls.steer * kart.driftDir // -1 extérieur .. 1 intérieur
-  const quality = inward >= 0
-    ? 1 + (DRIFT.chargeInside - 1) * inward
-    : 1 + (1 - DRIFT.chargeOutside) * inward
+  // Minuteur : plus rapide en braquant franchement vers l'intérieur (-1 extérieur .. 1 intérieur).
+  // Les pilotes ordinateur dosent leur trajectoire en braquant dehors : ils chargent comme en
+  // braquant dedans (sinon ils n'auraient presque jamais de mini-turbo).
+  const inward = controls.steer * kart.driftDir
+  const quality = kart.isBot || inward > DRIFT.chargeSteer ? DRIFT.chargeInside : 1
   const speedFactor = Math.min(1, kart.speed / (kart.stats.maxSpeed * 0.7))
   const surface = kart.offRoad && kart.stats.offRoad < 1 ? 0 : 1
   return quality * speedFactor * surface

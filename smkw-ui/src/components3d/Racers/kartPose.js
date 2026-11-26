@@ -1,5 +1,5 @@
 import { MathUtils } from 'three'
-import { SPINOUT } from '../../config/items'
+import { SHRINK, SPINOUT } from '../../config/items'
 import { DRIFT } from '../../config/kartTuning'
 import { RACE } from '../../config/race'
 
@@ -7,7 +7,7 @@ import { RACE } from '../../config/race'
 // - hauteur et tangage sur le relief ; saut du drift (parabole, écrasement à l'atterrissage),
 //   glisse du corps vers l'intérieur pendant le dérapage, selon le braquage ;
 // - roulis vers l'extérieur du virage, nez qui se lève sous turbo ;
-// - secousse après un choc, tête-à-queue (deux tours) après un objet, enfoncement dans l'eau ;
+// - taille réduite par l'orage ; secousse après un choc, tête-à-queue (deux tours) après un objet, enfoncement dans l'eau ;
 // - pilote : penché dans le virage, petite vibration moteur, gestes (driverRig) : volant,
 //   bras écartés sur un choc, bras levés à l'arrivée.
 // En mouvement réduit : ni secousse ni vibration (saut et glisse restent : c'est de l'information).
@@ -24,6 +24,9 @@ export function writeKartPose(kart, delta, reducedMotion, visual, { root, body, 
   visual.pitch = MathUtils.damp(visual.pitch, kart.airborne ? visual.pitch : -Math.atan(kart.slope), 10, delta)
   root.rotation.order = 'YXZ'
   root.rotation.set(visual.pitch, kart.yaw, 0)
+  // Orage : kart réduit (SHRINK.scale), il rapetisse et regrandit en douceur.
+  visual.size = MathUtils.damp(visual.size, kart.shrink > 0 ? SHRINK.scale : 1, 8, delta)
+  root.scale.setScalar(visual.size)
 
   const turning = kart.driftDir || kart.controls.steer
   const rate = reducedMotion ? 30 : DRIFT.slipRate

@@ -1,20 +1,36 @@
-// Objets et cases à objets : unique source de vérité (données seulement). Le comportement de
-// chaque objet est dans game/items/itemBehaviors.js (une entrée par objet : ajouter un objet ne
-// touche pas aux autres). Textes : items.<id>.name. Icône lucide : components (itemIcons.js).
+// Objets : unique source de vérité (données seulement). Comportement : game/items/itemBehaviors.js
+// (une entrée par `kind`) ; trajectoires : game/items/projectileMotion.js. Textes :
+// items.<id>.name. Icône lucide : components/ui/hud/itemIcons.js. Tirage et cases : itemOdds.js.
+// Mécaniques d'après le kart arcade de référence (version Wii), noms et visuels originaux.
 //
-// - kind      : 'boost' | 'trap' | 'projectile' | 'shield'
-// - charges   : utilisations par objet (triple nitro : 3)
-// - rarity    : indicatif (affichage, équilibrage)
-// - autres champs : réglages propres au comportement (durée, portée, vitesse...)
+// - kind    : 'boost' | 'goldBoost' | 'trap' | 'projectile' | 'shield' | 'overdrive' | 'storm'
+// - charges : utilisations par objet (triple nitro : 3)
+// - trail   : bouton maintenu = l'objet est tenu derrière le kart (il arrête un coup venu de
+//             derrière) ; relâché = posé (piège) ou lancé (projectile ; en freinant : vers l'arrière)
+// - mode    : trajectoire d'un projectile : 'straight' (tout droit, rebondit sur les bords),
+//             'homing' (suit la route puis fond sur le kart devant), 'leader' (vise le premier)
 export const ITEMS = Object.freeze({
-  nitro: { id: 'nitro', kind: 'boost', charges: 1, rarity: 'common', boost: 'item' },
-  tripleNitro: { id: 'tripleNitro', kind: 'boost', charges: 3, rarity: 'rare', boost: 'item' },
+  nitro: { id: 'nitro', kind: 'boost', charges: 1, boost: 'item' },
+  tripleNitro: { id: 'tripleNitro', kind: 'boost', charges: 3, boost: 'item' },
+  // Nitro d'or : turbos à volonté pendant `duration` s.
+  goldNitro: { id: 'goldNitro', kind: 'goldBoost', charges: 1, boost: 'item', duration: 7.5 },
   // Flaque posée derrière le kart : le premier qui roule dessus part en tête-à-queue.
-  oilSlick: { id: 'oilSlick', kind: 'trap', charges: 1, rarity: 'common', lifetime: 45, radius: 1.3, dropBack: 2.6 },
-  // Orbe lancé devant, qui suit la route et frappe le premier kart rencontré.
-  shockOrb: { id: 'shockOrb', kind: 'projectile', charges: 1, rarity: 'uncommon', speed: 58, lifetime: 6, radius: 1.4 },
+  oilSlick: { id: 'oilSlick', kind: 'trap', charges: 1, trail: true, lifetime: 45, radius: 1.3, dropBack: 2.6 },
+  // Fausse case : ressemble à une case à objets (point d'interrogation à l'envers).
+  fakeBox: { id: 'fakeBox', kind: 'trap', charges: 1, trail: true, lifetime: 60, radius: 1.2, dropBack: 2.6 },
+  // Orbe rebondissant : file tout droit, rebondit sur les bords de la route.
+  bounceOrb: { id: 'bounceOrb', kind: 'projectile', mode: 'straight', charges: 1, trail: true, speed: 50, lifetime: 9, radius: 1.1, color: '#2fd17a' },
+  // Orbe de choc : suit la route et fond sur le kart juste devant.
+  shockOrb: { id: 'shockOrb', kind: 'projectile', mode: 'homing', charges: 1, trail: true, speed: 58, lifetime: 7, radius: 1.3, color: '#ff4d5e' },
+  // Comète : vole au-dessus de la course jusqu'au premier et explose (souffle de `blast` m).
+  comet: { id: 'comet', kind: 'projectile', mode: 'leader', charges: 1, speed: 80, lifetime: 40, radius: 1.6, blast: 7, color: '#3b7bff' },
   // Bulle : absorbe le prochain coup, ou disparaît après sa durée.
-  bubble: { id: 'bubble', kind: 'shield', charges: 1, rarity: 'uncommon', duration: 12 },
+  bubble: { id: 'bubble', kind: 'shield', charges: 1, duration: 12 },
+  // Surcharge : invincible et plus rapide ; renverse les karts touchés.
+  overdrive: { id: 'overdrive', kind: 'overdrive', charges: 1, boost: 'overdrive', duration: 7 },
+  // Orage : tous les adversaires partent en tête-à-queue et rapetissent `shrink` s (plus lents,
+  // écrasés par les karts de taille normale).
+  storm: { id: 'storm', kind: 'storm', charges: 1, shrink: 5, spin: 0.7 },
 })
 
 export const ITEM_IDS = Object.freeze(Object.keys(ITEMS))
@@ -22,31 +38,7 @@ export const ITEM_IDS = Object.freeze(Object.keys(ITEMS))
 // Tête-à-queue (flaque, orbe) : perte de contrôle, ralentissement.
 export const SPINOUT = Object.freeze({ duration: 1.1, keepSpeed: 0.35 })
 
-// Distribution selon la place : poids par objet pour la tête, le milieu et la fin du peloton
-// (interpolés selon la place relative). Les premiers reçoivent surtout de quoi se défendre,
-// les derniers de quoi revenir, sans objet qui décide seul de la course.
-export const ITEM_DISTRIBUTION = Object.freeze({
-  front: { oilSlick: 45, bubble: 30, nitro: 20, shockOrb: 5, tripleNitro: 0 },
-  middle: { oilSlick: 25, bubble: 15, nitro: 25, shockOrb: 25, tripleNitro: 10 },
-  back: { oilSlick: 5, bubble: 10, nitro: 25, shockOrb: 25, tripleNitro: 35 },
-  // Case dorée : tirage généreux, quelle que soit la place.
-  lucky: { oilSlick: 0, bubble: 25, nitro: 10, shockOrb: 30, tripleNitro: 35 },
-})
+// Kart réduit (orage) : vitesse de pointe et taille.
+export const SHRINK = Object.freeze({ speed: 0.72, scale: 0.55, touch: 1.5 })
 
-// Cases à objets : rangées en travers de la route, aux fractions du tour indiquées (un circuit
-// peut fournir les siennes : config/tracks.js `itemRows`).
-// Dimensionné pour 32 karts : assez de rangées et une réapparition rapide pour que le fond du
-// peloton trouve encore des cases intactes.
-export const ITEM_BOXES = Object.freeze({
-  rows: [0.15, 0.42, 0.68, 0.88],
-  perRow: 6,
-  respawn: 1.1, // s avant réapparition
-  radius: 1.5, // distance de ramassage (m)
-  // Tirage à suspense : durée tirée au hasard à chaque case (la roulette ralentit jusqu'au
-  // résultat, voir components/ui/hud/ItemSlot.jsx).
-  roulette: { min: 1.1, max: 2.3 },
-  // Case dorée : à chaque réapparition, une case a cette chance de devenir dorée (tirage
-  // ITEM_DISTRIBUTION.lucky, roulette plus longue).
-  luckyChance: 0.12,
-  luckyRoulette: 0.6, // s ajoutées au tirage d'une case dorée
-})
+export { ITEM_BOXES, ITEM_DISTRIBUTION } from './itemOdds'

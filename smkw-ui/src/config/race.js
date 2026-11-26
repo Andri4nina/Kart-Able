@@ -39,15 +39,14 @@ export const TRACK_VOTE = Object.freeze({
   revealMs: 2200, // affichage du circuit élu avant le départ
 })
 
-// Feux de départ façon Formule 1 : cinq feux rouges s'allument un par un, puis s'éteignent
-// tous ensemble après un délai aléatoire : c'est le départ.
-export const START_LIGHTS = Object.freeze({
-  count: 5,
-  firstAt: 1.5, // s après l'arrivée sur la grille
-  interval: 1, // s entre deux feux
-  holdMin: 0.6, // délai aléatoire, feux tous allumés, avant l'extinction
-  holdMax: 2,
+// Compte à rebours 3, 2, 1, « Partez ! » (une seconde par chiffre), comme les jeux de kart de
+// salon. Départ turbo (BOOSTS.start) : appuyer sur l'accélérateur pendant le « 3 » et le tenir
+// jusqu'au départ. Appuyer avant le « 3 » (et tenir) : moteur calé (config/raceFeel.js
+// FALSE_START). Appuyer pendant le « 2 » ou le « 1 » : départ normal.
+export const START_COUNTDOWN = Object.freeze({
+  count: 3,
+  firstAt: 1.5, // s après l'arrivée sur la grille : « 3 »
+  interval: 1, // s par chiffre
+  boostOn: 3, // chiffre pendant lequel l'appui donne le départ turbo
   goShown: 1.2, // durée de l'affichage « Partez ! »
-  // Réaction : accélérer dans cet intervalle après l'extinction donne un départ turbo.
-  perfectWindow: 0.35, // turbo obtenu : BOOSTS.start (config/kartTuning.js)
 })

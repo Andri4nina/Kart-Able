@@ -12,8 +12,8 @@ const OVERTURN = 0.75 // braquage vers l'extérieur au-delà duquel le kart tour
 const OVERTURN_GRACE = 0.35 // s de survirage tolérées
 const TURN_IN = 0.35 // braquage vers l'intérieur nécessaire pour lancer le drift
 const MIN_SPEED = 0.62 // fraction de la vitesse max pour tenter un drift
-const MAX_HOLD = 3.2 // s au plus
-const PATIENCE = 1.3 // s : virage fini sans turbo, on garde encore le drift pour le palier bleu
+const MAX_HOLD = 4 // s au plus
+const PATIENCE = 2.4 // s : virage fini sans turbo, on garde encore le drift pour le palier bleu
 const EXPERT_SKILL = 0.93 // à partir de ce niveau, vise le palier orange
 
 export function applyBotDrift(kart, out, turnAhead, dt) {

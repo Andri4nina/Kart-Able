@@ -25,9 +25,30 @@ export function rollItem(position, total, roll, lucky = false) {
   return ids[0]
 }
 
-// Le kart peut-il prendre un objet ? (rien en main, aucun tirage en cours)
+// Champs « objets » d'un kart (game/race/raceKart.js) : objet en main et charges, tirage en
+// cours (durée, case dorée, résultat), bouton tenu, objet tenu derrière le kart (entité, ou
+// null), bulle, tête-à-queue, surcharge, rétrécissement, nitro d'or (s restantes).
+export function createItemFields() {
+  return {
+    item: null,
+    itemCharges: 0,
+    itemRoll: 0,
+    itemRollTotal: 0,
+    itemLucky: false,
+    itemPending: null,
+    itemHeld: false,
+    trailing: null,
+    shield: 0,
+    spin: 0,
+    overdrive: 0,
+    shrink: 0,
+    goldTime: 0,
+  }
+}
+
+// Le kart peut-il prendre un objet ? (rien en main ni tenu derrière, aucun tirage en cours)
 export function canReceiveItem(kart) {
-  return !kart.item && kart.itemRoll <= 0
+  return !kart.item && !kart.trailing && kart.itemRoll <= 0
 }
 
 export function giveItem(kart, itemId) {
@@ -38,9 +59,12 @@ export function giveItem(kart, itemId) {
 // Consomme une charge ; l'objet disparaît à la dernière.
 export function consumeCharge(kart) {
   kart.itemCharges -= 1
-  if (kart.itemCharges <= 0) {
-    kart.item = null
-    kart.itemCharges = 0
-    kart.itemLucky = false
-  }
+  if (kart.itemCharges <= 0) clearItem(kart)
+}
+
+export function clearItem(kart) {
+  kart.item = null
+  kart.itemCharges = 0
+  kart.itemLucky = false
+  kart.goldTime = 0
 }

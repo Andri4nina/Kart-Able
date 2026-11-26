@@ -40,7 +40,11 @@ export function writeChaseCamera(slot, distance, outPosition, outTarget) {
 // Sous le deltaplane, la caméra monte et recule un peu : l'aile ne cache pas la route.
 const HEIGHT_LAMBDA = 8
 const GLIDE_LIFT = 1.6
-const followers = Array.from({ length: 8 }, () => ({ race: null, yaw: 0, y: 0, lift: 0 }))
+// Sensation de vitesse : en turbo, le champ de vision s'ouvre de BOOST_FOV degrés et la caméra
+// recule un peu (jamais en mouvement réduit). Lu par SplitScreenRenderer (getChaseFovKick).
+const BOOST_FOV = 9
+const BOOST_LAMBDA = 4
+const followers = Array.from({ length: 8 }, () => ({ race: null, yaw: 0, y: 0, lift: 0, kick: 0 }))
 const pose = { x: 0, y: 0, z: 0, yaw: 0 }
 
 export function writeKartChase(cell, kart, race, delta, snap, distance, outPosition, outTarget) {
@@ -49,7 +53,9 @@ export function writeKartChase(cell, kart, race, delta, snap, distance, outPosit
     follower.race = race
     follower.yaw = kart.yaw
     follower.y = kart.y
+    follower.kick = 0
   } else {
+    follower.kick += ((kart.boost > 0 ? 1 : 0) - follower.kick) * (1 - Math.exp(-BOOST_LAMBDA * delta))
     follower.y += (kart.y - follower.y) * (1 - Math.exp(-HEIGHT_LAMBDA * delta))
     follower.lift += ((kart.gliding ? GLIDE_LIFT : 0) - follower.lift) * (1 - Math.exp(-3 * delta))
     const gap = kart.yaw - follower.yaw
@@ -59,9 +65,12 @@ export function writeKartChase(cell, kart, race, delta, snap, distance, outPosit
   pose.z = kart.z
   pose.y = follower.y
   pose.yaw = follower.yaw
-  writeChaseCamera(pose, distance * (1 + follower.lift * 0.15), outPosition, outTarget)
+  writeChaseCamera(pose, distance * (1 + follower.lift * 0.15 + follower.kick * 0.08), outPosition, outTarget)
   outPosition.y += follower.lift
 }
+
+// Ouverture du champ de vision (degrés) de la case `cell`, d'après son dernier suivi.
+export const getChaseFovKick = (cell) => followers[cell].kick * BOOST_FOV
 
 // Case sans joueur (ex. 3 joueurs en 2x2) : vue d'ensemble du circuit (ou de l'arène).
 export function writeOverviewCamera(distance, outPosition, outTarget, bounds) {

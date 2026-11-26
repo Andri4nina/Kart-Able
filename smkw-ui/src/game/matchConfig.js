@@ -1,5 +1,6 @@
 import { PLAY_TYPES } from '../config/gameModes'
 import { resolveCourse } from '../config/cups'
+import { DEFAULT_SPEED_CLASS, SPEED_CLASSES } from '../config/raceFeel'
 import { getTrack } from '../config/tracks'
 import { buildRaceBots } from './race/raceRoster'
 import { getGameMode, getPlayerLimit, NO_PICKS } from './matchRules'
@@ -39,6 +40,8 @@ export function buildMatchConfig(setup, localSlots = [], picks = NO_PICKS, seed 
     points: {},
     racesDone: 0,
     seed,
+    // Cylindrée (config/raceFeel.js), choisie dans les paramètres ; en réseau, celle de l'hôte.
+    speedClass: picks.speedClass in SPEED_CLASSES ? picks.speedClass : DEFAULT_SPEED_CLASS,
     players,
     bots: track ? buildRaceBots(mode, players, seed) : [],
     online: setup.playType === PLAY_TYPES.ONLINE ? { ...setup.online } : null,

@@ -176,6 +176,7 @@
     "soon": "This section is coming soon.",
     "tabs": {
       "language": "Language",
+      "race": "Race",
       "audio": "Audio",
       "graphics": "Graphics",
       "controls": "Controls"
@@ -225,6 +226,11 @@
         "cleared": "Key removed from \"{{action}}\".",
         "reset": "Default keys restored: {{profile}}."
       }
+    },
+    "race": {
+      "speedClass": "Engine class",
+      "speedClassHint": "Kart speed and computer driver skill. On LAN, the host's choice applies.",
+      "cc": "{{value}}cc"
     }
   },
   "language": {
@@ -254,7 +260,8 @@
     "overview": "Overview",
     "itemRolling": "Rolling",
     "itemCharges": "×{{count}}",
-    "luckyBox": "Golden box"
+    "luckyBox": "Golden box",
+    "draft": "Slipstream"
   },
   "input": {
     "keyboard1": "Keyboard 1",
@@ -414,8 +421,12 @@
     "summit": {
       "name": "Summit Cup"
     },
-    "frostbloom": "Frostbloom Cup",
-    "dustrail": "Dustrail Cup"
+    "frostbloom": {
+      "name": "Frostbloom Cup"
+    },
+    "dustrail": {
+      "name": "Dustrail Cup"
+    }
   },
   "tracks": {
     "kairosMeadow": {
@@ -545,8 +556,14 @@
   },
   "race": {
     "go": "Go!",
-    "lights": "Start lights: {{count}} of {{total}}",
-    "finished": "Finish"
+    "countdown": "Start in {{value}}",
+    "finished": "Finish",
+    "callout": {
+      "newLap": "Lap {{lap}}",
+      "finalLap": "Final lap!",
+      "wrongWay": "Wrong way",
+      "falseStart": "False start"
+    }
   },
   "items": {
     "nitro": {
@@ -563,6 +580,24 @@
     },
     "bubble": {
       "name": "Bubble"
+    },
+    "goldNitro": {
+      "name": "Golden nitro"
+    },
+    "fakeBox": {
+      "name": "Fake box"
+    },
+    "bounceOrb": {
+      "name": "Bounce orb"
+    },
+    "comet": {
+      "name": "Comet"
+    },
+    "overdrive": {
+      "name": "Overdrive"
+    },
+    "storm": {
+      "name": "Storm"
     }
   },
   "results": {

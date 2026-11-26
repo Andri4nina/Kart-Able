@@ -20,16 +20,45 @@ function hue(box, time, out, saturation, lightness) {
   else out.color.setHSL((time * 0.12 + box.x * 0.013 + box.z * 0.007) % 1, saturation, lightness)
 }
 
+// Verre : faces arc-en-ciel (itemResources.js) ; blanc (or pour une case dorée) par instance.
 export function writeGlass(box, time, out) {
   base(box, time, out)
   out.yaw = time * 1.1 + box.z
   out.tilt = TILT
-  hue(box, time, out, 1, 0.55)
+  out.color.set(box.lucky ? PALETTE.yellow : '#ffffff')
 }
 
 export function writeFrame(box, time, out) {
   writeGlass(box, time, out)
   hue(box, time + 0.8, out, 1, 0.72)
+}
+
+// Fausse case (piège posé, game/items) : même cube, teinte rouge-orangé, point d'interrogation
+// à l'envers. `box` est ici un piège ({ x, z, age, ttl, itemId }).
+const fake = { active: false, timer: 0, lucky: false, x: 0, z: 0 }
+function toFake(trap) {
+  fake.active = trap.ttl > 0 && trap.itemId === 'fakeBox'
+  fake.timer = fake.active ? 0 : 1
+  fake.x = trap.x
+  fake.z = trap.z
+  return fake
+}
+// Tenue derrière le kart : petite et basse (elle ne cache pas la route à la caméra).
+function held(trap, out) {
+  if (!trap.held) return
+  out.scale *= 0.32
+  out.y = 0.3
+}
+export function writeFakeGlass(trap, time, out) {
+  writeGlass(toFake(trap), time, out)
+  out.color.set('#ff8a6a')
+  held(trap, out)
+}
+export function writeFakeGlyph(trap, time, out) {
+  writeGlyph(toFake(trap), time, out)
+  out.tilt = Math.PI
+  out.color.set('#ffffff')
+  held(trap, out)
 }
 
 export function writeGlyph(box, time, out) {

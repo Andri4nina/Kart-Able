@@ -30,14 +30,15 @@ export const STAT_CURVES = Object.freeze({
   offRoad: 0.5,
 })
 
-// Dérapage manuel, même principe que les jeux de kart arcade de référence :
-// - appui sur Drift en roulant = petit saut ; tant que Drift reste enfoncé, le dérapage part
-//   dès qu'on braque (pendant le saut ou après l'atterrissage), dans ce sens, qui ne change
-//   plus ensuite ; relâcher sans avoir braqué = simple saut ;
+// Dérapage manuel, d'après le kart arcade de référence sur console de salon (version Wii, telle
+// que la décrivent les wikis de la communauté) :
+// - appui sur Drift en roulant = petit saut ; le sens braqué pendant le saut (ou à l'atterrissage,
+//   Drift toujours tenu) fixe le dérapage, qui ne change plus ; sans braquer = simple saut ;
 // - le kart tourne toujours vers l'intérieur : braquer dedans resserre, dehors élargit ;
-// - trois paliers d'étincelles, bleu, orange puis violet (ultra mini-turbo) ; braquer vers
-//   l'intérieur charge plus vite, vers l'extérieur plus lentement ; relâcher Drift déclenche
-//   le turbo du palier atteint. Hors-piste, la jauge ne charge pas.
+// - la charge est un minuteur : 1 unité par seconde, x chargeInside en braquant franchement
+//   vers l'intérieur. Mini-turbo (étincelles bleues) à 2,27 unités (~0,9 s braqué dedans,
+//   ~2,3 s sinon), super mini-turbo (orange) 2,52 unités plus loin, trois fois plus long ;
+// - relâcher Drift déclenche le turbo du palier atteint. Hors-piste, la jauge ne charge pas.
 export const DRIFT = Object.freeze({
   hopTime: 0.22, // durée du saut (s)
   hopHeight: 0.38, // hauteur du saut (affichage)
@@ -46,25 +47,24 @@ export const DRIFT = Object.freeze({
   minSpeed: 0.4, // fraction de la vitesse max pour lancer / garder (cancelSpeed) un drift
   cancelSpeed: 0.28,
   // Rotation : toujours vers l'intérieur, serrée (inside) ou large (outside) selon le braquage,
-  // en fraction du braquage normal à pleine vitesse (turnRate * fullSpeedTurn). Le drift
-  // neutre tourne déjà plus serré que le braquage normal à pleine vitesse (x 0,75).
+  // en fraction du braquage normal à pleine vitesse (turnRate * fullSpeedTurn).
   fullSpeedTurn: 0.8,
   turnInside: 1.95,
   turnOutside: 0.32,
   turnNeutral: 1.25,
-  // Qualité de charge : braquage extérieur .. neutre .. intérieur.
-  chargeOutside: 0.45,
-  chargeInside: 1.5,
+  // Charge : braquage vers l'intérieur au-delà de `chargeSteer` = x chargeInside (5 unités par
+  // image au lieu de 2 dans la référence), sinon x 1 (neutre ou extérieur).
+  chargeSteer: 0.3,
+  chargeInside: 2.5,
   // Angle visuel de glisse du kart (rad) : plus marqué en braquant dedans, moins dehors.
   slipAngle: 0.62,
   slipInside: 0.85,
   slipOutside: 0.4,
   slipRate: 7,
-  // Paliers : charge à atteindre (s pondérées) et turbo obtenu. Bleu, orange, puis violet.
+  // Paliers : charge à atteindre et turbo obtenu. Bleu (mini-turbo), orange (super mini-turbo).
   tiers: Object.freeze([
-    { charge: 0.7, boost: 'miniTurbo1' },
-    { charge: 1.6, boost: 'miniTurbo2' },
-    { charge: 2.7, boost: 'miniTurbo3' },
+    { charge: 2.27, boost: 'miniTurbo1' },
+    { charge: 4.79, boost: 'miniTurbo2' },
   ]),
 })
 
@@ -73,9 +73,9 @@ export const DRIFT = Object.freeze({
 // faible prolonge seulement la durée restante, jusqu'à `maxStack` secondes. Jamais de cumul
 // des multiplicateurs.
 export const BOOSTS = Object.freeze({
-  miniTurbo1: { duration: 0.7, speed: 1.24, accel: 2.5, effect: 'blue' },
-  miniTurbo2: { duration: 1.35, speed: 1.3, accel: 2.8, effect: 'orange' },
-  miniTurbo3: { duration: 2, speed: 1.34, accel: 3.1, effect: 'purple' },
+  // Mini-turbo et super mini-turbo : même poussée, le super dure trois fois plus longtemps.
+  miniTurbo1: { duration: 0.8, speed: 1.27, accel: 2.8, effect: 'blue' },
+  miniTurbo2: { duration: 2.4, speed: 1.27, accel: 2.8, effect: 'orange' },
   // Figure réussie : petit turbo à l'atterrissage.
   trick: { duration: 0.75, speed: 1.26, accel: 2.8, effect: 'blue' },
   start: { duration: 0.9, speed: 1.28, accel: 3, effect: 'orange' },
@@ -83,6 +83,10 @@ export const BOOSTS = Object.freeze({
   item: { duration: 1.5, speed: 1.36, accel: 3.4, effect: 'nitro' },
   // Pad d'accélération posé sur la route (config/tracks.js `pads`).
   pad: { duration: 0.85, speed: 1.3, accel: 3.2, effect: 'nitro' },
+  // Surcharge (objet) : invincible, plus rapide, sans pénalité hors-piste.
+  overdrive: { duration: 7, speed: 1.2, accel: 3, effect: 'nitro' },
+  // Aspiration (config/raceFeel.js DRAFT) : sortie du sillage en trombe.
+  draft: { duration: 1.3, speed: 1.24, accel: 2.6, effect: 'blue' },
 })
 export const BOOST_MAX_STACK = 2.4
 export const OVER_SPEED_DRAG = 22 // m/s² pour revenir à la vitesse max (fin de turbo, hors-piste)
