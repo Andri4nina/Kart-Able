@@ -1,25 +1,20 @@
 # smkw-api
 
-Serveur de jeu autoritaire de Kart Able (code SMKW), en **Rust**. **Squelette seulement** : le multijoueur arrive dans sa propre phase.
-
-## Pourquoi Rust
-
-- Binaire unique, léger (quelques Mo, peu de mémoire) : facile à déployer sur un petit VPS ou Fly.io.
-- Simulation à pas fixe (1/120 s) rapide et prévisible, sans pause de ramasse-miettes.
-- Les règles de course du client (`smkw-ui/src/game/race`, calcul pur sans React ni Three) seront portées telles quelles, avec les mêmes réglages (`config/kartTuning.js`), pour que la prédiction client reste cohérente.
-
-## Pile prévue (ajoutée à la phase multijoueur, pas avant)
-
-- `tokio` (runtime), `axum` (HTTP + WebSocket), `serde` / `serde_json` (messages), `tracing` (journaux)
-- PostgreSQL uniquement pour les comptes et la progression (plus tard)
+Serveur de jeu de Kart Able (code SMKW), en **Rust** : salons du réseau local (LAN), relais WebSocket des messages de jeu, et jeu web servi à la racine. Utilisé seul (binaire) ou embarqué dans l'application de bureau (`smkw-desktop`).
 
 ## Commandes
 
 ```
-cargo run              # lance le squelette (affiche la configuration)
+cargo run              # port 2567, jeu web depuis ../smkw-ui/dist s'il est compilé
 cargo build --release  # binaire optimisé
 ```
 
-Variables : `SMKW_PORT` (2567 par défaut).
+Variables : `SMKW_PORT` (2567), `SMKW_WEB_DIR` (dossier du jeu compilé).
 
-Structure cible : voir [docs/ARCHITECTURE.md](../docs/ARCHITECTURE.md). Règles : [docs/REGLES_D_OR.md](../docs/REGLES_D_OR.md).
+## Routes
+
+- `GET /ws` : WebSocket des salons (messages JSON, voir `src/protocol.rs`) ;
+- `GET /api/info` : version et adresse sur le réseau local ;
+- le reste : fichiers du jeu web (repli sur `index.html`).
+
+Les autres machines du réseau ouvrent `http://<adresse-de-l-hote>:2567` dans leur navigateur. Docker : `Dockerfile` (à construire depuis la racine du dépôt). Détails : [docs/elements/lan-multiplayer.md](../docs/elements/lan-multiplayer.md), [docs/HOSTING.md](../docs/HOSTING.md).

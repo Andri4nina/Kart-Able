@@ -1,10 +1,10 @@
 import { CircleCheck, Lock, Play } from 'lucide-react'
-import { startMatch } from '../../game/session'
+import { startLanMatch } from '../../game/lobbyReady'
 import { useTranslation } from '../../i18n/useTranslation'
 import { Button } from '../ui/Button'
 
 const BLOCKER_KEYS = {
-  serverRequired: 'lobby.startOnlineBlocked',
+  serverRequired: 'lan.lobby.noRoom',
   charactersPending: 'lobby.charactersPending',
   duplicateCharacters: 'lobby.duplicateCharacters',
   vehiclesPending: 'lobby.vehiclesPending',
@@ -12,15 +12,19 @@ const BLOCKER_KEYS = {
   noPlayers: 'lobby.noPlayers',
 }
 
-// Pied du lobby : raison du blocage, ou joueurs pas encore prêts (local). En ligne, le bouton
-// Lancer reste affiché, désactivé tant que smkw-api n'existe pas.
-export function LobbyFooter({ blocker, unready, isOnline }) {
+// Pied du lobby : raison du blocage, ou joueurs pas encore prêts. Réseau local : l'hôte lance
+// la partie quand tout le salon est prêt ; les autres machines attendent l'hôte.
+function lobbyStatus(t, { blocker, unready, isOnline, isHost, roomReady }) {
+  if (blocker) return t(BLOCKER_KEYS[blocker] ?? 'common.unavailable')
+  if (unready > 0) return t('lobby.readyPending', { count: unready })
+  if (!isOnline) return t('lobby.allReady')
+  if (!roomReady) return t('lan.lobby.waitingOthers')
+  return isHost ? t('lan.lobby.hostCanStart') : t('lan.lobby.waitingHost')
+}
+
+export function LobbyFooter({ blocker, unready, isOnline, isHost = false, roomReady = false }) {
   const { t } = useTranslation()
-  const status = blocker
-    ? t(BLOCKER_KEYS[blocker] ?? 'common.unavailable')
-    : unready > 0
-      ? t('lobby.readyPending', { count: unready })
-      : t('lobby.allReady')
+  const status = lobbyStatus(t, { blocker, unready, isOnline, isHost, roomReady })
   const Icon = blocker ? Lock : CircleCheck
 
   return (
@@ -29,8 +33,8 @@ export function LobbyFooter({ blocker, unready, isOnline }) {
         <Icon aria-hidden="true" className="size-4 text-brand-yellow" strokeWidth={2.75} />
         {status}
       </p>
-      {isOnline ? (
-        <Button id="lobby-start-btn" icon={Play} showArrow disabled={Boolean(blocker)} onClick={startMatch}>
+      {isOnline && isHost ? (
+        <Button id="lobby-start-btn" icon={Play} showArrow disabled={Boolean(blocker) || !roomReady} onClick={startLanMatch}>
           {t('common.start')}
         </Button>
       ) : null}

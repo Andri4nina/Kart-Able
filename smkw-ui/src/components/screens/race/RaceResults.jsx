@@ -2,7 +2,7 @@ import { Flag, Trophy } from 'lucide-react'
 import { motion } from 'motion/react'
 import { pageItem, pageList } from '../../../animations/variants'
 import { formatRaceTime } from '../../../game/format'
-import { continueAfterResults } from '../../../game/raceFlow'
+import { continueAfterResults, isNetGuest } from '../../../game/raceFlow'
 import { getStandings, hasNextRace } from '../../../game/raceSequence'
 import { useTranslation } from '../../../i18n/useTranslation'
 import { useRaceStore } from '../../../stores/raceStore'
@@ -71,9 +71,13 @@ export function RaceResults() {
       </motion.ol>
       <motion.footer variants={pageItem} className="flex flex-wrap items-center justify-between gap-3 pt-1">
         <p className="text-xs font-bold uppercase tracking-widest text-white/60">{t('results.hint')}</p>
-        <Button id="results-continue-btn" size="md" showArrow onClick={continueAfterResults}>
-          {next ? t('results.nextRace') : t('results.vote')}
-        </Button>
+        {isNetGuest() ? (
+          <p className="bg-white/10 px-3 py-2 text-xs font-bold uppercase tracking-widest">{t('lan.lobby.waitingHost')}</p>
+        ) : (
+          <Button id="results-continue-btn" size="md" showArrow onClick={continueAfterResults}>
+            {next ? t('results.nextRace') : t('results.vote')}
+          </Button>
+        )}
       </motion.footer>
     </motion.div>
   )

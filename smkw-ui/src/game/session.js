@@ -9,6 +9,7 @@ import { useCourseStore } from '../stores/courseStore'
 import { useVehicleSelectionStore } from '../stores/vehicleSelectionStore'
 import { buildMatchConfig } from './matchConfig'
 import { getStartBlocker } from './matchRules'
+import { disconnect } from '../net/lanSession'
 import { resetRaceFlow } from './raceFlow'
 import { startRace, stopRace } from './race/raceSession'
 
@@ -41,6 +42,7 @@ export function startMatch() {
 
 // Les joueurs locaux restent inscrits : une nouvelle partie les retrouve prêts.
 export function exitMatch() {
+  if (useSessionStore.getState().match?.net) disconnect()
   usePauseStore.getState().reset()
   resetRaceFlow()
   stopRace()

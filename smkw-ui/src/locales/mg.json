@@ -116,8 +116,8 @@
       "description": "Amin'ity fitaovana ity, efijery zaraina, fitendry sy manette."
     },
     "online": {
-      "name": "An-tserasera",
-      "description": "Mifanandrina amin'ny mpilalao mifandray, na aiza na aiza misy azy."
+      "name": "Tambajotra eo an-toerana",
+      "description": "Amin'ny milina maromaro amin'ny tambajotra iray (Wi-Fi, tariby) : rindrambaiko napetraka sy mpitety tranonkala miaraka."
     }
   },
   "local": {
@@ -134,25 +134,10 @@
     "howToJoin": "Ahoana no hidirana"
   },
   "online": {
-    "title": "Lalao an-tserasera",
-    "subtitle": "Mamorona lalao na midira amin'ny an'ny namana.",
-    "offline": "Mbola tsy mifandray ny mpizara: topimaso ny endrika ihany ity.",
-    "create": {
-      "name": "Hamorona lalao",
-      "description": "Ho mpampiantrano ianao ary manasa ny namanao amin'ny kaody.",
-      "submit": "Mamorona"
-    },
     "join": {
-      "name": "Hiditra amin'ny lalao",
-      "description": "Ampidiro ny kaody misy tarehintsoratra 6 avy amin'ny mpampiantrano.",
       "codeLabel": "Kaodin'ny lalao",
       "placeholder": "ABC123",
-      "submit": "Hiditra",
-      "invalid": "Tsy maintsy litera na isa 6 ny kaody."
-    },
-    "matchmaking": {
-      "name": "Matchmaking",
-      "description": "Mitady mpifanandrina ho azy."
+      "submit": "Hiditra"
     }
   },
   "lobby": {
@@ -160,16 +145,12 @@
     "mode": "Fomba",
     "type": "Karazana",
     "players": "Mpilalao",
-    "host": "Mpampiantrano",
-    "guest": "Vahiny",
-    "you": "Ianao",
     "code": "Kaodin'ny lalao",
     "codePending": "Omena rehefa mifandray amin'ny mpizara",
     "freeSlots": {
       "one": "Toerana malalaka {{count}}",
       "other": "Toerana malalaka {{count}}"
     },
-    "startOnlineBlocked": "Ilaina ny mpizara vao afaka manomboka lalao an-tserasera.",
     "waiting": "Miandry mpilalao",
     "charactersPending": "Tsy maintsy manamafy ny mpitondrany ny mpilalao rehetra.",
     "noPlayers": "Tsy misy mpilalao niditra.",
@@ -608,5 +589,46 @@
     "chooseCup": "Misafidiana amboara",
     "changeHint": "Ajanona ny hazakazaka ankehitriny, tsy misy isa.",
     "hint": "Ambony / ambany · A : manamarina · RETOUR : miverina · START : manohy"
+  },
+  "lan": {
+    "title": "Tambajotra eo an-toerana",
+    "subtitle": "Milalao miaraka amin'ireo milina hafa amin'ny tambajotra iray ihany : rindrambaiko napetraka na mpitety tranonkala.",
+    "howTo": "Ny mpampiantrano no mandefa ny rindrambaiko Kart Able napetraka (na ny mpizara smkw-api). Ny hafa manokatra ny adiresy asehon'ny mpampiantrano ao amin'ny mpitety tranonkala, na manoratra izany eto ambany.",
+    "server": {
+      "title": "Mpizara lalao",
+      "help": "Banga : ilay mpizara nanokatra ity pejy ity. Raha tsy izany, ny adiresin'ny mpampiantrano, ohatra 192.168.1.20:2567.",
+      "addressLabel": "Adiresin'ny mpizara",
+      "placeholder": "192.168.1.20:2567",
+      "connect": "Hifandray"
+    },
+    "status": {
+      "idle": "Tsy mifandray",
+      "connecting": "Mifandray…",
+      "connected": "Mifandray",
+      "error": "Tsy misy fifandraisana"
+    },
+    "errors": {
+      "roomClosed": "nakaton'ny mpampiantrano ny efitrano",
+      "connectionLost": "tapaka ny fifandraisana",
+      "serverNotFound": "tsy misy mpizara amin’io adiresy io",
+      "roomNotFound": "tsy hita ny efitrano",
+      "roomFull": "feno ny efitrano",
+      "badMessage": "hafatra nolavina"
+    },
+    "rooms": {
+      "title": "Efitrano",
+      "refresh": "Havaozina",
+      "create": "Hamorona efitrano",
+      "join": "Hiditra",
+      "empty": "Tsy misy efitrano misokatra : mamorona ny anao, na angataho amin'ny mpampiantrano ny kaody."
+    },
+    "lobby": {
+      "notReady": "tsy vonona",
+      "noRoom": "Midira aloha amin'ny efitrano iray (dingana Fifandraisana).",
+      "waitingOthers": "Miandry ireo mpilalao amin'ny milina hafa.",
+      "hostCanStart": "Vonona daholo ny efitrano : atombohy ny lalao.",
+      "waitingHost": "Miandry ny mpampiantrano.",
+      "invite": "Ireo mpilalao hafa ao amin'ny tambajotra dia manokatra http://{{address}} ary miditra ao amin'ny efitrano {{code}}."
+    }
   }
 }

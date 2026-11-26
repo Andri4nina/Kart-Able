@@ -23,6 +23,9 @@ export function createRaceKart(racer, slot, geometry, { device, random }) {
   const kart = {
     id: racer.id,
     isBot: racer.isBot,
+    // Piloté par une autre machine (réseau local) : état reçu dans `net` (remoteKart.js).
+    remote: Boolean(racer.remote),
+    net: null,
     playerIndex: racer.isBot ? null : racer.index,
     characterId: racer.characterId,
     vehicleId: racer.vehicleId,

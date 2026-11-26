@@ -40,8 +40,13 @@ const rosters = new WeakMap()
 export function getRaceRoster(match) {
   if (!match) return []
   if (!rosters.has(match)) {
-    const bots = (match.bots ?? []).map((bot) => Object.freeze({ ...bot, isBot: true }))
-    const humans = match.players.map((player) => Object.freeze({ ...player, isBot: false }))
+    // Réseau local : les joueurs des autres machines (remotes) et, chez un invité, les pilotes
+    // ordinateur (simulés par l'hôte) sont des karts distants.
+    const guest = Boolean(match.net && !match.net.host)
+    const bots = (match.bots ?? []).map((bot) => Object.freeze({ ...bot, isBot: true, remote: guest }))
+    const humans = [...match.players, ...(match.remotes ?? [])]
+      .sort((a, b) => a.index - b.index)
+      .map((player) => Object.freeze({ ...player, isBot: false, remote: (match.remotes ?? []).includes(player) }))
     rosters.set(match, Object.freeze([...bots, ...humans]))
   }
   return rosters.get(match)

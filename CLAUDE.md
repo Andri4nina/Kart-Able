@@ -3,7 +3,9 @@
 Jeu de course de kart 3D multijoueur pour le web, **Kart Able**, inspiré des jeux de kart arcade, avec sa propre identité visuelle. « SMKW » reste le nom de code (dossiers `smkw-ui`, `smkw-api`, clés de stockage).
 
 - `smkw-ui/` : frontend (React, Vite, React Three Fiber, Drei, Tailwind CSS, Motion, Zustand, lucide-react)
-- `smkw-api/` : backend (Rust, squelette léger), prévu pour la phase multijoueur
+- `smkw-api/` : backend Rust (axum) : salons du réseau local, relais WebSocket, sert le jeu web
+- `smkw-desktop/` : application de bureau (Tauri 2) qui embarque le jeu et le serveur ; installateurs par GitHub Actions
+- Hébergement, SEO, installateurs : [docs/HOSTING.md](docs/HOSTING.md)
 
 ## À lire avant toute modification
 

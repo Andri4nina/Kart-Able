@@ -1,0 +1,13 @@
+{
+  "name": "kart-able-desktop",
+  "private": true,
+  "version": "0.3.0",
+  "description": "Kart Able, application de bureau (Tauri) : jeu + serveur de reseau local",
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2"
+  }
+}

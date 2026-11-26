@@ -34,7 +34,9 @@ export const SCREEN_META = Object.freeze({
 // pour les modes qui se courent sur un circuit (config/gameModes.js, `tracks`).
 export const MENU_FLOWS = Object.freeze({
   local: Object.freeze(['mode', 'type', 'players', 'characters', 'vehicles', 'tracks', 'lobby']),
-  online: Object.freeze(['mode', 'type', 'connection', 'lobby']),
+  // Réseau local : salon, puis les joueurs de cette machine choisissent comme en local (les
+  // circuits : l'hôte seulement), puis le lobby commun.
+  online: Object.freeze(['mode', 'type', 'connection', 'players', 'characters', 'vehicles', 'tracks', 'lobby']),
 })
 
 export function getMenuFlow(playType, usesTracks = true) {

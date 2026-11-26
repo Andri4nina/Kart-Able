@@ -2,7 +2,7 @@ import { CUP_IDS, getCup } from '../config/cups'
 import { INPUT_ACTIONS } from '../input/actions'
 import { usePauseStore } from '../stores/pauseStore'
 import { useRaceStore } from '../stores/raceStore'
-import { changeTrack } from './raceFlow'
+import { changeTrack, isNetGuest } from './raceFlow'
 import { exitMatch } from './session'
 
 // Menu pause en course : START (n'importe quel joueur) ou Échap l'ouvre et le ferme.
@@ -33,7 +33,7 @@ export function togglePause() {
 export function getPauseItems({ view, cupId }) {
   if (view === 'cups') return CUP_IDS
   if (view === 'tracks') return getCup(cupId)?.trackIds ?? []
-  return PAUSE_OPTIONS
+  return isNetGuest() ? PAUSE_OPTIONS.filter((option) => option !== 'changeTrack') : PAUSE_OPTIONS
 }
 
 export function choosePauseItem(item) {

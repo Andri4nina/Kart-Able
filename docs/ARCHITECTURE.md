@@ -10,7 +10,8 @@ Règles non négociables : [REGLES_D_OR.md](REGLES_D_OR.md).
 ```
 super mario kart web/
 ├── smkw-ui/     Frontend (jeu, UI, rendu 3D)
-├── smkw-api/    Backend (serveur de jeu autoritaire) — à partir de la phase multijoueur
+├── smkw-api/    Backend Rust : salons LAN, relais WebSocket, jeu web servi (phase 3A)
+├── smkw-desktop/ Application de bureau Tauri (jeu + serveur embarqué), installateurs
 ├── docs/        Règles, architecture, fiches par élément et par phase
 ├── CLAUDE.md    Consignes pour les agents
 └── progress.md  Journal de progression (workflow develop-web-game)
@@ -20,7 +21,8 @@ super mario kart web/
 | --- | --- | --- |
 | Frontend `smkw-ui` | React, Vite, React Three Fiber, Three.js, Drei, Tailwind CSS, Motion, Zustand, lucide-react | Rendu 3D, UI, entrées joueur, prédiction client |
 | Physique | Maison, calcul pur (`game/race`) | Conduite arcade, drift, turbo, chocs en capsules ; réglages dans `config/kartTuning.js` (portable tel quel côté serveur) |
-| Backend `smkw-api` (phase multi) | Rust (tokio, axum, WebSocket) | Serveur autoritaire léger : rooms, simulation à pas fixe, synchronisation d'état. Squelette seulement aujourd'hui |
+| Backend `smkw-api` | Rust (tokio, axum, WebSocket) | Salons et relais des messages ; la machine hôte fait autorité sur la course (voir elements/lan-multiplayer.md) |
+| Bureau `smkw-desktop` | Tauri 2 (Rust) | Fenêtre native sur le serveur embarqué ; installateurs Windows, macOS, Linux |
 | Données (plus tard) | PostgreSQL | Uniquement comptes et progression |
 | Déploiement | Vercel (front), VPS / Railway / Fly.io (game server) | |
 
@@ -200,10 +202,10 @@ src/
 ├── components3d/Kart/, Track/, Items/
 ├── game/physics/, kart/, race/, battle/, rocketGol/, items/, camera/
 ├── input/                  + navigation des menus à la manette, remappage des touches
-└── net/                    client WebSocket vers smkw-api (création / connexion aux rooms, matchmaking)
+└── net/                    réseau local : client WebSocket, salon, partie de l'hôte, états des karts (voir elements/lan-multiplayer.md)
 ```
 
-`smkw-api/` (Rust, phase multijoueur) : `src/rooms/` (une room par mode), `src/protocol/` (messages serde), `src/simulation/` (portage de `game/race`), `src/matchmaking/`. Aujourd'hui : `src/main.rs` et `src/config.rs` seulement.
+`smkw-api/` (Rust) : `src/lib.rs` (routeur : /ws, /api/info, jeu web), `src/rooms.rs` (salons), `src/protocol.rs` (messages serde), `src/socket.rs` (connexion), `src/config.rs`, `src/main.rs` (binaire). `smkw-desktop/` l'utilise comme bibliothèque.
 
 ---
 
@@ -220,7 +222,7 @@ src/
 | Nouveau véhicule | GLB dans `assets/models` + entrée dans `VEHICLES` et `vehicleAssets.js` + `vehicles.<id>.name` dans chaque locale |
 | Nouvelle sélection (roues, ailes...) | `createSelectionStore` + `createSelectionController` + `SelectionScreen` (voir [elements/selection-system.md](elements/selection-system.md)) |
 | Commandes du kart | Les actions de course existent déjà (assignables) : un contrôleur `game/kart/` abonné via `subscribeToInput` les lit |
-| Réseau | `net/` : `hostOnlineMatch` / `joinOnlineMatch` deviennent des messages WebSocket vers smkw-api (Rust) ; `getStartBlocker` lève `serverRequired` une fois connecté |
+| Réseau | `net/` (lanSession, netMatch, netRace) et `smkw-api/src/protocol.rs` : nouveau message de jeu = un `kind` relayé (`relay`), le serveur ne l'interprète pas |
 | Gameplay d'un mode | Lire `sessionStore.match` (modeId, playType, players) au démarrage de la scène de course |
 | Réglage de conduite (drift, turbo, chocs, stats) | `config/kartTuning.js` uniquement ; le contrôleur (`game/race/kartPhysics.js`, `kartDrift.js`, `kartBoost.js`, `kartCollisions.js`) ne contient aucune valeur (voir [elements/kart-driving.md](elements/kart-driving.md)) |
 | Réglage en l'air (relief, figures, deltaplane) | `config/airTuning.js` ; rampes et brèches dans `config/tracks.js` (`ramps`, `gliders`) (voir [elements/jumps-gliders.md](elements/jumps-gliders.md)) |

@@ -22,7 +22,8 @@ export function beginVehicleSelect() {
 
 export function continueFromVehicleSelect() {
   if (!areAllConfirmed(currentPlayerIds(), useVehicleSelectionStore.getState().selections)) return false
-  if (modeUsesTracks(useMatchSetupStore.getState().modeId)) {
+  const setup = useMatchSetupStore.getState()
+  if (modeUsesTracks(setup.modeId) && setup.online.role !== 'guest') {
     beginTrackSelect()
     useNavigationStore.getState().navigate(SCREENS.TRACK_SELECT)
   } else {

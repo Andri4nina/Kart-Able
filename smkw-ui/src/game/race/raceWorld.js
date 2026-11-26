@@ -4,18 +4,13 @@ import { getTrackGeometry } from '../track/trackGeometry'
 import { getStartSlot } from '../track/trackLayout'
 import { createItemState, updateItems } from '../items/itemSystem'
 import { resolveKartCollisions } from './kartCollisions'
-import { stepKartPhysics } from './kartPhysics'
 import { chooseControls } from './raceControls'
-import { updateTrackFeatures } from './kartFeatures'
 import { createRaceKart } from './raceKart'
-import { placeOnGround, updateKartVertical } from './kartVertical'
+import { moveKart } from './kartMove'
 import { updatePace } from './racePace'
-import { updateProgress, updateRanking } from './raceProgress'
+import { updateRanking } from './raceProgress'
 import { getRaceRoster } from './raceRoster'
 import { createStartSequence } from './startLights'
-import { applyFence, isInWater, respawnOnTrack, updateTrackIndex } from './trackTracking'
-
-const GAP_WATER = -0.6 // hauteur sous laquelle un kart tombé dans une brèche coule
 
 // Monde d'une course (calcul pur, sans React ni Three) : départ, conduite, chocs, tours,
 // classement, fin. `raceTime` est négatif pendant les feux, 0 à leur extinction.
@@ -29,13 +24,15 @@ export function createRaceWorld(match, seed, resolveDevice) {
   )
   const world = {
     geometry,
+    // Réseau local : { hostId, clientId, host } (net/netMatch.js), sinon null.
+    net: match.net ?? null,
     laps: match.laps,
     seed,
     random,
     dt: 0,
     items: createItemState(geometry, random),
     karts,
-    humans: karts.filter((kart) => !kart.isBot),
+    humans: karts.filter((kart) => !kart.isBot && !kart.remote),
     kartsById: new Map(karts.map((kart) => [kart.id, kart])),
     ranking: [...karts],
     start: createStartSequence(random),
@@ -50,33 +47,6 @@ export function createRaceWorld(match, seed, resolveDevice) {
   return world
 }
 
-function moveKart(world, kart, dt) {
-  const { path, track, gaps } = world.geometry
-  if (kart.sinking > 0) {
-    kart.sinking = Math.max(0, kart.sinking - dt)
-    if (kart.sinking === 0) {
-      respawnOnTrack(path, kart, gaps)
-      placeOnGround(kart, world.geometry)
-    }
-    return
-  }
-  const fromX = kart.x
-  const fromZ = kart.z
-  stepKartPhysics(kart, kart.controls, dt)
-  updateKartVertical(kart, world.geometry, dt)
-  updateTrackIndex(path, kart)
-  applyFence(world.geometry, kart)
-  updateTrackFeatures(world.geometry, kart, dt)
-  // Dans l'eau : hors de la route sur un lac (au sol), ou tombé dans une brèche du deltaplane.
-  const fell = gaps[kart.trackIndex] && kart.y < GAP_WATER
-  if (fell || (kart.offRoad && !kart.airborne && isInWater(track.lakes, kart.x, kart.z))) {
-    kart.sinking = RACE.respawnDelay
-    kart.vx = 0
-    kart.vz = 0
-    kart.speed = 0
-  }
-  if (!kart.finished) updateProgress(kart, world, fromX, fromZ)
-}
 
 function updateEnd(world) {
   if (world.phase !== RACE_PHASES.RACING) return
@@ -91,7 +61,7 @@ export function stepRaceWorld(world, delta, readControls) {
   world.dt = delta
   world.raceTime = world.time - world.start.goAt
   if (world.phase === RACE_PHASES.COUNTDOWN && world.raceTime >= 0) world.phase = RACE_PHASES.RACING
-  for (const kart of world.karts) chooseControls(world, kart, readControls)
+  for (const kart of world.karts) if (!kart.remote) chooseControls(world, kart, readControls)
   if (world.phase === RACE_PHASES.COUNTDOWN) return
 
   updatePace(world)

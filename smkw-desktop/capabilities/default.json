@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Fenetre principale : aucune API Tauri n'est utilisee par le jeu (il parle au serveur local en HTTP / WebSocket).",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}

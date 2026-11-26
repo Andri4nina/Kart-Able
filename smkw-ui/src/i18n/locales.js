@@ -24,7 +24,16 @@ export function isSupportedLocale(code) {
 }
 
 // Première langue du navigateur disponible dans le jeu, sinon la langue par défaut.
+// Langue demandée par l'adresse (?lang=fr|en|mg : liens partagés, pages des moteurs de
+// recherche), ou null.
+export function getUrlLocale() {
+  if (typeof location === 'undefined') return null
+  const lang = new URLSearchParams(location.search).get('lang')?.toLowerCase()
+  return isSupportedLocale(lang) ? lang : null
+}
+
 export function detectLocale() {
+  if (getUrlLocale()) return getUrlLocale()
   const candidates = typeof navigator === 'undefined' ? [] : navigator.languages ?? [navigator.language]
   for (const candidate of candidates) {
     const base = candidate?.toLowerCase().split('-')[0]

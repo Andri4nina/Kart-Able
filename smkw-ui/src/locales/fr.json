@@ -116,8 +116,8 @@
       "description": "Sur cet appareil, en écran partagé, clavier et manettes."
     },
     "online": {
-      "name": "En réseau",
-      "description": "Affronte des joueurs connectés, où qu'ils soient."
+      "name": "Réseau local",
+      "description": "Sur plusieurs machines du même réseau (Wi-Fi, câble) : application installée et navigateur ensemble."
     }
   },
   "local": {
@@ -134,25 +134,10 @@
     "howToJoin": "Comment rejoindre"
   },
   "online": {
-    "title": "Partie en réseau",
-    "subtitle": "Crée une partie ou rejoins celle d'un ami.",
-    "offline": "Serveur multijoueur pas encore connecté : aperçu de l'interface.",
-    "create": {
-      "name": "Créer une partie",
-      "description": "Deviens l'hôte et invite tes amis avec un code.",
-      "submit": "Créer"
-    },
     "join": {
-      "name": "Rejoindre une partie",
-      "description": "Entre le code à 6 caractères de l'hôte.",
       "codeLabel": "Code de la partie",
       "placeholder": "ABC123",
-      "submit": "Rejoindre",
-      "invalid": "Le code doit contenir 6 lettres ou chiffres."
-    },
-    "matchmaking": {
-      "name": "Matchmaking",
-      "description": "Trouve automatiquement des adversaires."
+      "submit": "Rejoindre"
     }
   },
   "lobby": {
@@ -160,16 +145,12 @@
     "mode": "Mode",
     "type": "Type",
     "players": "Joueurs",
-    "host": "Hôte",
-    "guest": "Invité",
-    "you": "Toi",
     "code": "Code de la partie",
     "codePending": "Attribué à la connexion au serveur",
     "freeSlots": {
       "one": "{{count}} place libre",
       "other": "{{count}} places libres"
     },
-    "startOnlineBlocked": "Un serveur est nécessaire pour lancer une partie en ligne.",
     "waiting": "En attente de joueurs",
     "charactersPending": "Tous les joueurs doivent confirmer leur personnage.",
     "noPlayers": "Aucun joueur n'a rejoint la partie.",
@@ -609,5 +590,46 @@
     "chooseCup": "Choisir une coupe",
     "changeHint": "La course en cours est abandonnée, sans points.",
     "hint": "Haut / bas · A : valider · RETOUR : revenir · START : reprendre"
+  },
+  "lan": {
+    "title": "Réseau local",
+    "subtitle": "Joue avec les autres machines du même réseau : application installée ou navigateur.",
+    "howTo": "L'hôte lance l'application Kart Able installée (ou le serveur smkw-api). Les autres ouvrent l'adresse affichée par l'hôte dans leur navigateur, ou la saisissent ci-dessous dans leur application.",
+    "server": {
+      "title": "Serveur de jeu",
+      "help": "Vide : le serveur qui a ouvert cette page. Sinon l'adresse de l'hôte, par exemple 192.168.1.20:2567.",
+      "addressLabel": "Adresse du serveur",
+      "placeholder": "192.168.1.20:2567",
+      "connect": "Se connecter"
+    },
+    "status": {
+      "idle": "Non connecté",
+      "connecting": "Connexion…",
+      "connected": "Connecté",
+      "error": "Hors ligne"
+    },
+    "errors": {
+      "roomClosed": "le salon a été fermé par l'hôte",
+      "connectionLost": "connexion perdue",
+      "serverNotFound": "aucun serveur à cette adresse",
+      "roomNotFound": "salon introuvable",
+      "roomFull": "salon complet",
+      "badMessage": "message refusé"
+    },
+    "rooms": {
+      "title": "Salons",
+      "refresh": "Actualiser",
+      "create": "Créer un salon",
+      "join": "Rejoindre",
+      "empty": "Aucun salon ouvert : crée le tien, ou demande le code à l'hôte."
+    },
+    "lobby": {
+      "notReady": "pas prêt",
+      "noRoom": "Rejoins d'abord un salon (étape Connexion).",
+      "waitingOthers": "En attente des joueurs des autres machines.",
+      "hostCanStart": "Tout le salon est prêt : lance la partie.",
+      "waitingHost": "En attente de l'hôte.",
+      "invite": "Les autres joueurs du réseau ouvrent http://{{address}} puis rejoignent le salon {{code}}."
+    }
   }
 }

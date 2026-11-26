@@ -1,14 +1,27 @@
 [package]
 name = "smkw-api"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
-description = "Serveur de jeu autoritaire de Kart Able (squelette, phase multijoueur a venir)"
+description = "Serveur de jeu de Kart Able : salons de jeu en reseau local (LAN) et fichiers du jeu web"
 publish = false
 
-# Aucune dependance tant que la phase multijoueur n'a pas commence.
-# Pile prevue (a ajouter a ce moment-la) : tokio (runtime), axum (HTTP + WebSocket),
-# serde / serde_json (messages), tracing (journaux).
+[lib]
+name = "smkw_api"
+path = "src/lib.rs"
+
+[[bin]]
+name = "smkw-api"
+path = "src/main.rs"
+
+# Pile : tokio (runtime), axum (HTTP + WebSocket), tower-http (fichiers du jeu),
+# serde / serde_json (messages JSON).
 [dependencies]
+axum = { version = "0.8", features = ["ws"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "net", "time"] }
+tower-http = { version = "0.6", features = ["fs", "cors"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
 
 [profile.release]
 lto = true

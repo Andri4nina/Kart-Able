@@ -116,8 +116,8 @@
       "description": "On this device, split screen, keyboard and gamepads."
     },
     "online": {
-      "name": "Online",
-      "description": "Take on connected players, wherever they are."
+      "name": "Local network",
+      "description": "On several machines on the same network (Wi-Fi, cable): installed app and browser together."
     }
   },
   "local": {
@@ -134,25 +134,10 @@
     "howToJoin": "How to join"
   },
   "online": {
-    "title": "Online match",
-    "subtitle": "Create a match or join a friend's.",
-    "offline": "Multiplayer server not connected yet: interface preview.",
-    "create": {
-      "name": "Create a match",
-      "description": "Become the host and invite friends with a code.",
-      "submit": "Create"
-    },
     "join": {
-      "name": "Join a match",
-      "description": "Enter the host's 6-character code.",
       "codeLabel": "Match code",
       "placeholder": "ABC123",
-      "submit": "Join",
-      "invalid": "The code must be 6 letters or digits."
-    },
-    "matchmaking": {
-      "name": "Matchmaking",
-      "description": "Find opponents automatically."
+      "submit": "Join"
     }
   },
   "lobby": {
@@ -160,16 +145,12 @@
     "mode": "Mode",
     "type": "Type",
     "players": "Players",
-    "host": "Host",
-    "guest": "Guest",
-    "you": "You",
     "code": "Match code",
     "codePending": "Assigned once connected to the server",
     "freeSlots": {
       "one": "{{count}} free slot",
       "other": "{{count}} free slots"
     },
-    "startOnlineBlocked": "A server is required to start an online match.",
     "waiting": "Waiting for players",
     "charactersPending": "All players must confirm their character.",
     "noPlayers": "No player has joined.",
@@ -611,5 +592,46 @@
     "chooseCup": "Pick a cup",
     "changeHint": "The current race is abandoned, with no points.",
     "hint": "Up / down · A: select · BACK: go back · START: resume"
+  },
+  "lan": {
+    "title": "Local network",
+    "subtitle": "Play with the other machines on the same network: installed app or browser.",
+    "howTo": "The host runs the installed Kart Able app (or the smkw-api server). The others open the address shown by the host in their browser, or type it below in their app.",
+    "server": {
+      "title": "Game server",
+      "help": "Empty: the server that opened this page. Otherwise the host address, for example 192.168.1.20:2567.",
+      "addressLabel": "Server address",
+      "placeholder": "192.168.1.20:2567",
+      "connect": "Connect"
+    },
+    "status": {
+      "idle": "Not connected",
+      "connecting": "Connecting…",
+      "connected": "Connected",
+      "error": "Offline"
+    },
+    "errors": {
+      "roomClosed": "the host closed the room",
+      "connectionLost": "connection lost",
+      "serverNotFound": "no server at this address",
+      "roomNotFound": "room not found",
+      "roomFull": "room is full",
+      "badMessage": "message rejected"
+    },
+    "rooms": {
+      "title": "Rooms",
+      "refresh": "Refresh",
+      "create": "Create a room",
+      "join": "Join",
+      "empty": "No open room: create yours, or ask the host for the code."
+    },
+    "lobby": {
+      "notReady": "not ready",
+      "noRoom": "Join a room first (Connection step).",
+      "waitingOthers": "Waiting for the players on the other machines.",
+      "hostCanStart": "The whole room is ready: start the game.",
+      "waitingHost": "Waiting for the host.",
+      "invite": "Other players on the network open http://{{address}} then join room {{code}}."
+    }
   }
 }

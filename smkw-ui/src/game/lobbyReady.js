@@ -5,6 +5,8 @@ import { useMatchSetupStore } from '../stores/matchSetupStore'
 import { areAllReady } from './lobbyRules'
 import { getStartBlocker } from './matchRules'
 import { getCurrentPicks, startMatch } from './session'
+import { isLanGame, publishProfile } from '../net/lanSession'
+import { startNetMatch } from '../net/netMatch'
 
 // Lobby local : chaque joueur se déclare prêt avec son périphérique (START ou A) ou son
 // bouton à l'écran ; RETOUR annule. Dès que tout le monde est prêt, la course démarre
@@ -14,7 +16,11 @@ const currentPlayerIds = () => useLocalPlayersStore.getState().slots.map((slot) 
 
 export function beginLobby() {
   useLobbyReadyStore.getState().begin()
+  if (isLanGame()) publishProfile()
 }
+
+// Réseau local : l'hôte lance la partie quand tout le salon est prêt (bouton ou START).
+export const startLanMatch = () => startNetMatch()
 
 // Renvoie true si l'état du joueur a changé. Refusé si la partie ne peut pas démarrer
 // (sélections incomplètes) : personne ne peut se déclarer prêt pour rien.
@@ -26,6 +32,10 @@ export function setPlayerReady(playerId, ready) {
   const store = useLobbyReadyStore.getState()
   if (Boolean(store.ready[playerId]) === ready) return false
   store.setReady(playerId, ready)
+  if (isLanGame()) {
+    publishProfile()
+    return true
+  }
   if (ready && areAllReady(currentPlayerIds(), useLobbyReadyStore.getState().ready)) startMatch()
   return true
 }

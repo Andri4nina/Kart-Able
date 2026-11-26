@@ -1,6 +1,7 @@
 import { RACE, TRACK_VOTE } from '../config/race'
 import { INPUT_ACTIONS } from '../input/actions'
 import { usePauseStore } from '../stores/pauseStore'
+import { shareMatch } from '../net/netMatch'
 import { useRaceFlowStore } from '../stores/raceFlowStore'
 import { useRaceStore } from '../stores/raceStore'
 import { useSessionStore } from '../stores/sessionStore'
@@ -26,7 +27,11 @@ function launch(match) {
   useRaceFlowStore.getState().reset()
   useSessionStore.getState().begin(match)
   startRace(match)
+  shareMatch(match)
 }
+
+// Réseau local : seul l'hôte fait avancer la partie (résultats, vote, changement de circuit).
+export const isNetGuest = () => Boolean(useSessionStore.getState().match?.net && !useSessionStore.getState().match.net.host)
 
 // Les résultats n'acceptent une commande qu'après un court délai (appui involontaire).
 function resultsReady() {
@@ -44,7 +49,7 @@ export function beginTrackVote() {
 export function continueAfterResults() {
   const { match } = useSessionStore.getState()
   const { results } = useRaceStore.getState()
-  if (!match || !results || useRaceFlowStore.getState().step) return false
+  if (!match || !results || useRaceFlowStore.getState().step || isNetGuest()) return false
   if (hasNextRace(match)) launch(buildNextMatch(match, results, newSeed()))
   else beginTrackVote()
   return true
@@ -53,7 +58,7 @@ export function continueAfterResults() {
 // Menu pause : la course en cours est abandonnée (sans points) pour `trackId`.
 export function changeTrack(trackId) {
   const { match } = useSessionStore.getState()
-  if (!match?.trackId || !trackId) return false
+  if (!match?.trackId || !trackId || isNetGuest()) return false
   launch(buildChangedMatch(match, trackId, newSeed()))
   return true
 }

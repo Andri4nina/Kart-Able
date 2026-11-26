@@ -1,9 +1,10 @@
-import { Gamepad2, Globe, Hash, Route, Users, WifiOff } from 'lucide-react'
+import { Gamepad2, Globe, Hash, Network, Route, Users } from 'lucide-react'
 import { motion } from 'motion/react'
 import { pageItem } from '../../animations/variants'
 import { useTranslation } from '../../i18n/useTranslation'
 import { Notice } from './CapacityBanner'
 import { getTrackCup, resolveCourse } from '../../config/cups'
+import { useNetStore } from '../../stores/netStore'
 import { getModeVisual } from './modeVisuals'
 
 function SummaryRow({ icon: Icon, label, value }) {
@@ -34,6 +35,7 @@ function describeCourse(t, course) {
 export function LobbySummary({ setup, course = null, playerCount, limit, isOnline }) {
   const { t } = useTranslation()
   const courseValue = describeCourse(t, course)
+  const serverAddress = useNetStore((state) => state.lanUrl?.replace(/^https?:\/\//, '') || state.address || location.host)
   const { icon: ModeIcon, accent } = getModeVisual(setup.modeId)
 
   return (
@@ -54,7 +56,7 @@ export function LobbySummary({ setup, course = null, playerCount, limit, isOnlin
         <SummaryRow icon={Users} label={t('lobby.players')} value={t('players.count', { count: playerCount, max: limit })} />
         {isOnline ? <SummaryRow icon={Hash} label={t('lobby.code')} value={setup.online.code || t('lobby.codePending')} /> : null}
       </div>
-      {isOnline ? <Notice icon={WifiOff}>{t('online.offline')}</Notice> : null}
+      {isOnline && setup.online.code ? <Notice icon={Network}>{t('lan.lobby.invite', { address: serverAddress, code: setup.online.code })}</Notice> : null}
     </motion.aside>
   )
 }

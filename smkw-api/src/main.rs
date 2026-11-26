@@ -1,17 +1,18 @@
-//! Serveur de jeu autoritaire de Kart Able (code SMKW).
-//!
-//! Squelette seulement : le multijoueur arrive dans sa propre phase (voir docs/ARCHITECTURE.md).
-//! Le serveur reprendra la simulation pure du client (smkw-ui/src/game/race : pas fixe 1/120 s,
-//! reglages de config/kartTuning.js) pour rester coherent avec la prediction cote client.
+//! Serveur de jeu de Kart Able en ligne de commande : salons LAN et jeu web.
+//! Variables : SMKW_PORT (2567), SMKW_WEB_DIR (../smkw-ui/dist par defaut).
 
-mod config;
+use smkw_api::{lan_ip, serve, ServerConfig};
 
-fn main() {
-    let config = config::ServerConfig::from_env();
-    println!(
-        "smkw-api {} : squelette (aucune room). Port prevu : {}, tick : {} Hz.",
-        env!("CARGO_PKG_VERSION"),
-        config.port,
-        config.tick_rate
-    );
+#[tokio::main]
+async fn main() -> std::io::Result<()> {
+    let config = ServerConfig::from_env();
+    println!("smkw-api {} sur le port {}", env!("CARGO_PKG_VERSION"), config.port);
+    match &config.web_dir {
+        Some(dir) => println!("Jeu web servi depuis {}", dir.display()),
+        None => println!("Jeu web absent (SMKW_WEB_DIR) : WebSocket seul"),
+    }
+    if let Some(ip) = lan_ip() {
+        println!("Reseau local : http://{ip}:{}", config.port);
+    }
+    serve(config).await
 }

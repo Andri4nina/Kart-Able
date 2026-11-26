@@ -47,16 +47,16 @@ export function getStartBlocker(setup, localSlots = [], picks = NO_PICKS) {
   const mode = getGameMode(setup.modeId)
   if (!mode) return 'noMode'
   if (!isPlayTypeAvailable(mode, setup.playType)) return 'noPlayType'
-  if (setup.playType === PLAY_TYPES.LOCAL) {
+  if (setup.playType === PLAY_TYPES.ONLINE && !setup.online?.code) return 'serverRequired'
+  if (setup.playType === PLAY_TYPES.LOCAL || setup.playType === PLAY_TYPES.ONLINE) {
     if (localSlots.length === 0) return 'noPlayers'
     if (localSlots.length > getPlayerLimit(mode, PLAY_TYPES.LOCAL)) return 'tooManyPlayers'
     const playerIds = localSlots.map((slot) => slot.id)
     const characterBlocker = getCharacterSelectionBlocker(playerIds, picks.characters)
     if (characterBlocker) return characterBlocker
     if (getSelectionBlocker(playerIds, picks.vehicles, false)) return 'vehiclesPending'
-    if (mode.tracks && !resolveCourse(picks.course?.playlist, picks.course?.cupId)) return 'trackPending'
+    const choosesTracks = setup.playType === PLAY_TYPES.LOCAL || setup.online?.role === 'host'
+    if (mode.tracks && choosesTracks && !resolveCourse(picks.course?.playlist, picks.course?.cupId)) return 'trackPending'
   }
-  // Tant que smkw-api n'existe pas, une partie en ligne ne peut pas démarrer.
-  if (setup.playType === PLAY_TYPES.ONLINE) return 'serverRequired'
   return null
 }

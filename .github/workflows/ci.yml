@@ -1,0 +1,37 @@
+# Verifications a chaque push : jeu web (lint, regles d'or, traductions, build) et serveur Rust.
+name: Verifications
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: smkw-ui
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: smkw-ui/package-lock.json
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build
+
+  server:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: smkw-api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: smkw-api -> target
+      - run: cargo build --release

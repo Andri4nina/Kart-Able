@@ -1,0 +1,20 @@
+[package]
+name = "kart-able"
+version = "0.3.0"
+edition = "2021"
+description = "Kart Able, application de bureau : le jeu et son serveur de reseau local (LAN)"
+authors = ["Rasoamanana Andrianina"]
+publish = false
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "time"] }
+smkw-api = { path = "../smkw-api" }
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true

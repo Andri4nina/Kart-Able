@@ -12,6 +12,9 @@ import { useLocalPlayersStore } from '../../stores/localPlayersStore'
 import { useMatchSetupStore } from '../../stores/matchSetupStore'
 import { useCourseStore } from '../../stores/courseStore'
 import { useVehicleSelectionStore } from '../../stores/vehicleSelectionStore'
+import { useNetStore } from '../../stores/netStore'
+import { isRoomReady } from '../../net/netMatch'
+import { useLanLobbyPlayers } from './lan/useLanLobbyPlayers'
 import { LobbyFooter } from './LobbyFooter'
 import { LobbyPlayers } from './LobbyPlayers'
 import { LobbySummary } from './LobbySummary'
@@ -36,11 +39,13 @@ export function Lobby() {
   const limit = getPlayerLimit(getGameMode(setup.modeId), setup.playType)
   const blocker = getStartBlocker(setup, slots, { characters, vehicles, course })
   const unready = getUnreadyPlayerIds(slots.map((slot) => slot.id), ready).length
-  usePlayerInput(isOnline ? ignoreInput : handleLobbyInput)
+  const roomReady = useNetStore((state) => isRoomReady(state.room))
+  const lanPlayers = useLanLobbyPlayers(t)
+  usePlayerInput(isOnline && !setup.online.code ? ignoreInput : handleLobbyInput)
 
   const isOnlineHost = setup.online.role === 'host'
   const players = isOnline
-    ? [{ index: 0, id: 'P1', name: t('lobby.you'), badge: t(isOnlineHost ? 'lobby.host' : 'lobby.guest'), isHost: isOnlineHost }]
+    ? lanPlayers
     : slots.map((slot) => ({
         index: slot.index,
         id: slot.id,
@@ -56,11 +61,11 @@ export function Lobby() {
       step="lobby"
       title={t('lobby.title')}
       subtitle={t(`modes.${setup.modeId}.name`)}
-      footer={<LobbyFooter blocker={blocker} unready={unready} isOnline={isOnline} />}
+      footer={<LobbyFooter blocker={blocker} unready={unready} isOnline={isOnline} isHost={isOnlineHost} roomReady={roomReady} />}
     >
       <div className="grid max-w-5xl grid-cols-1 gap-6 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
-        <LobbySummary setup={setup} course={isOnline ? null : course} playerCount={players.length} limit={limit} isOnline={isOnline} />
-        <LobbyPlayers players={players} freeSlots={freeSlots} showWaiting={isOnline && freeSlots > 0} />
+        <LobbySummary setup={setup} course={isOnline && !isOnlineHost ? null : course} playerCount={players.length} limit={limit} isOnline={isOnline} />
+        <LobbyPlayers players={players} freeSlots={freeSlots} showWaiting={isOnline && !roomReady} />
       </div>
     </MenuPage>
   )

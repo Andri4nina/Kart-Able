@@ -3,6 +3,7 @@ import { useInputDevicesStore } from '../../stores/inputDevicesStore'
 import { useRaceStore } from '../../stores/raceStore'
 import { useSessionStore } from '../../stores/sessionStore'
 import { useTelemetryStore } from '../../stores/telemetryStore'
+import { tickNetRace } from '../../net/netRace'
 import { publishRace } from './racePublish'
 import { createRaceWorld, stepRaceWorld } from './raceWorld'
 
@@ -19,7 +20,9 @@ export function startRace(match) {
   useTelemetryStore.getState().reset(match?.players.map((player) => player.id))
   if (!match?.trackId) return null
   const devices = useInputDevicesStore.getState().devices
-  world = createRaceWorld(match, Math.floor(Math.random() * 2 ** 31), (racer) => devices[racer.deviceId] ?? null)
+  // Réseau local : même graine sur toutes les machines (feux, cases à objets).
+  const seed = match.net ? match.seed : Math.floor(Math.random() * 2 ** 31)
+  world = createRaceWorld(match, seed, (racer) => devices[racer.deviceId] ?? null)
   detachControls = attachDriveControls()
   publishRace(world)
   return world
@@ -54,6 +57,7 @@ export function stepRace(delta) {
   }
   pollDriveControls()
   stepRaceWorld(world, delta, readPlayerControls)
+  tickNetRace(world, delta)
   publishRace(world)
 }
 

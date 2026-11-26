@@ -390,3 +390,24 @@ Fiche : docs/phases/PHASE_2E_FEEL_JUMPS_COURSE.md.
 
 ### Tests
 Simulation 32 karts : tous arrivent, aucune chute, blocage max 5,9 s. Captures en jeu : Col Boréal (neige), Mesa Rouille (terre).
+
+---
+
+## 2026-11-26 — Phase 3A : réseau local, application de bureau, référencement
+
+Fiche : docs/phases/PHASE_3A_LAN_DESKTOP_SEO.md ; hébergement : docs/HOSTING.md.
+
+### Fait
+- SEO : site.config.js (nom, auteur Rasoamanana Andrianina, SITE_URL), scripts/seoPlugin.js (balises, JSON-LD, robots.txt, sitemap.xml), og-image, icônes, manifeste, `?lang=`.
+- Vercel : smkw-ui/vercel.json (projet rasoamanana-andrianina-kart-able).
+- smkw-api : axum + WebSocket, salons, relais, /api/info, jeu web servi ; Dockerfile.
+- Client LAN : src/net/*, netStore, écran Réseau local (serveur, salons), lobby commun, karts distants (remoteKart.js), l'hôte décide des courses.
+- smkw-desktop (Tauri 2) : serveur embarqué + fenêtre ; workflow desktop-release.yml (Windows, macOS, Linux) ; ci.yml.
+
+### Tests
+- LAN à deux onglets : sur le serveur de dev Vite (proxy /ws et /api vers cargo run), piloter le second onglet par les stores quand le panneau est masqué (animations figées) ; avancer chaque onglet tour à tour avec advanceTime.
+
+### TODO
+- Objets synchronisés (quand les objets définitifs seront fournis), vote partagé.
+- Fichiers de vérification Google / Bing à déposer dans smkw-ui/public/ (fournis plus tard).
+- Signature des installateurs.
