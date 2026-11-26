@@ -3,26 +3,26 @@ import { useCharacterSelectionStore } from '../stores/characterSelectionStore'
 import { useLocalPlayersStore } from '../stores/localPlayersStore'
 import { useMatchSetupStore } from '../stores/matchSetupStore'
 import { useNavigationStore } from '../stores/navigationStore'
+import { usePauseStore } from '../stores/pauseStore'
 import { useSessionStore } from '../stores/sessionStore'
-import { useTrackSelectionStore } from '../stores/trackSelectionStore'
+import { useCourseStore } from '../stores/courseStore'
 import { useVehicleSelectionStore } from '../stores/vehicleSelectionStore'
 import { buildMatchConfig } from './matchConfig'
 import { getStartBlocker } from './matchRules'
 import { resetRaceFlow } from './raceFlow'
 import { startRace, stopRace } from './race/raceSession'
-import { getConfirmedId } from './selection/selectionRules'
 
 // Frontière entre le menu et les systèmes de jeu : on fige la configuration (avec une graine
 // pour les tirages de la partie), on lance la course et on bascule sur l'écran de jeu.
 
-// Choix des écrans de sélection (personnages, véhicules, circuit choisi par P1) pour la
+// Choix des écrans de sélection (personnages, véhicules, programme composé par P1) pour la
 // validation finale.
 export function getCurrentPicks() {
-  const leader = useLocalPlayersStore.getState().slots[0]
+  const { cupId, playlist } = useCourseStore.getState()
   return {
     characters: useCharacterSelectionStore.getState().selections,
     vehicles: useVehicleSelectionStore.getState().selections,
-    trackId: leader ? getConfirmedId(useTrackSelectionStore.getState().selections, leader.id) : null,
+    course: { cupId, playlist },
   }
 }
 
@@ -41,6 +41,7 @@ export function startMatch() {
 
 // Les joueurs locaux restent inscrits : une nouvelle partie les retrouve prêts.
 export function exitMatch() {
+  usePauseStore.getState().reset()
   resetRaceFlow()
   stopRace()
   useSessionStore.getState().end()

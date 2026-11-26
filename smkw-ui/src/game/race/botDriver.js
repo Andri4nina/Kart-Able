@@ -49,6 +49,8 @@ export function driveBot(kart, geometry, out, dt = 0) {
     const here = kart.trackIndex
     const turnAhead = wrapAngle(Math.atan2(path.tx[far], path.tz[far]) - Math.atan2(path.tx[here], path.tz[here]))
     applyBotDrift(kart, out, turnAhead, dt)
+    // Tremplin : une figure à chaque saut (nouvel appui sur Drift dans la fenêtre).
+    if (kart.trickWindow > 0 && !kart.trickPending) out.drift = !kart.driftHeld
   }
   return out
 }

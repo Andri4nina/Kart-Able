@@ -1,7 +1,7 @@
 # Effets de course : particules, flamme de turbo
 
 - **Type** : objet 3D
-- **Fichiers** : `smkw-ui/src/components3d/Effects/` (RaceParticles, effectResources, particlePool, writeParticles, kartEmitters, emitterKit, boxEmitters), `smkw-ui/src/components3d/Racers/KartEffects.jsx`, `kartFlame.js`
+- **Fichiers** : `smkw-ui/src/components3d/Effects/` (RaceParticles, effectResources, particlePool, writeParticles, kartEmitters, emitterKit, boxEmitters, exhaustEmitters, trailEmitters, trailPool), `smkw-ui/src/components3d/Racers/KartEffects.jsx`, `kartFlame.js`
 - **Phase** : 2C
 
 ## Rôle
@@ -11,6 +11,11 @@ Retours visuels de conduite lisibles d'un coup d'œil, purement visuels (rien ne
 - turbo (nitro, pads, mini-turbos, départ) : deux réacteurs à l'arrière, façon voiture-fusée (trois cônes additifs emboîtés : cœur blanc, flamme vive, enveloppe ; longs et vacillants), onde de choc à l'allumage, braises éjectées et traînée de fumée ;
 - hors-piste : mottes de terre et d'herbe aux couleurs du thème ;
 - chute dans l'eau : grande gerbe ; choc : éclats ; case à objets prise : éclats à sa couleur.
+
+Ajouts 2E :
+- **Fumée d'échappement** de chaque kart (`exhaustEmitters.js`) : bouffées grises continues aux deux pots, plus denses à l'accélération, bouffée sombre quand on remet les gaz ; rien pendant un turbo ni dans l'eau.
+- **Traînées du drift** (`trailEmitters.js`, `trailPool.js`) : marques de gomme des deux roues arrière sur l'asphalte (s'amincissent en 3 s), et traînée lumineuse à la couleur du palier (bleu, orange, violet) derrière chaque roue. Rubans continus, un segment tous les 0,55 m.
+- Troisième palier violet (étincelles, lueur, flamme du turbo).
 
 ## Interface
 

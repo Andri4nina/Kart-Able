@@ -2,19 +2,20 @@
 
 - **Type** : système
 - **Fichiers** : `smkw-ui/src/config/kartTuning.js`, `smkw-ui/src/game/race/kartPhysics.js`, `kartDrift.js`, `kartDriftRates.js`, `kartBoost.js`, `kartCollisions.js`, `kartCapsule.js`, `kartStats.js`, `trackTracking.js` (murs), `smkw-ui/src/components3d/Racers/kartPose.js`, `KartEffects.jsx`, `smkw-ui/src/components/ui/hud/DriftGauge.jsx`
-- **Phase** : 2A (conduite, drift, chocs), drift revu en 2C
+- **Phase** : 2A (conduite, drift, chocs), drift revu en 2C puis en 2E
 
 ## Rôle
 
 Conduite arcade en calcul pur (pas fixe 1/120 s, aucune allocation), réglée entièrement depuis `config/kartTuning.js`. Le contrôleur ne contient aucune valeur de gameplay.
 
-## Drift manuel (génération Wii des jeux de kart)
+## Drift manuel (jeux de kart arcade de référence)
 
 1. Appui sur Drift en roulant : petit saut (`DRIFT.hopTime` 0,22 s). En l'air, braquage réduit.
-2. Le sens se choisit **pendant le saut** (dernière direction braquée au-delà de `steerThreshold`) ou dans `landGrace` (0,12 s) après l'atterrissage. Il ne change plus ensuite. Sans direction : simple saut, le bouton tenu ne relance rien ; il faut relâcher puis réappuyer.
-3. Entrée : poussée vers l'extérieur (`entryKick`). Le kart tourne toujours vers l'intérieur : serré en braquant dedans (`turnInside`), large dehors (`turnOutside`) ; jamais droit.
-4. Jauge : `charge += dt * stat drift * qualité`, qualité = braquage intérieur (x1,45) .. neutre (x1) .. extérieur (x0,4), multipliée par la vitesse ; hors-piste : aucune charge (sauf aéroglisseur). Taux : `kartDriftRates.js`.
-5. Deux paliers : 0,7 -> `miniTurbo1` (étincelles bleues), 1,7 -> `miniTurbo2` (orange, super mini-turbo). Relâcher Drift déclenche le turbo du palier atteint.
+2. Tant que Drift reste enfoncé, le drift part dans le **premier sens braqué** au-delà de `steerThreshold` : pendant le saut, ou plus tard au sol (2E : plus besoin de braquer pendant le saut). Il ne change plus ensuite. Relâcher sans avoir braqué : simple saut.
+3. Entrée : poussée vers l'extérieur (`entryKick`). Le kart tourne toujours vers l'intérieur : serré en braquant dedans (`turnInside` 1,95), neutre déjà plus serré que le braquage normal (`turnNeutral` 1,25), large dehors (`turnOutside` 0,32 : rayon d'environ 45 m à pleine vitesse, pour les grandes courbes) ; jamais droit.
+4. Jauge : `charge += dt * stat drift * qualité`, qualité = braquage intérieur (x1,5) .. neutre (x1) .. extérieur (x0,45), multipliée par la vitesse ; hors-piste : aucune charge (sauf aéroglisseur). Taux : `kartDriftRates.js`.
+5. Trois paliers : 0,7 -> `miniTurbo1` (étincelles bleues), 1,6 -> `miniTurbo2` (orange), 2,7 -> `miniTurbo3` (violet, ultra mini-turbo de 2 s). Relâcher Drift déclenche le turbo du palier atteint. Traînées au sol et lumineuses : [race-effects.md](race-effects.md).
+7. En l'air après un tremplin, l'appui sur Drift fait une figure (pas un saut) : [jumps-gliders.md](jumps-gliders.md).
 6. Annulation sans turbo : frein, vitesse sous `cancelSpeed`, choc fort (`COLLISION.driftBreak`, rocher), chute dans l'eau.
 
 Bots (`game/race/botDrift.js`, mêmes règles que les joueurs) : drift lancé quand la route tourne d'au moins 0,5 rad devant et que le pilote braque déjà vers l'intérieur ; sens donné pendant le saut ; relâché à la sortie du virage avec au moins le palier bleu (les meilleurs visent l'orange), ou en survirage, hors-piste prolongé, virage inverse. Simulé sur 8 circuits à 32 karts : 110 à 300 mini-turbos par course, aucun blocage durable.

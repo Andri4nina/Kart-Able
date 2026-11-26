@@ -186,7 +186,8 @@
     "track": "Lalana",
     "trackValue": "{{track}} · {{cup}}",
     "trackPending": "Mbola tsy voafidy ny lalana.",
-    "cupValue": "{{cup}} : kaopy feno (lalana {{count}})"
+    "cupValue": "{{cup}} : kaopy feno (lalana {{count}})",
+    "playlistValue": "Hazakazaka {{count}}, manomboka amin'ny {{first}} ka hatramin'ny {{last}}"
   },
   "settings": {
     "title": "Fikirana",
@@ -400,19 +401,27 @@
   },
   "trackSelect": {
     "title": "Lalana",
-    "subtitle": "{{player}} no misafidy ny kiopy sy ny lalana.",
-    "roster": "Lalan'ny {{cup}}",
     "length": "{{meters}} m",
     "lapLength": "Halavan'ny fihodinana",
     "laps": "Fihodinana",
     "width": "Sakany",
     "widthRange": "{{min}} hatramin'ny {{max}} m",
     "checkpoints": "Toerana fandalovana",
-    "pending": "Fidio ny kaopy feno na lalana iray, dia hamafiso.",
-    "confirmed": "Vita ny safidy : START hanohizana.",
     "fullCup": "Kaopy feno",
     "cupTracks": "Lalana {{count}}",
-    "cupDescription": "Ireo lalana {{count}} mifanesy, misy isa isaky ny hazakazaka : izay manana isa betsaka indrindra no mahazo ny kaopy."
+    "cupDescription": "Ireo lalana {{count}} mifanesy, misy isa isaky ny hazakazaka : izay manana isa betsaka indrindra no mahazo ny kaopy.",
+    "subtitleCups": "{{player}} no misafidy ny amboara.",
+    "subtitleTracks": "{{player}} no mandrafitra ny fandaharana : lalana iray, maromaro, na ny amboara manontolo.",
+    "cupsTitle": "Amboara",
+    "pendingCups": "Misafidiana amboara iray hahitana ny lalany.",
+    "pendingTracks": "A : manampy na manala lalana. RETOUR : amboara hafa. START : manohy.",
+    "otherCups": "Amboara hafa",
+    "playlist": "Fandaharana",
+    "playlistEmpty": "Tsy misy lalana voafidy.",
+    "playlistCount": "Hazakazaka {{count}} amin'ny {{max}} farafahabetsany, araka io filaharana io.",
+    "playlistWholeCup": "Tsy misy lalana voafidy : ny {{cup}} manontolo no hihazakazahana (hazakazaka {{count}}).",
+    "remove": "Esory {{track}}",
+    "pointsRule": "Mahazo isa isaky ny hazakazaka, ampiana hatramin'ny fiverenana amin'ny menio."
   },
   "cups": {
     "kairos": {
@@ -420,7 +429,9 @@
     },
     "summit": {
       "name": "Summit Cup"
-    }
+    },
+    "frostbloom": "Frostbloom Cup",
+    "dustrail": "Dustrail Cup"
   },
   "tracks": {
     "kairosMeadow": {
@@ -454,6 +465,38 @@
     "duneRun": {
       "name": "Hazakazaka Dongom-pasika",
       "description": "Dongom-pasika miolikolika sy fiolahana malalaka : tazony ny hafainganam-pandehanao."
+    },
+    "frostHollow": {
+      "name": "Lohasaha Fanala",
+      "description": "Lohasaha feno lanezy manodidina farihy mangatsiaka, avy eo fiolahana tery."
+    },
+    "borealPass": {
+      "name": "Lalan-tendrombohitra Avaratra",
+      "description": "Miakara any amin'ny tampona fotsy, midina miolakolaka, dia manidina ambonin'ny rano mangatsiaka."
+    },
+    "icefallRun": {
+      "name": "Riandrano Mangatsiaka",
+      "description": "Farihy mangatsiaka lehibe eo afovoany ; avy hatrany, manidina ambonin'ny helodrano."
+    },
+    "whitePines": {
+      "name": "Kesika Fotsy",
+      "description": "Ala kesika rakotra lanezy, fiolahana mafy sy rindrina kely."
+    },
+    "rustMesa": {
+      "name": "Lembalemba Mena",
+      "description": "Tany mena, fiakarana maina ary toerana roa hitsambikinana."
+    },
+    "clayQuarry": {
+      "name": "Toeram-pitrandrahana Tanimanga",
+      "description": "Toeram-pitrandrahana miolakolaka manodidina dobo, miraikitra amin'ny kodiarana ny tanimanga."
+    },
+    "dustWhirl": {
+      "name": "Tadio Vovoka",
+      "description": "Lalana lava mihodinkodina toy ny tadio fasika."
+    },
+    "rutRally": {
+      "name": "Hazakazaka Lavaka",
+      "description": "Lavaka, vongona ary fiolahana manodidina dobo feta."
     }
   },
   "vehicles": {
@@ -540,11 +583,13 @@
   },
   "results": {
     "title": "Valiny",
-    "cupFinal": "Laharana farany",
     "cupRound": "{{cup}} : hazakazaka {{round}} amin'ny {{total}}",
     "hint": "START na A hanohizana",
     "nextRace": "Hazakazaka manaraka",
-    "vote": "Mifidiana ny manaraka"
+    "vote": "Mifidiana ny manaraka",
+    "overall": "Filaharana ankapobeny",
+    "round": "{{track}} : hazakazaka {{round}} amin'ny {{total}}",
+    "pointsLegend": "Isa amin'ity hazakazaka ity · totaliny aorian'ny hazakazaka {{races}}"
   },
   "vote": {
     "title": "Lalana manaraka",
@@ -554,5 +599,14 @@
     "choosing": "misafidy",
     "elected": "Lalana voafidy",
     "votes": "Vato {{count}}"
+  },
+  "pause": {
+    "title": "Fiatoana",
+    "resume": "Hanohy",
+    "changeTrack": "Hanova lalana",
+    "quit": "Hiala amin'ny lalao",
+    "chooseCup": "Misafidiana amboara",
+    "changeHint": "Ajanona ny hazakazaka ankehitriny, tsy misy isa.",
+    "hint": "Ambony / ambany · A : manamarina · RETOUR : miverina · START : manohy"
   }
 }

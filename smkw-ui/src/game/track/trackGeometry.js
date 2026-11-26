@@ -3,6 +3,7 @@ import { distanceToLakeEdge } from './lakes'
 import { buildFences } from './trackFences'
 import { placeTrackFeatures } from './trackFeatures'
 import { buildHeightField } from './trackHeight'
+import { placeJumps } from './trackJumps'
 import { buildTrackPath } from './trackPath'
 import { getCheckpointGates, getTrackBounds } from './trackLayout'
 
@@ -11,14 +12,18 @@ const cache = new Map()
 
 export function getTrackGeometry(trackId) {
   if (!cache.has(trackId)) {
-    const track = getTrack(trackId)
-    if (!track) return null
-    const path = buildTrackPath(track.path)
+    const definition = getTrack(trackId)
+    if (!definition) return null
+    const path = buildTrackPath(definition.path)
     const bounds = getTrackBounds(path)
-    // relief : grille de hauteurs (trackHeight.js), null pour un circuit plat ; fences :
-    // barrière invisible par côté (trackFences.js) ; features : pads et obstacles.
+    // jumps : rampes, brèches du deltaplane (gaps, par échantillon) et lacs sous les brèches,
+    // ajoutés aux lacs du circuit (`track` les contient tous) ; relief : grille de hauteurs
+    // (trackHeight.js), null pour un circuit plat ; fences : limites par côté (trackFences.js) ;
+    // features : pads et obstacles.
+    const { gapLakes, ...jumps } = placeJumps(definition, path)
+    const track = gapLakes.length ? { ...definition, lakes: [...definition.lakes, ...gapLakes] } : definition
     const features = placeTrackFeatures(track, path)
-    cache.set(trackId, Object.freeze({ track, path, gates: getCheckpointGates(path), bounds, relief: buildHeightField(track, path, bounds), fences: buildFences(track, path), ...features }))
+    cache.set(trackId, Object.freeze({ track, path, gates: getCheckpointGates(path), bounds, relief: buildHeightField(track, path, bounds), fences: buildFences(track, path), ...features, ...jumps }))
   }
   return cache.get(trackId)
 }

@@ -6,7 +6,7 @@
 export const GRID = Object.freeze({ columns: 4, firstRowBack: 6, rowSpacing: 6, stagger: 3, maxColumnSpacing: 4.2 })
 // Une porte tous les ~60 m environ ; elle déborde de la route pour couvrir les bas-côtés.
 const GATE_SPACING = 60
-const GATE_OVERHANG = 12
+const GATE_OVERHANG = 18
 
 // Point du chemin à la distance `distance` (bouclée), interpolé entre deux échantillons.
 export function sampleTrack(path, distance) {

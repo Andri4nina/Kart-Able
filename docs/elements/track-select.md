@@ -1,43 +1,45 @@
-# Choix de la coupe et du circuit
+# Choix de la coupe puis des circuits (programme)
 
 - **Type** : écran
-- **Fichiers** : `src/components/menu/TrackSelect.jsx`, `src/components/tracks/` (`TrackCard.jsx`, `TrackMinimap.jsx`, `TrackPreview.jsx`), `src/game/trackSelect.js`, `src/stores/trackSelectionStore.js`
-- **Phase** : 1H
+- **Fichiers** : `src/components/menu/TrackSelect.jsx`, `src/components/tracks/` (`CupCard.jsx`, `TrackCard.jsx`, `PlaylistPanel.jsx`, `CupPreview.jsx`, `TrackPreview.jsx`, `TrackMinimap.jsx`), `src/game/trackSelect.js`, `src/stores/courseStore.js`, `src/stores/trackSelectionStore.js`, `src/config/cups.js` (`resolveCourse`), `src/config/race.js` (`COURSE`)
+- **Phase** : 1H, revu en 2D puis en 2E
 
 ## Flow
 
-Joueurs locaux, personnages, véhicules, puis **circuits** (modes qui se courent sur un circuit : course, contre-la-montre), puis lobby, puis course sur le circuit choisi. Les modes sans circuit (bataille, Rocket Gol) passent directement au lobby, et l'étape « Circuits » disparaît de leur parcours.
+Joueurs locaux, personnages, véhicules, puis **circuits** (modes qui se courent sur un circuit), puis lobby, puis course. Les modes sans circuit passent directement au lobby.
 
-## Ce que voit le joueur
+## Ce que voit le joueur (2E)
 
-- Une rangée de 4 cartes par coupe, sous le nom de la coupe (Kairos Cup) : mini-carte SVG du tracé (lacs, route, ligne de départ), nom, longueur du tour.
-- Aperçu du circuit présélectionné : grande carte avec les checkpoints, description, longueur du tour, tours, largeur, nombre de points de passage.
-- Le panneau de P1 (statut, périphérique, flèches, Confirmer) ; pied de page : Continuer quand le circuit est confirmé.
+1. **Les coupes** : une carte par coupe (ses 4 circuits en mini-cartes). On en ouvre une.
+2. **Les circuits de la coupe** : la carte « Coupe complète » puis ses 4 circuits. Chaque circuit choisi reçoit son numéro de passage. Le panneau **Programme** liste les circuits dans l'ordre (retirables d'un clic). On peut revenir aux coupes pour ajouter des circuits d'une autre coupe : on joue donc 1 circuit, 5 circuits, ou ce qu'on veut, jusqu'à `COURSE.maxRaces` (8).
+3. Programme vide : toute la coupe ouverte est courue (comme avant).
+
+Le programme est gardé en revenant du lobby. Le lobby affiche « Kairos Cup : coupe complète (4 circuits) », « Lac Miroir · Kairos Cup » ou « 3 courses, de Canyon Couchant à Prairie Kairos ».
 
 ## Qui choisit
 
-En local, **P1 choisit pour tout le monde** (comme les jeux de kart de salon) : la sélection réutilise le système générique avec un seul joueur inscrit, les entrées des autres sont ignorées. En réseau, un vote viendra avec smkw-api.
+En local, **P1 choisit pour tout le monde** ; les curseurs réutilisent le système de sélection générique (un store par étape, un seul joueur inscrit).
 
-| Entrée (P1) | Effet |
-| --- | --- |
-| Gauche / droite | circuit voisin |
-| Haut / bas | coupe voisine (4 circuits par rangée) |
-| START ou A | confirmer, puis START : lobby |
-| RETOUR | annuler la confirmation |
+| Entrée (P1) | Coupes | Circuits de la coupe |
+| --- | --- | --- |
+| Directions | coupe voisine | carte voisine (5 par rangée) |
+| A | ouvrir la coupe | ajouter / retirer (Coupe complète : tous ses circuits) |
+| START | ouvrir la coupe | continuer vers le lobby |
+| RETOUR | (écran précédent) | revenir aux coupes, programme gardé |
 
 ## Interface et tests
 
-- `#track-<id>` (cartes), `#P1-prev-btn`, `#P1-next-btn`, `#P1-confirm-btn`, `#tracks-continue-btn`.
-- `render_game_to_text()` : `trackSelection` (présélection, confirmation), puis `match.trackId`, `match.laps` et `track` en course.
-- Lobby : ligne « Circuit : Côte Turquoise · Kairos Cup » ; départ bloqué (`trackPending`) sans circuit.
+- `#cup-card-<id>` (coupes), `#cup-<id>[data-picked]` (coupe complète), `#track-<id>[data-order]`, `#course-playlist`, `#tracks-back-btn`, `#tracks-continue-btn`.
+- `render_game_to_text().trackSelection` : `{ step, cupId, playlist }` ; en course `match.playlist`, `match.round`, `match.cupId` (coupe exacte, sinon null).
+- Départ bloqué (`trackPending`) sans coupe ni circuit.
 
 ## Conformité règles d'or
 
-- [x] Réutilise le système de sélection générique (store, contrôleur, roster, panneau)
-- [x] Mini-cartes en SVG à couleurs pleines, aucune image ; aucun dégradé ; aucun emoji
-- [x] Icônes utiles seulement (Trophy, Ruler, Flag, MoveHorizontal, ScanLine)
-- [x] Aucun texte en dur ; aucune touche en dur
+- [x] Réutilise le système de sélection générique (stores de curseur, roster)
+- [x] Mini-cartes en SVG à couleurs pleines ; aucun dégradé ; aucun emoji
+- [x] Icônes utiles seulement (Trophy, Check, ListOrdered, X, ArrowLeft)
+- [x] Aucun texte en dur ; aucune touche en dur ; zone qui défile : `scrollbar-game`
 
 ## Évolutions prévues
 
-Vote en réseau ; aperçu 3D survolant le circuit ; nouvelles coupes.
+Vote en réseau ; aperçu 3D survolant le circuit ; nouvelles coupes ; réordonner le programme.

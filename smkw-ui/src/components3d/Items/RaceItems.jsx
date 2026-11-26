@@ -1,9 +1,10 @@
 import { ITEM_BOXES } from '../../config/items'
-import { writeCore, writeHalo, writeRing, writeShell } from './boxPose'
+import { writeFrame, writeGlass, writeGlyph, writeHalo } from './boxPose'
 import { ItemInstances } from './ItemInstances'
 import { ITEM_GEOMETRIES, ITEM_MATERIALS } from './itemResources'
 
-// Objets de la course en 3D : cases à objets (cristal, cœur, anneau, halo au sol : boxPose.js ;
+// Objets de la course en 3D : cases à objets (cube de verre, arêtes, point d'interrogation,
+// halo au sol : boxPose.js ;
 // dorées au hasard), flaques d'huile posées, orbes lancés. Lus dans le monde de course
 // (game/items) ; rien ici ne décide du jeu.
 const BOX_CAPACITY = 64
@@ -28,10 +29,11 @@ function writeProjectile(entry, time, out) {
   out.scale = 1
 }
 
+// Ordre de rendu : le point d'interrogation (opaque) avant le verre translucide qui l'entoure.
 const BOX_PARTS = [
-  ['shells', 'boxShell', writeShell],
-  ['cores', 'boxCore', writeCore],
-  ['rings', 'boxRing', writeRing],
+  ['glyphs', 'boxGlyph', writeGlyph],
+  ['frames', 'boxFrame', writeFrame],
+  ['glass', 'boxGlass', writeGlass],
   ['halos', 'boxHalo', writeHalo],
 ]
 

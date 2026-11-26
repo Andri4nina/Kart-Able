@@ -36,9 +36,10 @@ function createBuilder() {
 // Point à `lateral` mètres sur la droite de l'échantillon i : [x, z, hauteur de la route].
 const offsetPoint = (path, i, lateral) => [path.x[i] - path.tz[i] * lateral, path.z[i] + path.tx[i] * lateral, path.y[i]]
 
-function addCurbs(builder, path) {
+function addCurbs(builder, path, gaps) {
   for (let i = 0; i < path.count; i += 1) {
     const j = (i + 1) % path.count
+    if (gaps?.[i] || gaps?.[j]) continue
     if (Math.abs(getCurvature(path, i)) < CURB_CURVATURE || Math.abs(getCurvature(path, j)) < CURB_CURVATURE) continue
     const color = Math.floor((i * path.step) / CURB_STEP) % 2 === 0 ? RED : WHITE
     for (const sign of [-1, 1]) {
@@ -75,9 +76,9 @@ function addGridMarks(builder, path, slotCount) {
   }
 }
 
-export function buildMarkingsGeometry(path, slotCount = GRID.columns * 8) {
+export function buildMarkingsGeometry(path, gaps, slotCount = GRID.columns * 8) {
   const builder = createBuilder()
-  addCurbs(builder, path)
+  addCurbs(builder, path, gaps)
   addStartLine(builder, path)
   addGridMarks(builder, path, slotCount)
   return builder.toGeometry()

@@ -48,3 +48,7 @@ Calcul : cases x karts par pas (24 x 32), entités en réserve fixe ; course de 
 ## Évolutions prévues
 
 Objets de bataille, rangées de cases par circuit réglées à la main, son.
+
+## Case à objets (2E)
+
+Nouveau design : cube de verre irisé aux coins arrondis, penché sur un coin et qui tourne, arêtes lumineuses plus claires, point d'interrogation en volume qui flotte au centre, halo au sol. Case dorée : or et blanc, plus grosse. Fichiers : `components3d/Items/itemResources.js`, `boxPose.js`, `RaceItems.jsx`.

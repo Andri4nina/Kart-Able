@@ -3,16 +3,18 @@ import { Suspense, useEffect, useMemo } from 'react'
 import { getTrackTheme } from '../../config/trackThemes'
 import { getTrackGeometry } from '../../game/track/trackGeometry'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { TrackBarriers } from './TrackBarriers'
 import { TrackDecor } from './TrackDecor'
 import { TrackFeatures } from './TrackFeatures'
 import { TrackGrass } from './TrackGrass'
 import { TrackGround } from './TrackGround'
+import { TrackRamps } from './TrackRamps'
 import { TrackVegetation } from './TrackVegetation'
 import { trackTime } from './trackClock'
 import { buildTrackField } from './trackField'
 
 // Monde d'un circuit, entièrement généré depuis sa définition (config/tracks.js) : sol, eau,
-// route, herbe, pads et rochers, arbres et décor. Remplace l'arène du menu pendant une course.
+// route, herbe, pads et rochers, tremplins, murets et clôtures, arbres et décor. Remplace l'arène du menu pendant une course.
 export function TrackWorld({ trackId }) {
   const geometry = getTrackGeometry(trackId)
   const theme = getTrackTheme(geometry?.track.theme)
@@ -40,6 +42,8 @@ export function TrackWorld({ trackId }) {
       <TrackGround geometry={geometry} field={field} theme={theme} />
       <TrackGrass field={field} theme={theme} seed={track.seed} />
       <TrackFeatures geometry={geometry} theme={theme} />
+      <TrackRamps geometry={geometry} />
+      <TrackBarriers geometry={geometry} />
       <Suspense fallback={null}>
         <TrackVegetation geometry={geometry} field={field} theme={theme} />
       </Suspense>

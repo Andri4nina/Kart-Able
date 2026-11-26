@@ -62,5 +62,5 @@ export function writeKartPose(kart, delta, reducedMotion, visual, { root, body, 
 
   input.steer = kart.finished ? 0 : kart.driftDir ? kart.driftDir * 0.6 + kart.controls.steer * 0.4 : kart.controls.steer
   input.panic = kart.bump > 0.12 || kart.spin > 0 ? 1 : 0
-  input.cheer = kart.finished ? 1 : 0
+  input.cheer = kart.finished || kart.trick > 0 ? 1 : 0
 }

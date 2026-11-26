@@ -3,7 +3,7 @@ import { motion } from 'motion/react'
 import { pageItem } from '../../animations/variants'
 import { useTranslation } from '../../i18n/useTranslation'
 import { Notice } from './CapacityBanner'
-import { getCupFromItem, getTrackCup } from '../../config/cups'
+import { getTrackCup, resolveCourse } from '../../config/cups'
 import { getModeVisual } from './modeVisuals'
 
 function SummaryRow({ icon: Icon, label, value }) {
@@ -18,16 +18,22 @@ function SummaryRow({ icon: Icon, label, value }) {
   )
 }
 
-// Récapitulatif du lobby : mode, type de partie, circuit (coupe), nombre de joueurs, code (réseau).
-export function LobbySummary({ setup, trackId = null, playerCount, limit, isOnline }) {
+// Programme en une ligne : coupe complète, circuit seul, ou plusieurs circuits.
+function describeCourse(t, course) {
+  const resolved = course ? resolveCourse(course.playlist, course.cupId) : null
+  if (!resolved) return null
+  const { cupId, trackIds } = resolved
+  if (cupId) return t('lobby.cupValue', { cup: t(`cups.${cupId}.name`), count: trackIds.length })
+  const first = t(`tracks.${trackIds[0]}.name`)
+  if (trackIds.length === 1) return t('lobby.trackValue', { track: first, cup: t(`cups.${getTrackCup(trackIds[0])?.id}.name`) })
+  return t('lobby.playlistValue', { count: trackIds.length, first, last: t(`tracks.${trackIds.at(-1)}.name`) })
+}
+
+// Récapitulatif du lobby : mode, type de partie, programme des circuits, nombre de joueurs,
+// code (réseau). `course` : { cupId, playlist } composé à l'écran des circuits.
+export function LobbySummary({ setup, course = null, playerCount, limit, isOnline }) {
   const { t } = useTranslation()
-  // trackId : choix de l'écran des circuits, coupe complète (`cup:<id>`) ou circuit seul.
-  const cup = getCupFromItem(trackId)
-  const courseValue = cup
-    ? t('lobby.cupValue', { cup: t(`cups.${cup.id}.name`), count: cup.trackIds.length })
-    : trackId
-      ? t('lobby.trackValue', { track: t(`tracks.${trackId}.name`), cup: t(`cups.${getTrackCup(trackId)?.id}.name`) })
-      : null
+  const courseValue = describeCourse(t, course)
   const { icon: ModeIcon, accent } = getModeVisual(setup.modeId)
 
   return (

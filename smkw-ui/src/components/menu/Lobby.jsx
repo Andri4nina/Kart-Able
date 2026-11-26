@@ -10,7 +10,7 @@ import { useCharacterSelectionStore } from '../../stores/characterSelectionStore
 import { useLobbyReadyStore } from '../../stores/lobbyReadyStore'
 import { useLocalPlayersStore } from '../../stores/localPlayersStore'
 import { useMatchSetupStore } from '../../stores/matchSetupStore'
-import { useTrackSelectionStore } from '../../stores/trackSelectionStore'
+import { useCourseStore } from '../../stores/courseStore'
 import { useVehicleSelectionStore } from '../../stores/vehicleSelectionStore'
 import { LobbyFooter } from './LobbyFooter'
 import { LobbyPlayers } from './LobbyPlayers'
@@ -30,11 +30,11 @@ export function Lobby() {
   const slots = useLocalPlayersStore((state) => state.slots)
   const characters = useCharacterSelectionStore((state) => state.selections)
   const vehicles = useVehicleSelectionStore((state) => state.selections)
-  const trackId = useTrackSelectionStore((state) => (slots[0] ? getConfirmedId(state.selections, slots[0].id) : null))
+  const course = useCourseStore(useShallow((state) => ({ cupId: state.cupId, playlist: state.playlist })))
   const ready = useLobbyReadyStore((state) => state.ready)
   const isOnline = setup.playType === PLAY_TYPES.ONLINE
   const limit = getPlayerLimit(getGameMode(setup.modeId), setup.playType)
-  const blocker = getStartBlocker(setup, slots, { characters, vehicles, trackId })
+  const blocker = getStartBlocker(setup, slots, { characters, vehicles, course })
   const unready = getUnreadyPlayerIds(slots.map((slot) => slot.id), ready).length
   usePlayerInput(isOnline ? ignoreInput : handleLobbyInput)
 
@@ -59,7 +59,7 @@ export function Lobby() {
       footer={<LobbyFooter blocker={blocker} unready={unready} isOnline={isOnline} />}
     >
       <div className="grid max-w-5xl grid-cols-1 gap-6 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
-        <LobbySummary setup={setup} trackId={isOnline ? null : trackId} playerCount={players.length} limit={limit} isOnline={isOnline} />
+        <LobbySummary setup={setup} course={isOnline ? null : course} playerCount={players.length} limit={limit} isOnline={isOnline} />
         <LobbyPlayers players={players} freeSlots={freeSlots} showWaiting={isOnline && freeSlots > 0} />
       </div>
     </MenuPage>

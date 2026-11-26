@@ -3,9 +3,10 @@ import { resolveCourse } from '../config/cups'
 import { getCharacterSelectionBlocker } from './characterSelectionRules'
 import { getSelectionBlocker } from './selection/selectionRules'
 
-// Choix des écrans de sélection : { characters, vehicles } (sélections par joueur) et trackId
-// (choix de l'écran des circuits : coupe entière `cup:<id>` ou circuit, modes de course). Configuration figée : voir matchConfig.js.
-export const NO_PICKS = Object.freeze({ characters: {}, vehicles: {}, trackId: null })
+// Choix des écrans de sélection : { characters, vehicles } (sélections par joueur) et course
+// (écran des circuits, modes de course : { cupId, playlist }, voir resolveCourse). Configuration
+// figée : voir matchConfig.js.
+export const NO_PICKS = Object.freeze({ characters: {}, vehicles: {}, course: null })
 
 // Règles pures de configuration d'une partie (aucun React, aucun store).
 
@@ -53,7 +54,7 @@ export function getStartBlocker(setup, localSlots = [], picks = NO_PICKS) {
     const characterBlocker = getCharacterSelectionBlocker(playerIds, picks.characters)
     if (characterBlocker) return characterBlocker
     if (getSelectionBlocker(playerIds, picks.vehicles, false)) return 'vehiclesPending'
-    if (mode.tracks && !resolveCourse(picks.trackId)) return 'trackPending'
+    if (mode.tracks && !resolveCourse(picks.course?.playlist, picks.course?.cupId)) return 'trackPending'
   }
   // Tant que smkw-api n'existe pas, une partie en ligne ne peut pas démarrer.
   if (setup.playType === PLAY_TYPES.ONLINE) return 'serverRequired'

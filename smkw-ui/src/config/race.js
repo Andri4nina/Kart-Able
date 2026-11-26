@@ -7,12 +7,15 @@ export const RACE = Object.freeze({
   fieldSize: 32,
   // Physique en pas fixes (déterministe, indépendante de la fréquence d'affichage).
   step: 1 / 120,
-  // Les karts ne s'éloignent pas de plus de `fence` mètres du bord de la route (barrière
-  // invisible) : les portes de checkpoint (débord de 12 m) les couvrent toujours.
-  fence: 10,
-  // Bord de lac à moins de `reach` m de la route : la barrière s'ouvre jusqu'à `into` m dans
-  // l'eau (on peut y tomber). reach + into <= débord des portes de checkpoint (12 m).
-  waterFence: { reach: 8, into: 4 },
+  // Hors-piste : les karts ne s'éloignent pas de plus de `fence` mètres du bord de la route
+  // (clôture basse) : les portes de checkpoint (débord de 18 m, trackLayout.js) les couvrent.
+  fence: 12,
+  // Bord de lac à moins de `reach` m de la route : la clôture s'ouvre jusqu'à `into` m dans
+  // l'eau (on peut y tomber). reach + into <= débord des portes de checkpoint.
+  waterFence: { reach: 11, into: 4 },
+  // Anti-raccourci : là où une autre portion de route (à plus de `separation` m sur le tour)
+  // passe à moins de `gap` m du bord, un muret est posé à `fence` m du bord, de ce côté.
+  shortcut: { gap: 34, separation: 70, fence: 1.6 },
   // Chute dans l'eau : durée avant de réapparaître sur la route.
   respawnDelay: 1.2,
   // Après l'arrivée du dernier joueur, délai avant l'écran des résultats.
@@ -23,9 +26,13 @@ export const RACE = Object.freeze({
   speedometerMax: 140,
 })
 
-// Points de coupe par place (1er, 2e, ...) ; au-delà, 0. Classement de coupe : total des
-// points sur les courses de la coupe.
-export const CUP_POINTS = Object.freeze([15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
+// Points par place à chaque course (1er, 2e, ...) ; au-delà, 0. Ils s'additionnent d'une course
+// à l'autre pendant toute la partie (programme, courses votées, changements de circuit compris),
+// jusqu'au retour au menu.
+export const RACE_POINTS = Object.freeze([15, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1])
+
+// Programme choisi à l'écran des circuits : de 1 à `maxRaces` courses.
+export const COURSE = Object.freeze({ maxRaces: 8 })
 
 // Après une course : vote des joueurs pour le circuit suivant (parmi les autres circuits).
 export const TRACK_VOTE = Object.freeze({

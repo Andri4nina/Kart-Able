@@ -19,7 +19,7 @@ Jeu de course de kart 3D multijoueur pour le web, **Kart Able**, inspiré des je
 - Tailwind uniquement pour le style. Animations : Tailwind > Motion > `useFrame`. Mouvement réduit respecté.
 - UI (`components/`) et 3D (`components3d/`) ne s'importent jamais : elles passent par les stores.
 - **Aucun texte UI en dur** : tout passe par `t()` et `src/locales/*.json` (fr = référence, puis en, mg).
-- Les modes de jeu se définissent uniquement dans `src/config/gameModes.js`, les personnages dans `src/config/characters.js` (archétype, gabarit, couleur d'identité ; modèle GLB dans `components3d/Characters/characterAssets.js`), les véhicules dans `src/config/vehicles.js`, les coupes et circuits dans `src/config/cups.js` et `src/config/tracks.js` (générés par `game/track` et `components3d/Track`).
+- Les modes de jeu se définissent uniquement dans `src/config/gameModes.js`, les personnages dans `src/config/characters.js` (archétype, gabarit, couleur d'identité ; modèle GLB dans `components3d/Characters/characterAssets.js`), les véhicules dans `src/config/vehicles.js`, les coupes et circuits dans `src/config/cups.js` et `src/config/tracks.js` (données par coupe dans `src/config/trackData/`) (générés par `game/track` et `components3d/Track`).
 - Toute sélection par joueur réutilise le système générique (`game/selection/`, `createSelectionStore`, `components/selection/`).
 - Aucune touche ou bouton physique dans les écrans : passer par `src/input/` (actions abstraites, PlayerInput). Ne jamais supposer le clavier.
 - Toute zone qui défile utilise la classe `scrollbar-game`.

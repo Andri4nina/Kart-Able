@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { canPause, togglePause } from '../game/pauseMenu'
 import { exitMatch } from '../game/session'
 import { SCREENS } from '../navigation/screens'
 import { selectCurrentScreen, useNavigationStore } from '../stores/navigationStore'
@@ -25,7 +26,8 @@ function toggleFullscreen() {
 
 // Raccourcis globaux (un seul listener, état lu à la volée) :
 // F = plein écran ; Entrée = jouer depuis le menu principal ;
-// Échap = fermer les réglages, sinon écran précédent, ou quitter la partie en jeu.
+// Échap = fermer les réglages, sinon écran précédent ; en jeu : menu pause pendant la course,
+// quitter la partie après (résultats).
 export function useGlobalHotkeys() {
   useEffect(() => {
     const onKeyDown = (event) => {
@@ -47,7 +49,9 @@ export function useGlobalHotkeys() {
           break
         case 'Escape':
           if (navigation.settingsOpen) navigation.closeSettings()
-          else if (screen === SCREENS.GAME) exitMatch()
+          else if (screen === SCREENS.GAME) {
+            if (!canPause() || !togglePause()) exitMatch()
+          }
           else navigation.back()
           break
         case 'Enter':

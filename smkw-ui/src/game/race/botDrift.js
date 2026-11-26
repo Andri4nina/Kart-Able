@@ -1,5 +1,3 @@
-import { DRIFT } from '../../config/kartTuning'
-
 // Drift des pilotes ordinateur (calcul pur, aucune allocation), mêmes règles que les joueurs
 // (game/race/kartDrift.js) : ils sautent à l'approche d'un virage marqué, braquent vers
 // l'intérieur pendant le saut pour fixer le sens, laissent le pilotage normal doser l'arc
@@ -46,7 +44,7 @@ export function applyBotDrift(kart, out, turnAhead, dt) {
   // Survirage : le pilotage normal demande de braquer fort vers l'extérieur (le drift fait
   // tourner plus que le virage) ; au-delà d'un instant, on relâche.
   kart.botOverturn = out.steer * kart.driftDir < -OVERTURN ? kart.botOverturn + dt : 0
-  const goal = kart.skill >= EXPERT_SKILL ? DRIFT.tiers.length : 1
+  const goal = kart.skill >= EXPERT_SKILL ? 2 : 1
   const cornerDone = Math.abs(farError) < END_ERROR
   const wrongSide = cornerSide !== 0 && cornerSide !== kart.driftDir && Math.abs(farError) > START_ERROR * 0.6
   const charged = kart.driftTier >= 1

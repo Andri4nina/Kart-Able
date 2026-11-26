@@ -15,9 +15,10 @@ export const FLAME_STYLES = {
   nitro: { core: additive('#fff6d8'), mid: additive(PALETTE.yellow), outer: additive(PALETTE.orange, 0.55), length: 1 },
   orange: { core: additive('#fff3c4'), mid: additive(PALETTE.orange), outer: additive('#ff4d1a', 0.55), length: 0.75 },
   blue: { core: additive('#e8f6ff'), mid: additive(PALETTE.blue), outer: additive('#1b5cff', 0.55), length: 0.6 },
+  purple: { core: additive('#fbe8ff'), mid: additive(PALETTE.purple), outer: additive('#c13bff', 0.55), length: 0.9 },
 }
 export const RING_MATERIAL = additive('#fff1c2')
-export const SPARK_GLOWS = [PALETTE.white, PALETTE.blue, PALETTE.orange].map(additive)
+export const SPARK_GLOWS = [PALETTE.white, PALETTE.blue, PALETTE.orange, PALETTE.purple].map((color) => additive(color))
 
 // Pose des trois cônes d'un échappement : `power` 0..1 (fin du turbo), `flicker` aléatoire.
 export function writeFlame(parts, style, power, flicker) {

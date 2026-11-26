@@ -354,3 +354,39 @@ Pour finir une course vite en test : marquer les karts humains `finished` dans l
 ### TODO
 - Vote : proposer aussi une coupe ; trophée de fin de coupe.
 - Performance 32 karts en écran partagé ; rampes, raccourcis, pièces.
+
+---
+
+## 2026-11-26 — Phase 2E : sensations, tremplins, deltaplane, programme et points
+
+Fiche : docs/phases/PHASE_2E_FEEL_JUMPS_COURSE.md.
+
+### Fait
+- Roues animées (components3d/Vehicles/wheelRig.js, détection automatique) ; fumée d'échappement (exhaustEmitters.js) ; marques de pneus et traînées du drift (trailPool.js, trailEmitters.js) ; palier violet (miniTurbo3).
+- Drift : départ dès qu'on braque tant que Drift est tenu ; turnInside 1,95 / neutral 1,25 / outside 0,32 ; paliers 0,7 / 1,6 / 2,7.
+- Case à objets : cube de verre irisé, arêtes, point d'interrogation (itemResources.js, boxPose.js).
+- Circuits x1,5 (TRACK_SCALE) ; RACE.fence 12 m, portes de checkpoint 18 m ; clôture visible et murets anti-raccourci (trackFences.js, TrackBarriers.jsx) ; décor hors de la clôture.
+- Tremplins et deltaplane : config/airTuning.js, game/track/trackJumps.js, game/race/kartAir.js, kartVertical.js (relief + rampes + brèches), TrackRamps.jsx, KartGlider.jsx, kartAirPose.js, caméra relevée en vol.
+- Écran des circuits : coupe puis programme libre (courseStore, useCupSelectionStore / useTrackSelectionStore, PlaylistPanel) ; match.points / racesDone (RACE_POINTS) ; menu pause avec changement de circuit (pauseStore, game/pauseMenu.js, PauseMenu.jsx).
+
+### Tests
+- Dans le panneau, les modules chargés par l'app portent un `?t=` après une modification : importer `/src/...` sans ce suffixe donne une autre instance (course invisible). Retrouver l'URL exacte via `performance.getEntriesByType('resource')` avant d'appeler startRace & co.
+- Le panneau tourne à ~3 images/s (version commitée comprise) : avancer avec `advanceTime`, capturer après `resumeRealtime`.
+- React met à jour le DOM après coup : laisser un `await` entre une entrée simulée et la lecture du DOM.
+
+### TODO
+- Bots : viser les paliers orange / violet sur les grandes courbes ; aller chercher les tremplins.
+- Deltaplane sur sections courbes ; pièces ; podium de fin de programme.
+- Mesurer les performances sur une vraie machine (32 karts, traînées, fumée).
+
+---
+
+## 2026-11-26 — Coupes Frostbloom (neige) et Dustrail (terre battue)
+
+### Fait
+- 8 circuits : Combe du Givre, Col Boréal, Cascade de Glace, Sapins Blancs ; Mesa Rouille, Carrière d'Argile, Tourbillon de Poussière, Rallye des Ornières (deltaplane sur Col Boréal et Cascade de Glace, tremplins partout).
+- Données des circuits rangées par coupe : config/trackData/*.js ; ambiances snow, snowForest, dirt (config/trackThemes.js, couleur de route `road`).
+- Textes fr / en / mg.
+
+### Tests
+Simulation 32 karts : tous arrivent, aucune chute, blocage max 5,9 s. Captures en jeu : Col Boréal (neige), Mesa Rouille (terre).

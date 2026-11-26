@@ -11,12 +11,12 @@ import { FLAME_GEOMETRY, FLAME_STYLES, GLOW_GEOMETRY, RING_GEOMETRY, RING_MATERI
 // Retours visuels attachés au kart, lus dans son état à chaque frame (aucun re-render) :
 // - deux réacteurs à l'arrière pendant un turbo (flamme à trois couches, couleur de la source),
 //   onde de choc à l'allumage ; les braises et la fumée sont des particules (Effects) ;
-// - lueur aux roues arrière pendant un drift, à la couleur du palier (blanc, bleu, orange) ;
+// - lueur aux roues arrière pendant un drift, à la couleur du palier (blanc, bleu, orange, violet) ;
 // - bulle translucide tant que l'objet Bulle protège le kart.
 const REAR = -0.95
 const EXHAUSTS = [-0.28, 0.28]
 const BUBBLE_MATERIAL = new MeshStandardMaterial({ color: PALETTE.sky, emissive: PALETTE.sky, emissiveIntensity: 0.4, transparent: true, opacity: 0.28, depthWrite: false })
-const GLOW_SIZES = [0.14, 0.26, 0.34]
+const GLOW_SIZES = [0.14, 0.26, 0.34, 0.42]
 
 function Exhaust({ x, register }) {
   return (

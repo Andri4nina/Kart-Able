@@ -4,7 +4,8 @@ const ROAD_Y = 0.03
 
 // Ruban d'asphalte le long du chemin (boucle fermée), largeur et hauteur variables (relief).
 // Attribut `aRoad` : x = position en travers (-1 bord gauche, +1 bord droit), y = distance (m).
-export function buildRoadGeometry(path) {
+// `gaps` : échantillons sans route (brèches du deltaplane, game/track/trackJumps.js).
+export function buildRoadGeometry(path, gaps) {
   const count = path.count
   const positions = new Float32Array(count * 2 * 3)
   const road = new Float32Array(count * 2 * 2)
@@ -25,6 +26,7 @@ export function buildRoadGeometry(path) {
   for (let i = 0; i < count; i += 1) {
     const a = i * 2
     const b = ((i + 1) % count) * 2
+    if (gaps?.[i] || gaps?.[(i + 1) % count]) continue
     // Ordre des sommets : faces tournées vers le haut.
     indices.push(a, a + 1, b, a + 1, b + 1, b)
   }

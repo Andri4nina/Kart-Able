@@ -8,7 +8,7 @@ import { selectCurrentScreen, useNavigationStore } from '../stores/navigationSto
 import { useRaceFlowStore } from '../stores/raceFlowStore'
 import { useSessionStore } from '../stores/sessionStore'
 import { useSettingsStore } from '../stores/settingsStore'
-import { useTrackSelectionStore } from '../stores/trackSelectionStore'
+import { useCourseStore } from '../stores/courseStore'
 import { useTrackVoteStore } from '../stores/trackVoteStore'
 import { describeHud, describeRace } from './race/raceText'
 import { collectButtons, collectProps, describeTrack, round, summarizeLocalPlayers } from './textStateParts'
@@ -51,7 +51,7 @@ export function buildTextState({ camera, scene, timeControl }) {
     bindings: useBindingsStore.getState().bindings,
     match,
     track: describeTrack(match),
-    trackSelection: Object.values(useTrackSelectionStore.getState().selections)[0] ?? null,
+    trackSelection: (({ step, cupId, playlist }) => ({ step, cupId, playlist }))(useCourseStore.getState()),
     hud: screen === SCREENS.GAME ? describeHud(match) : null,
     race: describeRace(),
     // Enchaînement après la course : coupe (course n / total), étape (résultats, vote, annonce).

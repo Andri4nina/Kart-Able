@@ -1,6 +1,5 @@
 import bannerTowerGreenUrl from '../../assets/models/racing/bannerTowerGreen.glb'
 import bannerTowerRedUrl from '../../assets/models/racing/bannerTowerRed.glb'
-import barrierWallUrl from '../../assets/models/racing/barrierWall.glb'
 import flagCheckersUrl from '../../assets/models/racing/flagCheckers.glb'
 import grandStandCoveredUrl from '../../assets/models/racing/grandStandCovered.glb'
 import lightPostModernUrl from '../../assets/models/racing/lightPostModern.glb'
@@ -15,7 +14,6 @@ export const DECOR_MODELS = Object.freeze({
   stand: { url: grandStandCoveredUrl, scale: 7 },
   towerRed: { url: bannerTowerRedUrl, scale: 7 },
   towerGreen: { url: bannerTowerGreenUrl, scale: 7 },
-  barrier: { url: barrierWallUrl, scale: 4 },
   light: { url: lightPostModernUrl, scale: 10 },
 })
 

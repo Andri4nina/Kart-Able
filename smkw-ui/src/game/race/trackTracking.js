@@ -1,4 +1,5 @@
 import { WALL } from '../../config/kartTuning'
+import { resetAir } from './kartAir'
 import { clearBoost } from './kartBoost'
 import { cancelDrift } from './kartDrift'
 import { distanceToLake } from '../track/trackGeometry'
@@ -65,9 +66,13 @@ export function isInWater(lakes, x, z) {
   return false
 }
 
-// Réapparition sur la route, un peu avant l'endroit de la chute, dans le sens de course.
-export function respawnOnTrack(path, kart) {
-  const i = (kart.trackIndex - 4 + path.count) % path.count
+// Réapparition sur la route, un peu avant l'endroit de la chute, dans le sens de course ; après
+// la brèche si la chute a eu lieu au-dessus d'une brèche du deltaplane (`gaps`).
+export function respawnOnTrack(path, kart, gaps) {
+  let i = (kart.trackIndex - 4 + path.count) % path.count
+  if (gaps?.[kart.trackIndex] || gaps?.[i]) {
+    while (gaps[i] || gaps[(i - 4 + path.count) % path.count]) i = (i + 1) % path.count
+  }
   kart.trackIndex = i
   kart.x = path.x[i]
   kart.z = path.z[i]
@@ -80,6 +85,7 @@ export function respawnOnTrack(path, kart) {
   kart.spin = 0
   cancelDrift(kart)
   clearBoost(kart)
+  resetAir(kart)
   kart.lateral = 0
   kart.offRoad = false
 }

@@ -37,8 +37,10 @@ export function writeChaseCamera(slot, distance, outPosition, outTarget) {
 // Suivi d'un kart en course : la caméra rattrape son orientation avec un léger retard (aucun
 // retard en mouvement réduit, ou à une nouvelle course). Un suiveur par case, au niveau module.
 // La hauteur suit le relief avec un léger amorti (les petits sauts ne secouent pas l'image).
+// Sous le deltaplane, la caméra monte et recule un peu : l'aile ne cache pas la route.
 const HEIGHT_LAMBDA = 8
-const followers = Array.from({ length: 8 }, () => ({ race: null, yaw: 0, y: 0 }))
+const GLIDE_LIFT = 1.6
+const followers = Array.from({ length: 8 }, () => ({ race: null, yaw: 0, y: 0, lift: 0 }))
 const pose = { x: 0, y: 0, z: 0, yaw: 0 }
 
 export function writeKartChase(cell, kart, race, delta, snap, distance, outPosition, outTarget) {
@@ -49,6 +51,7 @@ export function writeKartChase(cell, kart, race, delta, snap, distance, outPosit
     follower.y = kart.y
   } else {
     follower.y += (kart.y - follower.y) * (1 - Math.exp(-HEIGHT_LAMBDA * delta))
+    follower.lift += ((kart.gliding ? GLIDE_LIFT : 0) - follower.lift) * (1 - Math.exp(-3 * delta))
     const gap = kart.yaw - follower.yaw
     follower.yaw += (gap - Math.round(gap / (Math.PI * 2)) * Math.PI * 2) * (1 - Math.exp(-FOLLOW_LAMBDA * delta))
   }
@@ -56,7 +59,8 @@ export function writeKartChase(cell, kart, race, delta, snap, distance, outPosit
   pose.z = kart.z
   pose.y = follower.y
   pose.yaw = follower.yaw
-  writeChaseCamera(pose, distance, outPosition, outTarget)
+  writeChaseCamera(pose, distance * (1 + follower.lift * 0.15), outPosition, outTarget)
+  outPosition.y += follower.lift
 }
 
 // Case sans joueur (ex. 3 joueurs en 2x2) : vue d'ensemble du circuit (ou de l'arène).

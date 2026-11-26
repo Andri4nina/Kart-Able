@@ -30,39 +30,41 @@ export const STAT_CURVES = Object.freeze({
   offRoad: 0.5,
 })
 
-// Dérapage manuel, même principe que les karts des jeux de kart classiques (génération Wii) :
-// - appui sur Drift en roulant = petit saut ; la direction tenue PENDANT le saut (ou juste à
-//   l'atterrissage, `landGrace`) fixe le sens du dérapage, qui ne change plus ensuite ;
-// - sans direction à l'atterrissage : simple saut, il faut relâcher et réappuyer ;
+// Dérapage manuel, même principe que les jeux de kart arcade de référence :
+// - appui sur Drift en roulant = petit saut ; tant que Drift reste enfoncé, le dérapage part
+//   dès qu'on braque (pendant le saut ou après l'atterrissage), dans ce sens, qui ne change
+//   plus ensuite ; relâcher sans avoir braqué = simple saut ;
 // - le kart tourne toujours vers l'intérieur : braquer dedans resserre, dehors élargit ;
-// - deux paliers d'étincelles, bleu puis orange (super mini-turbo) ; braquer vers l'intérieur
-//   charge plus vite, vers l'extérieur plus lentement ; relâcher Drift déclenche le turbo.
+// - trois paliers d'étincelles, bleu, orange puis violet (ultra mini-turbo) ; braquer vers
+//   l'intérieur charge plus vite, vers l'extérieur plus lentement ; relâcher Drift déclenche
+//   le turbo du palier atteint. Hors-piste, la jauge ne charge pas.
 export const DRIFT = Object.freeze({
   hopTime: 0.22, // durée du saut (s)
   hopHeight: 0.38, // hauteur du saut (affichage)
-  landGrace: 0.12, // s après l'atterrissage pendant lesquelles on peut encore choisir un sens
   entryKick: 0.14, // poussée vers l'extérieur à l'entrée du drift (fraction de la vitesse)
   steerThreshold: 0.3, // braquage minimal pour choisir un sens
   minSpeed: 0.4, // fraction de la vitesse max pour lancer / garder (cancelSpeed) un drift
   cancelSpeed: 0.28,
   // Rotation : toujours vers l'intérieur, serrée (inside) ou large (outside) selon le braquage,
-  // en fraction du braquage normal à pleine vitesse (turnRate * fullSpeedTurn).
+  // en fraction du braquage normal à pleine vitesse (turnRate * fullSpeedTurn). Le drift
+  // neutre tourne déjà plus serré que le braquage normal à pleine vitesse (x 0,75).
   fullSpeedTurn: 0.8,
-  turnInside: 1.6,
-  turnOutside: 0.5,
-  turnNeutral: 1.05,
+  turnInside: 1.95,
+  turnOutside: 0.32,
+  turnNeutral: 1.25,
   // Qualité de charge : braquage extérieur .. neutre .. intérieur.
-  chargeOutside: 0.4,
-  chargeInside: 1.45,
+  chargeOutside: 0.45,
+  chargeInside: 1.5,
   // Angle visuel de glisse du kart (rad) : plus marqué en braquant dedans, moins dehors.
   slipAngle: 0.62,
   slipInside: 0.85,
   slipOutside: 0.4,
   slipRate: 7,
-  // Paliers : charge à atteindre (s pondérées) et turbo obtenu. Bleu, puis orange.
+  // Paliers : charge à atteindre (s pondérées) et turbo obtenu. Bleu, orange, puis violet.
   tiers: Object.freeze([
     { charge: 0.7, boost: 'miniTurbo1' },
-    { charge: 1.7, boost: 'miniTurbo2' },
+    { charge: 1.6, boost: 'miniTurbo2' },
+    { charge: 2.7, boost: 'miniTurbo3' },
   ]),
 })
 
@@ -73,6 +75,9 @@ export const DRIFT = Object.freeze({
 export const BOOSTS = Object.freeze({
   miniTurbo1: { duration: 0.7, speed: 1.24, accel: 2.5, effect: 'blue' },
   miniTurbo2: { duration: 1.35, speed: 1.3, accel: 2.8, effect: 'orange' },
+  miniTurbo3: { duration: 2, speed: 1.34, accel: 3.1, effect: 'purple' },
+  // Figure réussie : petit turbo à l'atterrissage.
+  trick: { duration: 0.75, speed: 1.26, accel: 2.8, effect: 'blue' },
   start: { duration: 0.9, speed: 1.28, accel: 3, effect: 'orange' },
   // Nitro (objet) : longue poussée, flamme de réacteur (KartEffects).
   item: { duration: 1.5, speed: 1.36, accel: 3.4, effect: 'nitro' },
@@ -103,12 +108,4 @@ export const WALL = Object.freeze({
   bounce: 0.35,
   bumpSpeed: 4,
   speedLoss: 0.25, // part de la vitesse perdue sur un choc frontal (pondérée par la résistance)
-})
-
-// Relief (game/race/kartVertical.js) : gravité verticale (sauts sur les crêtes), gravité le
-// long de la pente (freine en montée, pousse en descente), seuil de décollage.
-export const RELIEF = Object.freeze({
-  gravity: 11,
-  slopeGravity: 7,
-  airThreshold: 0.12,
 })

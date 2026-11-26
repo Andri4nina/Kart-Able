@@ -186,7 +186,8 @@
     "track": "Circuit",
     "trackValue": "{{track}} · {{cup}}",
     "trackPending": "Le circuit n'est pas encore choisi.",
-    "cupValue": "{{cup}} : coupe complète ({{count}} circuits)"
+    "cupValue": "{{cup}} : coupe complète ({{count}} circuits)",
+    "playlistValue": "{{count}} courses, de {{first}} à {{last}}"
   },
   "settings": {
     "title": "Paramètres",
@@ -401,19 +402,27 @@
   },
   "trackSelect": {
     "title": "Circuits",
-    "subtitle": "{{player}} choisit la coupe et le circuit.",
-    "roster": "Circuits de la {{cup}}",
     "length": "{{meters}} m",
     "lapLength": "Longueur du tour",
     "laps": "Tours",
     "width": "Largeur",
     "widthRange": "{{min}} à {{max}} m",
     "checkpoints": "Points de passage",
-    "pending": "Choisis une coupe complète ou un circuit, puis confirme.",
-    "confirmed": "Choix fait : START pour continuer.",
     "fullCup": "Coupe complète",
     "cupTracks": "{{count}} circuits",
-    "cupDescription": "Les {{count}} circuits à la suite, avec des points à chaque course : le meilleur total remporte la coupe."
+    "cupDescription": "Les {{count}} circuits à la suite, avec des points à chaque course : le meilleur total remporte la coupe.",
+    "subtitleCups": "{{player}} choisit la coupe.",
+    "subtitleTracks": "{{player}} compose le programme : un circuit, plusieurs, ou toute la coupe.",
+    "cupsTitle": "Coupes",
+    "pendingCups": "Choisis une coupe pour voir ses circuits.",
+    "pendingTracks": "A : ajouter ou retirer un circuit. RETOUR : autres coupes. START : continuer.",
+    "otherCups": "Autres coupes",
+    "playlist": "Programme",
+    "playlistEmpty": "Aucun circuit choisi.",
+    "playlistCount": "{{count}} course(s) sur {{max}} au plus, dans cet ordre.",
+    "playlistWholeCup": "Aucun circuit choisi : toute la {{cup}} sera courue ({{count}} courses).",
+    "remove": "Retirer {{track}}",
+    "pointsRule": "Chaque course rapporte des points, additionnés jusqu'au retour au menu."
   },
   "cups": {
     "kairos": {
@@ -421,7 +430,9 @@
     },
     "summit": {
       "name": "Summit Cup"
-    }
+    },
+    "frostbloom": "Frostbloom Cup",
+    "dustrail": "Dustrail Cup"
   },
   "tracks": {
     "kairosMeadow": {
@@ -455,6 +466,38 @@
     "duneRun": {
       "name": "Course des Dunes",
       "description": "Des dunes qui ondulent et des virages larges : garde ta vitesse dans les bosses."
+    },
+    "frostHollow": {
+      "name": "Combe du Givre",
+      "description": "Une combe enneigée autour d'un lac gelé, puis une chicane serrée entre les congères."
+    },
+    "borealPass": {
+      "name": "Col Boréal",
+      "description": "Grimpe vers les sommets blancs, redescends en lacets, puis envole-toi en deltaplane au-dessus de l'eau glacée."
+    },
+    "icefallRun": {
+      "name": "Cascade de Glace",
+      "description": "Un grand lac glacé au centre ; dès le départ, un saut en deltaplane au-dessus d'une baie."
+    },
+    "whitePines": {
+      "name": "Sapins Blancs",
+      "description": "Une forêt de sapins sous la neige, des épingles et des murets là où la route se replie."
+    },
+    "rustMesa": {
+      "name": "Mesa Rouille",
+      "description": "Plateaux de terre rouge, montées sèches et deux tremplins pour voler au-dessus de la piste."
+    },
+    "clayQuarry": {
+      "name": "Carrière d’Argile",
+      "description": "Une carrière creusée en épingles autour d'un bassin, la terre colle aux roues."
+    },
+    "dustWhirl": {
+      "name": "Tourbillon de Poussière",
+      "description": "Une longue piste qui s'enroule sur elle-même comme un tourbillon de sable."
+    },
+    "rutRally": {
+      "name": "Rallye des Ornières",
+      "description": "Ornières, bosses et virages enchaînés autour d'un étang de boue."
     }
   },
   "vehicles": {
@@ -541,11 +584,13 @@
   },
   "results": {
     "title": "Résultats",
-    "cupFinal": "Classement final",
     "cupRound": "{{cup}} : course {{round}} sur {{total}}",
     "hint": "START ou A pour continuer",
     "nextRace": "Course suivante",
-    "vote": "Voter pour la suite"
+    "vote": "Voter pour la suite",
+    "overall": "Classement général",
+    "round": "{{track}} : course {{round}} sur {{total}}",
+    "pointsLegend": "Points de la course · total après {{races}} course(s)"
   },
   "vote": {
     "title": "Circuit suivant",
@@ -555,5 +600,14 @@
     "choosing": "choisit",
     "elected": "Circuit élu",
     "votes": "{{count}} voix"
+  },
+  "pause": {
+    "title": "Pause",
+    "resume": "Reprendre",
+    "changeTrack": "Changer de circuit",
+    "quit": "Quitter la partie",
+    "chooseCup": "Choisir une coupe",
+    "changeHint": "La course en cours est abandonnée, sans points.",
+    "hint": "Haut / bas · A : valider · RETOUR : revenir · START : reprendre"
   }
 }

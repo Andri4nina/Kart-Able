@@ -2,16 +2,19 @@ import { Color } from 'three'
 import { DRIFT } from '../../config/kartTuning'
 import { PALETTE } from '../World/palette'
 import { burst, count, pick, place, spec, spread } from './emitterKit'
+import { emitExhaust } from './exhaustEmitters'
 import { emitParticle } from './particlePool'
+import { emitKartTrails, TIER_COLORS } from './trailEmitters'
 
 // Émetteurs de particules d'un kart (visuels seulement, lus dans l'état de course) :
-// - drift : fumée de pneus, puis étincelles aux roues arrière dès le palier bleu, orange
-//   ensuite ; gerbe au déclenchement du mini-turbo ;
+// - drift : fumée de pneus, puis étincelles aux roues arrière dès le palier bleu (orange,
+//   violet ensuite) ; gerbe au déclenchement du mini-turbo ; traînées au sol (trailEmitters) ;
+// - échappement : fumée continue (exhaustEmitters) ;
 // - turbo : braises éjectées par le réacteur (nitro), traînée de fumée ;
 // - hors-piste : mottes de terre et d'herbe arrachées ;
 // - chute dans l'eau : grande gerbe ; choc : éclats blancs.
 // `rate` : facteur global (mouvement réduit : moins de particules).
-const TIER_COLORS = [new Color(PALETTE.white), new Color(PALETTE.blue), new Color(PALETTE.orange)]
+const SPARK_RATES = [0, 70, 110, 150]
 const EMBER = [new Color('#fff3b0'), new Color(PALETTE.yellow), new Color(PALETTE.orange)]
 const SMOKE = new Color('#d9dde3')
 const SPLASH = [new Color('#ffffff'), new Color(PALETTE.sky)]
@@ -28,10 +31,10 @@ function emitDrift(kart, angle, pools, dt, rate) {
     }
     if (kart.driftTier === 0) continue
     const color = TIER_COLORS[kart.driftTier]
-    for (let k = count((kart.driftTier === 1 ? 70 : 110) * rate, dt); k > 0; k -= 1) {
+    for (let k = count(SPARK_RATES[kart.driftTier] * rate, dt); k > 0; k -= 1) {
       place(kart, angle, side * WHEEL, 0.1, REAR)
       const out = -kart.driftDir * (1 + Math.random() * 3)
-      Object.assign(spec, { vx: -fx * 4 + Math.cos(angle) * out + spread(1), vy: 1.5 + Math.random() * 3, vz: -fz * 4 - Math.sin(angle) * out + spread(1), life: 0.18 + Math.random() * 0.2, size: kart.driftTier === 1 ? 0.05 : 0.07, grow: 1, gravity: 14, drag: 1, color })
+      Object.assign(spec, { vx: -fx * 4 + Math.cos(angle) * out + spread(1), vy: 1.5 + Math.random() * 3, vz: -fz * 4 - Math.sin(angle) * out + spread(1), life: 0.18 + Math.random() * 0.2, size: 0.04 + kart.driftTier * 0.012, grow: 1, gravity: 14, drag: 1, color })
       emitParticle(pools.glow, spec)
     }
   }
@@ -65,7 +68,7 @@ function emitOffRoad(kart, angle, pools, dt, rate, dirt) {
 }
 
 // Une frame : tous les karts. `memory` garde l'état précédent de chaque kart (événements).
-export function emitKartParticles(world, pools, dt, rate, dirt, memory) {
+export function emitKartParticles(world, pools, trails, dt, rate, dirt, memory) {
   for (const kart of world.karts) {
     let previous = memory.get(kart.id)
     if (!previous) {
@@ -82,6 +85,8 @@ export function emitKartParticles(world, pools, dt, rate, dirt, memory) {
     previous.hits = kart.hits
     previous.driftDir = kart.driftDir
     previous.driftTier = kart.driftTier
+    emitExhaust(kart, pools, dt, rate, previous)
+    emitKartTrails(kart, trails, previous)
     if (sinking) continue
     const angle = kart.yaw - kart.driftDir * DRIFT.slipAngle
     if (kart.driftDir && !kart.airborne) emitDrift(kart, angle, pools, dt, rate)

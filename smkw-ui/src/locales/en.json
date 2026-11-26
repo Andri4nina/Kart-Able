@@ -186,7 +186,8 @@
     "track": "Track",
     "trackValue": "{{track}} · {{cup}}",
     "trackPending": "The track hasn't been chosen yet.",
-    "cupValue": "{{cup}}: full cup ({{count}} tracks)"
+    "cupValue": "{{cup}}: full cup ({{count}} tracks)",
+    "playlistValue": "{{count}} races, from {{first}} to {{last}}"
   },
   "settings": {
     "title": "Settings",
@@ -403,19 +404,27 @@
   },
   "trackSelect": {
     "title": "Tracks",
-    "subtitle": "{{player}} picks the cup and the track.",
-    "roster": "{{cup}} tracks",
     "length": "{{meters}} m",
     "lapLength": "Lap length",
     "laps": "Laps",
     "width": "Width",
     "widthRange": "{{min}} to {{max}} m",
     "checkpoints": "Checkpoints",
-    "pending": "Pick a full cup or a track, then confirm.",
-    "confirmed": "Choice made: START to continue.",
     "fullCup": "Full cup",
     "cupTracks": "{{count}} tracks",
-    "cupDescription": "All {{count}} tracks in a row, with points for every race: the best total wins the cup."
+    "cupDescription": "All {{count}} tracks in a row, with points for every race: the best total wins the cup.",
+    "subtitleCups": "{{player}} picks the cup.",
+    "subtitleTracks": "{{player}} builds the schedule: one track, several, or the whole cup.",
+    "cupsTitle": "Cups",
+    "pendingCups": "Pick a cup to see its tracks.",
+    "pendingTracks": "A: add or remove a track. BACK: other cups. START: continue.",
+    "otherCups": "Other cups",
+    "playlist": "Schedule",
+    "playlistEmpty": "No track picked.",
+    "playlistCount": "{{count}} race(s) out of {{max}} at most, in this order.",
+    "playlistWholeCup": "No track picked: the whole {{cup}} will be raced ({{count}} races).",
+    "remove": "Remove {{track}}",
+    "pointsRule": "Every race awards points, added up until you go back to the menu."
   },
   "cups": {
     "kairos": {
@@ -423,7 +432,9 @@
     },
     "summit": {
       "name": "Summit Cup"
-    }
+    },
+    "frostbloom": "Frostbloom Cup",
+    "dustrail": "Dustrail Cup"
   },
   "tracks": {
     "kairosMeadow": {
@@ -457,6 +468,38 @@
     "duneRun": {
       "name": "Dune Run",
       "description": "Rolling dunes and wide corners: keep your speed through the bumps."
+    },
+    "frostHollow": {
+      "name": "Frost Hollow",
+      "description": "A snowy hollow around a frozen lake, then a tight chicane between the drifts."
+    },
+    "borealPass": {
+      "name": "Boreal Pass",
+      "description": "Climb to the white peaks, wind back down, then glide over the icy water."
+    },
+    "icefallRun": {
+      "name": "Icefall Run",
+      "description": "A huge frozen lake in the middle; right after the start, a glide over a bay."
+    },
+    "whitePines": {
+      "name": "White Pines",
+      "description": "A snowy pine forest, hairpins and walls where the road folds back."
+    },
+    "rustMesa": {
+      "name": "Rust Mesa",
+      "description": "Red dirt plateaus, dry climbs and two ramps to fly over the track."
+    },
+    "clayQuarry": {
+      "name": "Clay Quarry",
+      "description": "A quarry carved in hairpins around a pond, the clay sticks to the wheels."
+    },
+    "dustWhirl": {
+      "name": "Dust Whirl",
+      "description": "A long track that coils in on itself like a sand whirlwind."
+    },
+    "rutRally": {
+      "name": "Rut Rally",
+      "description": "Ruts, bumps and linked corners around a muddy pond."
     }
   },
   "vehicles": {
@@ -543,11 +586,13 @@
   },
   "results": {
     "title": "Results",
-    "cupFinal": "Final standings",
     "cupRound": "{{cup}}: race {{round}} of {{total}}",
     "hint": "START or A to continue",
     "nextRace": "Next race",
-    "vote": "Vote for what is next"
+    "vote": "Vote for what is next",
+    "overall": "Overall standings",
+    "round": "{{track}}: race {{round}} of {{total}}",
+    "pointsLegend": "Race points · total after {{races}} race(s)"
   },
   "vote": {
     "title": "Next track",
@@ -557,5 +602,14 @@
     "choosing": "choosing",
     "elected": "Track elected",
     "votes": "{{count}} votes"
+  },
+  "pause": {
+    "title": "Pause",
+    "resume": "Resume",
+    "changeTrack": "Change track",
+    "quit": "Quit the game",
+    "chooseCup": "Pick a cup",
+    "changeHint": "The current race is abandoned, with no points.",
+    "hint": "Up / down · A: select · BACK: go back · START: resume"
   }
 }

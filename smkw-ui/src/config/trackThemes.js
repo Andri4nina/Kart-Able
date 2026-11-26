@@ -1,6 +1,7 @@
 // Ambiances des circuits : couleurs du sol, de l'eau et de l'herbe, essences d'arbres
 // (voir components3d/Track/treeAssets.js) et densité de végétation. Couleurs pleines ;
-// les shaders mélangent ces teintes selon la texture de données du circuit.
+// les shaders mélangent ces teintes selon la texture de données du circuit. `road`
+// (facultatif) : teinte de la route, asphalte sombre par défaut.
 
 export const TRACK_THEMES = Object.freeze({
   meadow: {
@@ -63,6 +64,42 @@ export const TRACK_THEMES = Object.freeze({
     grass: { tip: '#cfe9a8', base: '#5e8f4a' },
     trees: ['bluePine', 'fir', 'tallPine', 'softPine'],
     treeCount: 700,
+    bushCount: 220,
+  },
+  // Neige : sol blanc bleuté, route de neige tassée, eau glacée, conifères.
+  snow: {
+    ground: ['#eef4fa', '#d6e3ef'],
+    shoulder: '#b7c4d2',
+    sand: '#f7fbff',
+    road: '#6b7686',
+    water: { shallow: '#9fe3f2', deep: '#3b7fb0', foam: '#ffffff' },
+    grass: { tip: '#e9f2f6', base: '#9bb3a6' },
+    trees: ['bluePine', 'fir', 'tallPine'],
+    treeCount: 520,
+    bushCount: 120,
+  },
+  // Forêt sous la neige : plus d'arbres, sol plus sombre entre les sapins.
+  snowForest: {
+    ground: ['#e3ecf4', '#c4d4e2'],
+    shoulder: '#a9b6c4',
+    sand: '#f2f7fc',
+    road: '#5f6a79',
+    water: { shallow: '#8fd8ea', deep: '#2f6f9e', foam: '#ffffff' },
+    grass: { tip: '#dfeaf0', base: '#7f9a8c' },
+    trees: ['bluePine', 'fir', 'tallPine', 'softPine'],
+    treeCount: 950,
+    bushCount: 160,
+  },
+  // Terre battue : piste brune, sol argileux, herbe sèche, arbres rares.
+  dirt: {
+    ground: ['#b9875a', '#a06f45'],
+    shoulder: '#8a5a33',
+    sand: '#d8b384',
+    road: '#7a5232',
+    water: { shallow: '#8ab8a0', deep: '#4b6f5a', foam: '#efe6d2' },
+    grass: { tip: '#c9b46a', base: '#7a6230' },
+    trees: ['acacia', 'orangeUmbrella', 'limeCube', 'greenBlock'],
+    treeCount: 220,
     bushCount: 220,
   },
 })

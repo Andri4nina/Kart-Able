@@ -15,6 +15,8 @@ import { getRaceRoster } from './raceRoster'
 import { createStartSequence } from './startLights'
 import { applyFence, isInWater, respawnOnTrack, updateTrackIndex } from './trackTracking'
 
+const GAP_WATER = -0.6 // hauteur sous laquelle un kart tombé dans une brèche coule
+
 // Monde d'une course (calcul pur, sans React ni Three) : départ, conduite, chocs, tours,
 // classement, fin. `raceTime` est négatif pendant les feux, 0 à leur extinction.
 export const RACE_PHASES = Object.freeze({ COUNTDOWN: 'countdown', RACING: 'racing', RESULTS: 'results' })
@@ -49,11 +51,11 @@ export function createRaceWorld(match, seed, resolveDevice) {
 }
 
 function moveKart(world, kart, dt) {
-  const { path, track } = world.geometry
+  const { path, track, gaps } = world.geometry
   if (kart.sinking > 0) {
     kart.sinking = Math.max(0, kart.sinking - dt)
     if (kart.sinking === 0) {
-      respawnOnTrack(path, kart)
+      respawnOnTrack(path, kart, gaps)
       placeOnGround(kart, world.geometry)
     }
     return
@@ -65,7 +67,9 @@ function moveKart(world, kart, dt) {
   updateTrackIndex(path, kart)
   applyFence(world.geometry, kart)
   updateTrackFeatures(world.geometry, kart, dt)
-  if (kart.offRoad && isInWater(track.lakes, kart.x, kart.z)) {
+  // Dans l'eau : hors de la route sur un lac (au sol), ou tombé dans une brèche du deltaplane.
+  const fell = gaps[kart.trackIndex] && kart.y < GAP_WATER
+  if (fell || (kart.offRoad && !kart.airborne && isInWater(track.lakes, kart.x, kart.z))) {
     kart.sinking = RACE.respawnDelay
     kart.vx = 0
     kart.vz = 0

@@ -28,7 +28,7 @@ function lakeDistance(lake, x, z) {
 
 // Masque de route dessiné au canevas : plusieurs traits de plus en plus étroits, translucides,
 // dont l'empilement donne 1 sur l'asphalte et un fondu sur l'accotement.
-function drawRoadMask(path, origin, size) {
+function drawRoadMask(path, gaps, origin, size) {
   const canvas = document.createElement('canvas')
   canvas.width = RESOLUTION
   canvas.height = RESOLUTION
@@ -46,7 +46,8 @@ function drawRoadMask(path, origin, size) {
       const k = i % path.count
       const px = (path.x[k] - origin[0]) * scale
       const pz = (path.z[k] - origin[1]) * scale
-      if (i === 0) context.moveTo(px, pz)
+      // Brèche (deltaplane) : pas de route, le trait reprend après.
+      if (i === 0 || gaps[k] || gaps[(k - 1 + path.count) % path.count]) context.moveTo(px, pz)
       else context.lineTo(px, pz)
     }
     context.stroke()
@@ -58,7 +59,7 @@ export function buildTrackField(geometry) {
   const { track, path, bounds } = geometry
   const size = (bounds.halfSize + MARGIN) * 2
   const origin = [bounds.centerX - size / 2, bounds.centerZ - size / 2]
-  const road = drawRoadMask(path, origin, size)
+  const road = drawRoadMask(path, geometry.gaps, origin, size)
   const data = new Uint8Array(RESOLUTION * RESOLUTION * 4)
   const texel = size / RESOLUTION
 

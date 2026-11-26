@@ -41,8 +41,8 @@ export function TrackGround({ geometry, field, theme }) {
     return {
       terrain: { geometry: plane, material: createTerrainMaterial(field, theme) },
       water: { geometry: waterPlane, material: createWaterMaterial(field, theme) },
-      road: { geometry: buildRoadGeometry(path), material: createRoadMaterial() },
-      markings: { geometry: buildMarkingsGeometry(path), material: createMarkingsMaterial() },
+      road: { geometry: buildRoadGeometry(path, geometry.gaps), material: createRoadMaterial(theme) },
+      markings: { geometry: buildMarkingsGeometry(path, geometry.gaps), material: createMarkingsMaterial() },
     }
   }, [geometry, path, field, theme])
 

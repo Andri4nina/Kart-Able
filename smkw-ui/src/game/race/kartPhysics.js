@@ -1,3 +1,4 @@
+import { GLIDE } from '../../config/airTuning'
 import { COLLISION, OVER_SPEED_DRAG, STAT_CURVES } from '../../config/kartTuning'
 import { tickBoost } from './kartBoost'
 import { driftTurnRate, updateDrift } from './kartDrift'
@@ -18,7 +19,7 @@ function steerRate(kart, controls, forward) {
   // À l'arrêt on ne tourne pas ; à pleine vitesse on tourne un peu moins vite. En l'air (saut
   // du drift), le braquage reste possible mais réduit.
   const grip = Math.min(1, speed / 5) * (1 - 0.25 * Math.min(1, speed / stats.maxSpeed))
-  const air = kart.hop > 0 || kart.airborne ? 0.6 : 1
+  const air = kart.gliding ? GLIDE.steer : kart.hop > 0 || kart.airborne ? 0.6 : 1
   // Secousse après un choc : le braquage ne répond qu'en partie.
   const wobble = kart.bump > 0 ? COLLISION.wobbleSteer : 1
   return controls.steer * stats.turnRate * grip * air * wobble * (forward < 0 ? -1 : 1)
@@ -47,7 +48,7 @@ function updateForward(kart, controls, forward, dt) {
 
 // Fait tourner le vecteur vitesse avec le kart (part `carry` de la rotation `turn`).
 function carryVelocity(kart, turn) {
-  const carry = kart.hop > 0 || kart.airborne ? STAT_CURVES.carryAir : kart.driftDir ? STAT_CURVES.carryDrift : STAT_CURVES.carry
+  const carry = kart.gliding ? STAT_CURVES.carry : kart.hop > 0 || kart.airborne ? STAT_CURVES.carryAir : kart.driftDir ? STAT_CURVES.carryDrift : STAT_CURVES.carry
   const angle = turn * carry
   const cos = Math.cos(angle)
   const sin = Math.sin(angle)
@@ -65,7 +66,8 @@ export function stepKartPhysics(kart, controls, dt) {
   const forwardX = Math.sin(kart.yaw)
   const forwardZ = Math.cos(kart.yaw)
   const forward = kart.vx * forwardX + kart.vz * forwardZ
-  const sideGrip = kart.driftDir ? kart.stats.driftGrip : kart.hop > 0 || kart.airborne ? kart.stats.grip * 0.5 : kart.stats.grip
+  const loose = (kart.hop > 0 || kart.airborne) && !kart.gliding
+  const sideGrip = kart.driftDir ? kart.stats.driftGrip : loose ? kart.stats.grip * 0.5 : kart.stats.grip
   const side = (kart.vx * -forwardZ + kart.vz * forwardX) * Math.exp(-sideGrip * dt)
   const nextForward = updateForward(kart, controls, forward, dt)
 

@@ -11,7 +11,7 @@ import { getConfirmedId } from './selection/selectionRules'
 // partie (bots).
 export function buildMatchConfig(setup, localSlots = [], picks = NO_PICKS, seed = 1) {
   const mode = getGameMode(setup.modeId)
-  const course = mode.tracks ? resolveCourse(picks.trackId) : null
+  const course = mode.tracks ? resolveCourse(picks.course?.playlist, picks.course?.cupId) : null
   const track = course ? getTrack(course.trackIds[0]) : null
   const players =
     setup.playType === PLAY_TYPES.LOCAL
@@ -31,12 +31,13 @@ export function buildMatchConfig(setup, localSlots = [], picks = NO_PICKS, seed 
     teams: mode.teams,
     trackId: track?.id ?? null,
     laps: track?.laps ?? null,
-    // Coupe : programme des circuits (un seul pour une course simple), course en cours (0..),
-    // points de coupe cumulés par pilote (game/raceSequence.js).
+    // Programme : circuits à courir (cupId si c'est exactement une coupe), course en cours
+    // (0..), points cumulés de la partie par pilote, courses terminées (game/raceSequence.js).
     cupId: course?.cupId ?? null,
     playlist: course?.trackIds ?? [],
     round: 0,
-    cupPoints: {},
+    points: {},
+    racesDone: 0,
     seed,
     players,
     bots: track ? buildRaceBots(mode, players, seed) : [],

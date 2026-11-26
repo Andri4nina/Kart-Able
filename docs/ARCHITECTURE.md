@@ -215,7 +215,7 @@ src/
 | Nouvelle langue | Fichier `src/locales/<code>.json` avec `_meta.name` ; `npm run check:i18n` |
 | Nouvel écran | `SCREENS` + `SCREEN_META` + une ligne dans `SCREEN_COMPONENTS` (UILayer) |
 | Nouveau périphérique | Fabrique dans `input/devices.js` + lecture dans `inputManager.js` ; les écrans ne changent pas |
-| Nouveau circuit / nouvelle coupe | Entrée dans `config/tracks.js` (points de contrôle, lacs, ambiance, graine) et `config/cups.js` + textes `tracks.<id>.*`, `cups.<id>.name` (voir [elements/track-generation.md](elements/track-generation.md)) |
+| Nouveau circuit / nouvelle coupe | Entrée dans `config/trackData/<coupe>.js` (liste importée par `config/tracks.js`) (points de contrôle, lacs, ambiance, graine) et `config/cups.js` + textes `tracks.<id>.*`, `cups.<id>.name` (voir [elements/track-generation.md](elements/track-generation.md)) |
 | Nouveau personnage | GLB dans `assets/models/Character` + `characterAssets.js` + entrée dans `CHARACTERS` (`classId`, `size`, `color`) + token `--color-char-<id>` + `characters.<id>.name` dans chaque locale (voir [elements/character-classes.md](elements/character-classes.md)) |
 | Nouveau véhicule | GLB dans `assets/models` + entrée dans `VEHICLES` et `vehicleAssets.js` + `vehicles.<id>.name` dans chaque locale |
 | Nouvelle sélection (roues, ailes...) | `createSelectionStore` + `createSelectionController` + `SelectionScreen` (voir [elements/selection-system.md](elements/selection-system.md)) |
@@ -223,6 +223,8 @@ src/
 | Réseau | `net/` : `hostOnlineMatch` / `joinOnlineMatch` deviennent des messages WebSocket vers smkw-api (Rust) ; `getStartBlocker` lève `serverRequired` une fois connecté |
 | Gameplay d'un mode | Lire `sessionStore.match` (modeId, playType, players) au démarrage de la scène de course |
 | Réglage de conduite (drift, turbo, chocs, stats) | `config/kartTuning.js` uniquement ; le contrôleur (`game/race/kartPhysics.js`, `kartDrift.js`, `kartBoost.js`, `kartCollisions.js`) ne contient aucune valeur (voir [elements/kart-driving.md](elements/kart-driving.md)) |
+| Réglage en l'air (relief, figures, deltaplane) | `config/airTuning.js` ; rampes et brèches dans `config/tracks.js` (`ramps`, `gliders`) (voir [elements/jumps-gliders.md](elements/jumps-gliders.md)) |
+| Limites du hors-piste, murets anti-raccourci | `config/race.js` (`fence`, `shortcut`) (voir [elements/track-barriers.md](elements/track-barriers.md)) |
 | Nouvelle source de turbo (pad, objet) | Entrée dans `BOOSTS` + `applyBoost(kart, id)` : la politique de cumul est commune |
 | Caméra de poursuite | `components3d/Camera/chaseCamera.js` (une par case de l'écran partagé) |
 | Disposition de l'écran partagé | `config/splitScreen.js` + `GRID_CLASSES` dans `SplitScreenHud.jsx` (mêmes grilles) |

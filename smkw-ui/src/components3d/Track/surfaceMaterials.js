@@ -1,5 +1,8 @@
 import { Color, MeshLambertMaterial, Vector2 } from 'three'
 
+// Asphalte par défaut (valeurs linéaires, comme le shader).
+const ASPHALT = Object.freeze([0.105, 0.115, 0.135])
+
 // Matériaux du sol d'un circuit : terrain et route. Lambert (léger) complété par
 // onBeforeCompile pour lire la texture de données du circuit (trackField.js).
 const LAKE_DEPTH = 3.2
@@ -51,19 +54,21 @@ export function createTerrainMaterial(field, theme) {
   return material
 }
 
-// Route : asphalte et lignes blanches de bord (attribut aRoad, voir roadGeometry.js).
-export function createRoadMaterial() {
+// Route : revêtement (asphalte, neige tassée, terre selon l'ambiance) et lignes blanches de
+// bord (attribut aRoad, voir roadGeometry.js).
+export function createRoadMaterial(theme) {
   const material = new MeshLambertMaterial({ polygonOffset: true, polygonOffsetFactor: -2 })
   material.onBeforeCompile = (shader) => {
+    shader.uniforms.uRoad = { value: theme?.road ? new Color(theme.road) : new Color().setRGB(...ASPHALT) }
     shader.vertexShader = `attribute vec2 aRoad;\nvarying vec2 vRoad;\n${shader.vertexShader}`.replace(
       '#include <begin_vertex>',
       '#include <begin_vertex>\nvRoad = aRoad;',
     )
-    shader.fragmentShader = `varying vec2 vRoad;\n${shader.fragmentShader}`.replace(
+    shader.fragmentShader = `varying vec2 vRoad;\nuniform vec3 uRoad;\n${shader.fragmentShader}`.replace(
       '#include <color_fragment>',
       `#include <color_fragment>
       float grain = fract(sin(dot(floor(vRoad * vec2(18.0, 1.5)), vec2(12.9898, 78.233))) * 43758.5453);
-      vec3 asphalt = vec3(0.105, 0.115, 0.135) * (0.92 + grain * 0.16);
+      vec3 asphalt = uRoad * (0.92 + grain * 0.16);
       float edge = step(0.94, abs(vRoad.x));
       diffuseColor.rgb = mix(asphalt, vec3(0.92), edge);`,
     )

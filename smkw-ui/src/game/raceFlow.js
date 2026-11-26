@@ -1,16 +1,18 @@
 import { RACE, TRACK_VOTE } from '../config/race'
 import { INPUT_ACTIONS } from '../input/actions'
+import { usePauseStore } from '../stores/pauseStore'
 import { useRaceFlowStore } from '../stores/raceFlowStore'
 import { useRaceStore } from '../stores/raceStore'
 import { useSessionStore } from '../stores/sessionStore'
 import { useTrackVoteStore } from '../stores/trackVoteStore'
 import { getRace, startRace } from './race/raceSession'
-import { buildNextCupMatch, buildVotedMatch, getVoteOptions, hasNextCupRace, tallyVotes } from './raceSequence'
+import { buildChangedMatch, buildNextMatch, buildVotedMatch, getVoteOptions, hasNextRace, tallyVotes } from './raceSequence'
 import { createSelectionController } from './selection/createSelectionController'
 import { areAllConfirmed, getConfirmedId } from './selection/selectionRules'
 
-// Après une course : écran des résultats, puis course suivante de la coupe, ou vote des
-// joueurs pour le circuit suivant (le plus choisi est couru ; égalité : tirage au sort).
+// Après une course : écran des résultats (points de la course, total de la partie), puis
+// course suivante du programme, ou vote des joueurs pour le circuit suivant (le plus choisi est
+// couru ; égalité : tirage au sort). En pleine course : changement de circuit (menu pause).
 // Entrées : START ou A (n'importe quel joueur) pour continuer ; pendant le vote, chaque joueur
 // choisit avec son périphérique (même contrôleur que les écrans de sélection).
 const VOTE_COLUMNS = 4
@@ -20,6 +22,7 @@ let revealTimer = null
 
 function launch(match) {
   clearTimeout(revealTimer)
+  usePauseStore.getState().reset()
   useRaceFlowStore.getState().reset()
   useSessionStore.getState().begin(match)
   startRace(match)
@@ -37,13 +40,21 @@ export function beginTrackVote() {
   useTrackVoteStore.getState().begin(match.players)
 }
 
-// Bouton « Continuer » des résultats : course suivante de la coupe, sinon le vote.
+// Bouton « Continuer » des résultats : course suivante du programme, sinon le vote.
 export function continueAfterResults() {
   const { match } = useSessionStore.getState()
   const { results } = useRaceStore.getState()
   if (!match || !results || useRaceFlowStore.getState().step) return false
-  if (hasNextCupRace(match)) launch(buildNextCupMatch(match, results, newSeed()))
+  if (hasNextRace(match)) launch(buildNextMatch(match, results, newSeed()))
   else beginTrackVote()
+  return true
+}
+
+// Menu pause : la course en cours est abandonnée (sans points) pour `trackId`.
+export function changeTrack(trackId) {
+  const { match } = useSessionStore.getState()
+  if (!match?.trackId || !trackId) return false
+  launch(buildChangedMatch(match, trackId, newSeed()))
   return true
 }
 
@@ -62,9 +73,10 @@ export function finishTrackVote() {
 
 export function startVotedRace() {
   const { match } = useSessionStore.getState()
+  const { results } = useRaceStore.getState()
   const { step, winner } = useRaceFlowStore.getState()
   if (!match || step !== 'reveal' || !winner) return false
-  launch(buildVotedMatch(match, winner, newSeed()))
+  launch(buildVotedMatch(match, winner, results ?? [], newSeed()))
   return true
 }
 
