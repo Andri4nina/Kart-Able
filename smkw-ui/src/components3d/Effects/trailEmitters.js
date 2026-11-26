@@ -1,5 +1,4 @@
 import { Color } from 'three'
-import { DRIFT } from '../../config/kartTuning'
 import { PALETTE } from '../World/palette'
 import { emitTrail } from './trailPool'
 
@@ -23,9 +22,9 @@ function wheelPoint(kart, angle, side, out) {
 const point = { x: 0, z: 0 }
 
 export function emitKartTrails(kart, pools, memory) {
-  const marking = kart.driftDir !== 0 && !kart.airborne && kart.sinking === 0
+  const marking = kart.driftDir !== 0 && kart.hop === 0 && !kart.airborne && kart.sinking === 0
   memory.trail ??= [{ x: 0, z: 0, on: false }, { x: 0, z: 0, on: false }]
-  const angle = kart.yaw - kart.driftDir * DRIFT.slipAngle
+  const angle = kart.yaw
   for (let w = 0; w < 2; w += 1) {
     const last = memory.trail[w]
     if (!marking) {

@@ -18,6 +18,7 @@ const flatPlane = () => new PlaneGeometry(1, 1).rotateX(-Math.PI / 2)
 const TRAILS = {
   skid: { capacity: 3072, geometry: flatPlane, material: () => new MeshBasicMaterial({ transparent: true, opacity: 0.5, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -6 }), mode: 'skid' },
   streak: { capacity: 1024, geometry: flatPlane, material: () => new MeshBasicMaterial({ blending: AdditiveBlending, transparent: true, depthWrite: false, toneMapped: false, polygonOffset: true, polygonOffsetFactor: -8 }), mode: 'glow' },
+  boost: { capacity: 2048, geometry: flatPlane, material: () => new MeshBasicMaterial({ blending: AdditiveBlending, transparent: true, depthWrite: false, toneMapped: false, polygonOffset: true, polygonOffsetFactor: -10 }), mode: 'glow' },
 }
 
 function createLayers(definitions, prefix, createPool) {

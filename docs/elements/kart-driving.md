@@ -59,3 +59,67 @@ Aucune allocation par frame ; test grossier par distance avant les capsules (32 
 ## Évolutions prévues
 
 Pads de turbo, rampes, objets : nouvelles entrées dans `BOOSTS`. IA qui drift : phase IA.
+
+## Drift : glisse par adhérence (phase 3E)
+
+Fichiers :
+- `config/driftTuning.js` : réglages ;
+- `game/race/kartDrift.js` : états et charge ;
+- `kartDriftMotion.js` : mouvement ;
+- `kartDriftRates.js` : rotation visée et adhérence ;
+- `kartSpeed.js` : vitesse commune ;
+- `kartPhysics.js` : conduite normale et sortie de drift.
+
+**Modèle de glisse.** Rien n'est imposé, tout découle de la rotation et de l'adhérence :
+1. Le braquage pilote la vitesse de rotation du kart (`kart.yawRate`), toujours vers l'intérieur, avec de l'inertie (`driftResponse`, selon le poids).
+2. La vitesse garde sa norme. Sa direction suit le nez : une part `carry` (0,35) de la rotation tout de suite, le reste rattrapé par l'adhérence latérale (`driftGrip`). L'adhérence réoriente l'élan, elle ne le freine pas.
+3. L'angle de glisse `kart.slip` est l'écart entre le nez et la vitesse. En régime établi, il vaut environ (1 - carry) x rotation / adhérence :
+   - 35° braqué dedans, 23° au neutre, 7° en contre-braquage ;
+   - un peu plus marqué à haute vitesse (moins d'adhérence) ;
+   - plafonné à 39° (pas de toupie).
+4. La trajectoire tourne aussi vite que le kart. Rayons à pleine vitesse :
+   - 11 m braqué dedans, 17 m au neutre, 36 m en contre-braquage ;
+   - en conduite normale, braquage à fond : 19 m.
+5. Contre-braquer :
+   - réduit la rotation ;
+   - augmente l'adhérence (`counterGrip`) : le kart se redresse et élargit, sans perdre le drift.
+
+**États**
+- **Conduite normale.**
+- **Entrée** : petit saut, sens fixé par le braquage dès l'appui (ou pendant le saut, Drift tenu).
+  - La rotation visée est majorée au départ (`entryKick`).
+  - Les pneus ne tiennent presque plus pendant le saut (`hopGrip`).
+  - L'arrière décroche donc : le nez tourne de 33° quand la trajectoire n'a tourné que de 16° (0,3 s).
+- **Drift** : la jauge charge au sol.
+- **Relâchement** : mini-turbo, sans délai.
+- **Sortie** :
+  - `slip` se résorbe (`driftRecover`) et la conduite normale s'applique au cap de la trajectoire ;
+  - un nouveau drift dans l'autre sens part de l'élan restant.
+
+**Vitesse** : gardée, avec une légère perte au-delà d'un fort angle (`scrub`).
+
+**Charge**
+- Par seconde : 2,6 dedans, 1,25 au neutre, 0,75 en contre-braquage, jamais nulle.
+- Seulement au sol, après le saut.
+- Bleu à 2,27, orange à 4,79.
+
+**Mini-turbos**
+- Bleu : x1,33 pendant 1 s, élan immédiat de +2,5 m/s (`kick`).
+- Orange : x1,4 pendant 2,2 s, élan immédiat de +4 m/s.
+
+**Par kart** (`STAT_CURVES`)
+- `driftTurn` et `driftRecover` : maniabilité.
+- `driftGrip` : statistique drift ; plus elle est haute, plus le kart glisse.
+- `driftCharge` : statistique drift.
+- `driftResponse` : poids.
+
+**Visuel**
+- Le lacet inclut l'angle de glisse : aucun angle « décoratif » n'est ajouté.
+- Roulis proportionnel à l'angle, suspension écrasée.
+- Étincelles et traces aux roues arrière, à partir de l'atterrissage.
+
+**Caméra** : suit à 90 % la trajectoire, on voit donc le kart de travers. Elle revient en douceur pendant que l'angle se résorbe.
+
+**Pilotes ordinateur**
+- Ils visent avec le nez, ce qui anticipe la trajectoire qui le rejoint.
+- Ils ne driftent que dans les vrais virages (`START_ERROR` 1) et tolèrent plus de contre-braquage.

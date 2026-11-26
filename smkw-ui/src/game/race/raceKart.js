@@ -57,10 +57,15 @@ export function createRaceKart(racer, slot, geometry, { device, random, speedCla
     // figure à récompenser, style de figure.
     hop: 0,
     driftDir: 0,
+    driftTime: 0,
     driftCharge: 0,
     driftTier: 0,
     driftArmed: false,
-    driftPick: 0,
+    // Glisse (kartDriftMotion.js) : angle du nez sur la trajectoire (rad, lacet = trajectoire +
+    // slip), vitesse de rotation du kart (rad/s), braquage lissé du drift.
+    slip: 0,
+    yawRate: 0,
+    driftSteer: 0,
     driftHeld: false,
     gliding: false,
     trick: 0,

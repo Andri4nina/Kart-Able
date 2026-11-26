@@ -261,7 +261,8 @@
     "itemRolling": "Rolling",
     "itemCharges": "×{{count}}",
     "luckyBox": "Golden box",
-    "draft": "Slipstream"
+    "draft": "Slipstream",
+    "minimap": "Track minimap"
   },
   "input": {
     "keyboard1": "Keyboard 1",

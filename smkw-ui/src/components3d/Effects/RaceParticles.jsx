@@ -43,7 +43,7 @@ export function RaceParticles({ trackId }) {
       for (const layer of Object.values(trails)) clearTrailPool(layer.pool)
     }
     const pools = { glow: layers.glow.pool, puff: layers.puff.pool, chunk: layers.chunk.pool }
-    const trailPools = { skid: trails.skid.pool, streak: trails.streak.pool }
+    const trailPools = { skid: trails.skid.pool, streak: trails.streak.pool, boost: trails.boost.pool }
     if (world) {
       const rate = reducedMotion ? 0.4 : 1
       emitKartParticles(world, pools, trailPools, dt, rate, dirt, memory.karts)

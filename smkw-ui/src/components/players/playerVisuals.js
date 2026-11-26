@@ -4,14 +4,14 @@ import { Gamepad2, Gauge, Hand, Keyboard, Shield, Sparkles, Unplug, Zap } from '
 // pour être détectées au build). Les données restent dans config/.
 
 const PLAYER_COLORS = [
-  { bg: 'bg-player-1', text: 'text-player-1', border: 'border-player-1', ring: 'ring-player-1' },
-  { bg: 'bg-player-2', text: 'text-player-2', border: 'border-player-2', ring: 'ring-player-2' },
-  { bg: 'bg-player-3', text: 'text-player-3', border: 'border-player-3', ring: 'ring-player-3' },
-  { bg: 'bg-player-4', text: 'text-player-4', border: 'border-player-4', ring: 'ring-player-4' },
-  { bg: 'bg-player-5', text: 'text-player-5', border: 'border-player-5', ring: 'ring-player-5' },
-  { bg: 'bg-player-6', text: 'text-player-6', border: 'border-player-6', ring: 'ring-player-6' },
-  { bg: 'bg-player-7', text: 'text-player-7', border: 'border-player-7', ring: 'ring-player-7' },
-  { bg: 'bg-player-8', text: 'text-player-8', border: 'border-player-8', ring: 'ring-player-8' },
+  { bg: 'bg-player-1', text: 'text-player-1', border: 'border-player-1', ring: 'ring-player-1', fill: 'fill-player-1' },
+  { bg: 'bg-player-2', text: 'text-player-2', border: 'border-player-2', ring: 'ring-player-2', fill: 'fill-player-2' },
+  { bg: 'bg-player-3', text: 'text-player-3', border: 'border-player-3', ring: 'ring-player-3', fill: 'fill-player-3' },
+  { bg: 'bg-player-4', text: 'text-player-4', border: 'border-player-4', ring: 'ring-player-4', fill: 'fill-player-4' },
+  { bg: 'bg-player-5', text: 'text-player-5', border: 'border-player-5', ring: 'ring-player-5', fill: 'fill-player-5' },
+  { bg: 'bg-player-6', text: 'text-player-6', border: 'border-player-6', ring: 'ring-player-6', fill: 'fill-player-6' },
+  { bg: 'bg-player-7', text: 'text-player-7', border: 'border-player-7', ring: 'ring-player-7', fill: 'fill-player-7' },
+  { bg: 'bg-player-8', text: 'text-player-8', border: 'border-player-8', ring: 'ring-player-8', fill: 'fill-player-8' },
 ]
 
 export function getPlayerColors(index) {

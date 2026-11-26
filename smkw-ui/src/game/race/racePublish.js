@@ -76,6 +76,12 @@ export function publishRace(world) {
     entry.boost = kart.boost
     entry.draft = kart.drafting ? getDraftLevel(kart) : 0
   }
+  const { racers } = telemetry
+  racers.count = Math.min(world.karts.length, racers.x.length)
+  for (let i = 0; i < racers.count; i += 1) {
+    racers.x[i] = world.karts[i].x
+    racers.z[i] = world.karts[i].z
+  }
   telemetry.publish(Math.max(0, world.raceTime))
 
   const race = useRaceStore.getState()

@@ -28,15 +28,15 @@ export function writeKartPose(kart, delta, reducedMotion, visual, { root, body, 
   visual.size = MathUtils.damp(visual.size, kart.shrink > 0 ? SHRINK.scale : 1, 8, delta)
   root.scale.setScalar(visual.size)
 
+  // L'angle de glisse est dans le lacet (physique, kartDriftMotion.js) : le corps n'en rajoute pas.
   const turning = kart.driftDir || kart.controls.steer
-  const rate = reducedMotion ? 30 : DRIFT.slipRate
-  // Glisse du corps : plus profonde en braquant vers l'intérieur du drift, moindre dehors.
-  const inward = kart.driftDir ? kart.controls.steer * kart.driftDir : 0
-  const slipAngle = inward >= 0 ? DRIFT.slipAngle + (DRIFT.slipInside - DRIFT.slipAngle) * inward : DRIFT.slipAngle + (DRIFT.slipAngle - DRIFT.slipOutside) * inward
-  visual.slip = MathUtils.damp(visual.slip, -kart.driftDir * slipAngle, rate, delta)
-  // Roulis : vers l'extérieur du virage, plus marqué en drift (le kart s'appuie sur ses roues).
-  const lean = kart.driftDir ? DRIFT_ROLL : ROLL
+  // Roulis : vers l'extérieur du virage, plus marqué en drift (le kart s'appuie sur ses roues
+  // extérieures), proportionnel à l'angle de glisse.
+  const slide = Math.min(1, Math.abs(kart.slip) / 0.4)
+  const lean = kart.driftDir ? ROLL + (DRIFT_ROLL - ROLL) * slide : ROLL
   visual.roll = MathUtils.damp(visual.roll, -turning * lean * Math.min(1, Math.abs(kart.speed) / 15), 8, delta)
+  // Suspension : le kart s'écrase un peu en drift (charge sur les ressorts).
+  visual.squat = MathUtils.damp(visual.squat, kart.driftDir && kart.hop === 0 ? 0.035 : 0, 10, delta)
   visual.phase += delta * (20 + Math.abs(kart.speed))
 
   const hopT = kart.hop > 0 ? 1 - kart.hop / DRIFT.hopTime : 0
@@ -47,13 +47,13 @@ export function writeKartPose(kart, delta, reducedMotion, visual, { root, body, 
   visual.land = Math.max(0, visual.land - delta * 6)
   const squash = reducedMotion ? 0 : Math.sin(visual.land * Math.PI) * 0.09
   const shake = reducedMotion ? 0 : kart.bump * 0.35
-  body.position.y = hopY
+  body.position.y = hopY - visual.squat
   body.scale.set(1 + squash * 0.5, 1 - squash, 1 + squash * 0.5)
   // Drift : le kart vibre légèrement sur ses pneus (petite trépidation, pas en mouvement réduit).
   const chatter = kart.driftDir && !reducedMotion ? Math.sin(visual.phase * 3.1) * 0.012 : 0
   body.rotation.set(
     (kart.boost > 0 ? BOOST_PITCH : 0) + Math.sin(visual.phase * 2.3) * shake * 0.3 + chatter,
-    visual.slip + Math.sin(visual.phase * 1.7) * shake * 0.4 + (kart.spin > 0 ? (1 - kart.spin / SPINOUT.duration) * Math.PI * 4 : 0),
+    Math.sin(visual.phase * 1.7) * shake * 0.4 + (kart.spin > 0 ? (1 - kart.spin / SPINOUT.duration) * Math.PI * 4 : 0),
     visual.roll + Math.sin(visual.phase * 2.9) * shake * 0.3,
   )
 

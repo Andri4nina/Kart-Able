@@ -10,13 +10,34 @@ Trois façons de jouer, trois livraisons :
 
 ## 1. Site web sur Vercel
 
-1. Sur vercel.com, **Add New Project** puis importer le dépôt GitHub `Kart-Able`.
-2. **Project Name** : `rasoamanana-andrianina-kart-able` (adresse : https://rasoamanana-andrianina-kart-able.vercel.app).
-3. **Root Directory** : `smkw-ui`. Le reste vient de `smkw-ui/vercel.json` (build `npm run build`, sortie `dist`, cache des fichiers, en-têtes de sécurité).
+Le dépôt est prêt pour Vercel de deux façons. Les deux construisent seulement le jeu web (`smkw-ui`) ; ni le serveur Rust ni l'application de bureau ne sont envoyés.
+
+### a. Depuis GitHub (recommandé : redéploiement à chaque push)
+
+1. Sur vercel.com, **Add New Project**, puis importer le dépôt GitHub `Kart-Able`.
+2. **Project Name** : `rasoamanana-andrianina-kart-able`. L'adresse sera https://rasoamanana-andrianina-kart-able.vercel.app.
+3. **Root Directory**, au choix :
+   - laisser la racine du dépôt : `vercel.json` (à la racine) installe et construit `smkw-ui` et publie `smkw-ui/dist` ;
+   - ou choisir `smkw-ui` : c'est alors `smkw-ui/vercel.json` qui s'applique.
+
+   Dans les deux cas, ces fichiers règlent le build (`npm run build`), le dossier de sortie, le cache des fichiers et les en-têtes de sécurité. Rien n'est à saisir dans l'interface.
 4. Variables d'environnement (Settings, Environment Variables) :
    - `SITE_URL` : l'adresse définitive (ex. `https://kart-able.mg` si un domaine est ajouté) ; sans elle, l'adresse Vercel ci-dessus ;
    - `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION` : codes des balises meta de vérification (facultatif, voir plus bas).
-5. Chaque push sur `main` redéploie le site.
+5. **Deploy**. Ensuite :
+   - chaque push sur `main` redéploie le site en production ;
+   - chaque branche ou pull request obtient une adresse d'aperçu.
+
+### b. En ligne de commande (sans GitHub)
+
+Depuis `smkw-ui/` (Node 20 ou plus) :
+
+```
+npm run deploy:preview   # adresse d'aperçu
+npm run deploy           # production
+```
+
+Au premier lancement, la commande Vercel (`npx vercel`) demande de se connecter, puis de lier ou de créer le projet. Le choix est gardé dans `.vercel/`, ignoré par git. Les variables se gèrent de la même façon : `npx vercel env add SITE_URL`.
 
 Domaine personnalisé : Settings, Domains, ajouter le domaine, suivre les enregistrements DNS indiqués, puis mettre `SITE_URL` à jour et redéployer (le sitemap et les balises suivent).
 

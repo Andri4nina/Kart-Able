@@ -11,6 +11,7 @@ import { ItemSlot } from '../../ui/hud/ItemSlot'
 import { LapPanel } from '../../ui/hud/LapPanel'
 import { PositionBadge } from '../../ui/hud/PositionBadge'
 import { RaceCallout } from '../../ui/hud/RaceCallout'
+import { RaceMinimap } from '../../ui/hud/RaceMinimap'
 import { Speedometer } from '../../ui/hud/Speedometer'
 
 // Étiquette du joueur : numéro sur sa couleur, puis visage et nom du personnage
@@ -77,7 +78,10 @@ export function PlayerViewportHud({ player, position, total, framed }) {
               <LapPanel playerId={player.id} />
             </div>
           </motion.div>
-          <motion.div variants={hudFrom.right}>
+          <motion.div variants={hudFrom.right} className="flex flex-col items-end gap-2">
+            <div className="hidden @xs:block cell-short:hidden">
+              <RaceMinimap playerId={player.id} />
+            </div>
             <PositionBadge position={racePosition} total={raceTotal} />
           </motion.div>
         </div>

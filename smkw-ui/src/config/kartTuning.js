@@ -11,9 +11,13 @@ export const STAT_CURVES = Object.freeze({
   acceleration: { base: 14, perPoint: 1.25 },
   turnRate: { base: 2.15, perPoint: 0.1 },
   grip: { base: 8, perPoint: 0.55 },
-  // Adhérence latérale en drift : la trajectoire suit le kart (la glisse du corps est visuelle,
-  // voir slipAngle), sans quoi un drift ferait perdre toute la vitesse.
-  driftGrip: { base: 6.5, perPoint: 0.2 },
+  // Drift (config/driftTuning.js) : rotation (maniabilité), adhérence latérale (statistique
+  // drift : plus elle est haute, moins le kart tient, plus il glisse), inertie de la rotation
+  // (poids : un kart lourd pivote plus lentement), réalignement à la sortie (maniabilité).
+  driftTurn: { base: 1.65, perPoint: 0.06 },
+  driftGrip: { base: 3.4, perPoint: -0.12 },
+  driftResponse: { base: 9, perPoint: -0.5 },
+  driftRecover: { base: 8, perPoint: 0.4 },
   driftCharge: { base: 1, perPoint: 0.06 },
   mass: { base: 1.6, perPoint: 0.14 },
   // Résistance aux chocs : part de la vitesse conservée après un impact (0..1).
@@ -24,58 +28,23 @@ export const STAT_CURVES = Object.freeze({
   // Élan conservé en virage : part de la rotation du kart transmise directement à sa vitesse
   // (arcade : tourner ne freine presque pas). Le reste est rattrapé par l'adhérence.
   carry: 0.9,
-  carryDrift: 0.82,
   carryAir: 0.4,
   // Hors-piste : vitesse maximale réduite (sauf mécanique « hover »).
   offRoad: 0.5,
 })
 
-// Dérapage manuel, d'après le kart arcade de référence sur console de salon (version Wii, telle
-// que la décrivent les wikis de la communauté) :
-// - appui sur Drift en roulant = petit saut ; le sens braqué pendant le saut (ou à l'atterrissage,
-//   Drift toujours tenu) fixe le dérapage, qui ne change plus ; sans braquer = simple saut ;
-// - le kart tourne toujours vers l'intérieur : braquer dedans resserre, dehors élargit ;
-// - la charge est un minuteur : 1 unité par seconde, x chargeInside en braquant franchement
-//   vers l'intérieur. Mini-turbo (étincelles bleues) à 2,27 unités (~0,9 s braqué dedans,
-//   ~2,3 s sinon), super mini-turbo (orange) 2,52 unités plus loin, trois fois plus long ;
-// - relâcher Drift déclenche le turbo du palier atteint. Hors-piste, la jauge ne charge pas.
-export const DRIFT = Object.freeze({
-  hopTime: 0.22, // durée du saut (s)
-  hopHeight: 0.38, // hauteur du saut (affichage)
-  entryKick: 0.14, // poussée vers l'extérieur à l'entrée du drift (fraction de la vitesse)
-  steerThreshold: 0.3, // braquage minimal pour choisir un sens
-  minSpeed: 0.4, // fraction de la vitesse max pour lancer / garder (cancelSpeed) un drift
-  cancelSpeed: 0.28,
-  // Rotation : toujours vers l'intérieur, serrée (inside) ou large (outside) selon le braquage,
-  // en fraction du braquage normal à pleine vitesse (turnRate * fullSpeedTurn).
-  fullSpeedTurn: 0.8,
-  turnInside: 1.95,
-  turnOutside: 0.32,
-  turnNeutral: 1.25,
-  // Charge : braquage vers l'intérieur au-delà de `chargeSteer` = x chargeInside (5 unités par
-  // image au lieu de 2 dans la référence), sinon x 1 (neutre ou extérieur).
-  chargeSteer: 0.3,
-  chargeInside: 2.5,
-  // Angle visuel de glisse du kart (rad) : plus marqué en braquant dedans, moins dehors.
-  slipAngle: 0.62,
-  slipInside: 0.85,
-  slipOutside: 0.4,
-  slipRate: 7,
-  // Paliers : charge à atteindre et turbo obtenu. Bleu (mini-turbo), orange (super mini-turbo).
-  tiers: Object.freeze([
-    { charge: 2.27, boost: 'miniTurbo1' },
-    { charge: 4.79, boost: 'miniTurbo2' },
-  ]),
-})
+// Dérapage : config/driftTuning.js (réexporté ici pour les modules qui lisent DRIFT).
+export { DRIFT } from './driftTuning'
 
 // Sources de turbo. `speed` multiplie la vitesse maximale, `accel` l'accélération.
 // Politique de cumul (kartBoost.js) : le turbo le plus fort l'emporte ; un turbo égal ou plus
 // faible prolonge seulement la durée restante, jusqu'à `maxStack` secondes. Jamais de cumul
 // des multiplicateurs.
 export const BOOSTS = Object.freeze({
-  // Mini-turbo et super mini-turbo : même poussée, le super dure trois fois plus longtemps.
-  miniTurbo1: { duration: 0.8, speed: 1.27, accel: 2.8, effect: 'blue' },
-  miniTurbo2: { duration: 2.4, speed: 1.27, accel: 2.8, effect: 'orange' },
+  // Mini-turbo (bleu) et super mini-turbo (orange, plus fort et plus long). `kick` : élan
+  // ajouté aussitôt au relâchement (m/s), le turbo pousse ensuite : immédiat, sans téléportation.
+  miniTurbo1: { duration: 1, speed: 1.33, accel: 4, kick: 2.5, effect: 'blue' },
+  miniTurbo2: { duration: 2.2, speed: 1.4, accel: 4.5, kick: 4, effect: 'orange' },
   // Figure réussie : petit turbo à l'atterrissage.
   trick: { duration: 0.75, speed: 1.26, accel: 2.8, effect: 'blue' },
   start: { duration: 0.9, speed: 1.28, accel: 3, effect: 'orange' },
@@ -88,7 +57,7 @@ export const BOOSTS = Object.freeze({
   // Aspiration (config/raceFeel.js DRAFT) : sortie du sillage en trombe.
   draft: { duration: 1.3, speed: 1.24, accel: 2.6, effect: 'blue' },
 })
-export const BOOST_MAX_STACK = 2.4
+export const BOOST_MAX_STACK = 3
 export const OVER_SPEED_DRAG = 22 // m/s² pour revenir à la vitesse max (fin de turbo, hors-piste)
 
 // Chocs. Chaque kart est une capsule (segment avant-arrière + rayon) : deux karts peuvent rouler

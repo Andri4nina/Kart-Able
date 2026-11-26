@@ -8,6 +8,8 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
+    "deploy:preview": "npx vercel@latest",
+    "deploy": "npx vercel@latest --prod",
     "check:rules": "node scripts/check-golden-rules.mjs",
     "check": "oxlint && node scripts/check-golden-rules.mjs && node scripts/check-locales.mjs",
     "check:i18n": "node scripts/check-locales.mjs"

@@ -44,6 +44,7 @@ const GLIDE_LIFT = 1.6
 // recule un peu (jamais en mouvement réduit). Lu par SplitScreenRenderer (getChaseFovKick).
 const BOOST_FOV = 9
 const BOOST_LAMBDA = 4
+const DRIFT_FOLLOW = 0.9 // part de la trajectoire dans le cap suivi en drift (le reste : vers le nez)
 const followers = Array.from({ length: 8 }, () => ({ race: null, yaw: 0, y: 0, lift: 0, kick: 0 }))
 const pose = { x: 0, y: 0, z: 0, yaw: 0 }
 
@@ -58,7 +59,11 @@ export function writeKartChase(cell, kart, race, delta, snap, distance, outPosit
     follower.kick += ((kart.boost > 0 ? 1 : 0) - follower.kick) * (1 - Math.exp(-BOOST_LAMBDA * delta))
     follower.y += (kart.y - follower.y) * (1 - Math.exp(-HEIGHT_LAMBDA * delta))
     follower.lift += ((kart.gliding ? GLIDE_LIFT : 0) - follower.lift) * (1 - Math.exp(-3 * delta))
-    const gap = kart.yaw - follower.yaw
+    // En drift, la caméra suit surtout la trajectoire (lacet moins l'angle de glisse), un peu
+    // tournée vers l'intérieur : on voit le kart de travers et le virage. L'angle de glisse se
+    // résorbe en douceur à la sortie : la caméra revient sans à-coup.
+    const aim = kart.yaw - (kart.slip ?? 0) * DRIFT_FOLLOW
+    const gap = aim - follower.yaw
     follower.yaw += (gap - Math.round(gap / (Math.PI * 2)) * Math.PI * 2) * (1 - Math.exp(-FOLLOW_LAMBDA * delta))
   }
   pose.x = kart.x

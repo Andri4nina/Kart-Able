@@ -1,0 +1,7 @@
+# Envoi vers Vercel (CLI) : seul le jeu web est construit, le reste n'est pas envoyé.
+smkw-api
+smkw-desktop
+**/node_modules
+**/dist
+**/target
+.claude

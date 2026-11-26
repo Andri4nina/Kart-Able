@@ -26,6 +26,8 @@ function build(trackId) {
   const widths = track.path.map((point) => point[2])
   return Object.freeze({
     viewBox: `0 0 ${BOX} ${BOX}`,
+    // Passage monde -> carte (mini-carte de course : position des karts) : svg = pad + (monde - min) * scale.
+    transform: { minX: bounds.centerX - bounds.halfSize, minZ: bounds.centerZ - bounds.halfSize, scale, pad: PADDING },
     d,
     roadWidth: round(18 * scale),
     lakes: track.lakes.map((lake) => ({ cx: round(toX(lake.x)), cy: round(toY(lake.z)), rx: round(lake.rx * scale), ry: round(lake.rz * scale), angle: round((lake.angle * 180) / Math.PI) })),

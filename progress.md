@@ -476,3 +476,49 @@ Demande : dérapage fidèle à la référence, cases et objets façon Wii, dépa
 
 ### TODO
 - Synchronisation des objets en réseau local, modèles d'objets fournis par l'utilisateur, sons.
+
+---
+
+## 2026-11-26 — Phase 3D : glisse du drift, mini-carte, relief, nitro
+
+Fiche : docs/phases/PHASE_3D_DRIFT_MINIMAP_BOOST.md.
+
+### Fait
+- **Drift** :
+  - vraie glisse (`carryDrift`, `driftGrip`) avec énergie conservée dans `kartPhysics` (`topSpeed`) ;
+  - rampe d'entrée (`DRIFT.rampFrom`, `rampTime`, `kart.driftTime`) ;
+  - virage plus serré, lancement plus facile, mini-turbos x1,35 ;
+  - caméra qui suit la trajectoire en drift.
+- **Mini-carte** : `RaceMinimap` ; `telemetryStore.racers` ; `trackOutline.transform` ; `fill-player-*`.
+- **Relief** sur 4 circuits plats (hauteurs du tracé, `hills`).
+- **Turbo** : `boostEmitters.js` (rubans, boules de feu), pool de traînées `boost`, flammes plus longues.
+
+### TODO
+- Avis de l'utilisateur sur le nouveau drift (réglages dans config/kartTuning.js : DRIFT, carryDrift, driftGrip).
+
+---
+
+## 2026-11-26 — Phase 3E : drift refait, hébergement Vercel
+
+Fiche : docs/phases/PHASE_3E_DRIFT_REWORK.md.
+
+### Fait
+- **Drift : glisse par adhérence.**
+  - Le braquage pilote `kart.yawRate` (avec inertie).
+  - La vitesse suit le nez par `carry` et `driftGrip`, avec sa norme gardée.
+  - `kart.slip` émerge de cet écart, plafonné.
+  - Fichiers : `config/driftTuning.js` ; `game/race/kartDriftMotion.js`, `kartDriftRates.js`,
+    `kartSpeed.js` ; sortie dans `kartPhysics.stepRecovering`.
+- Élan immédiat des mini-turbos (`BOOSTS.kick`).
+- Statistiques de drift par kart : `driftTurn`, `driftGrip`, `driftResponse`, `driftRecover`.
+- Caméra : suit la trajectoire.
+- Pilotes ordinateur : visée avec le nez ; seuils dans `botDrift`.
+- **Vercel** : `vercel.json` à la racine, `.vercelignore`, scripts `deploy` et `deploy:preview`,
+  `docs/HOSTING.md`.
+
+### TODO
+- Avis de l'utilisateur sur le drift. Réglages dans `config/driftTuning.js` :
+  - `turn` : rotation, donc rayon ;
+  - `carry` et `STAT_CURVES.driftGrip` : angle de glisse ;
+  - `entryKick` et `hopGrip` : attaque ;
+  - `counterGrip` : contre-braquage.

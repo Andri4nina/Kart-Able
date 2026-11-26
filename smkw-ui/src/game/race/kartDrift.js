@@ -1,15 +1,16 @@
-import { DRIFT } from '../../config/kartTuning'
+import { DRIFT } from '../../config/driftTuning'
 import { startTrick } from './kartAir'
 import { applyBoost } from './kartBoost'
-import { chargeQuality } from './kartDriftRates'
+import { chargeRate, driftInward } from './kartDriftRates'
 
-export { driftTurnRate } from './kartDriftRates'
-
-// Dérapage manuel façon kart arcade (calcul pur, aucune allocation ; règles : DRIFT dans
-// config/kartTuning.js). Appui = saut ; tant que Drift reste enfoncé, le premier sens braqué
-// (en l'air ou au sol) fixe le drift ; relâcher = mini-turbo du palier atteint. Freiner,
-// ralentir ou un choc fort l'annulent (relâcher puis réappuyer pour en relancer un).
-// État : hop, driftPick (sens choisi en l'air), driftArmed, driftDir, driftCharge, driftTier.
+// Dérapage manuel façon kart arcade : états et charge (calcul pur, aucune allocation ; réglages
+// config/driftTuning.js ; mouvement : kartDriftMotion.js). États :
+// - conduite normale : driftDir 0 (sortie de drift : `slip` se résorbe, kartPhysics.js) ;
+// - entrée : appui sur Drift en roulant = petit saut ; le sens braqué (dès l'appui, pendant le
+//   saut ou ensuite, Drift tenu) lance le drift et ne change plus ;
+// - drift : la jauge charge au sol, paliers bleu puis orange (driftTier) ;
+// - relâchement : mini-turbo du palier atteint, aussitôt. Freiner, trop ralentir, s'envoler en
+//   deltaplane ou un choc fort l'annulent sans turbo.
 
 export function getDriftTier(charge) {
   let tier = 0
@@ -17,47 +18,31 @@ export function getDriftTier(charge) {
   return tier
 }
 
-// Fraction 0..1 de la jauge vers le palier suivant (affichage).
+// Fraction 0..1 de la jauge vers le dernier palier (affichage).
 export function getDriftGauge(charge) {
   const last = DRIFT.tiers[DRIFT.tiers.length - 1].charge
   return Math.min(1, charge / last)
 }
 
+// Fin du drift. L'angle de glisse (slip) est gardé : il se résorbe en douceur (kartPhysics.js).
 export function cancelDrift(kart) {
   kart.driftDir = 0
   kart.driftCharge = 0
   kart.driftTier = 0
   kart.driftArmed = false
-  kart.driftPick = 0
 }
 
-function startDrift(kart, dir) {
+function startDrift(kart, dir, controls) {
   kart.driftDir = dir
+  kart.driftTime = 0
   kart.driftCharge = 0
   kart.driftTier = 0
   kart.driftArmed = false
-  kart.driftPick = 0
-  // Petite poussée vers l'extérieur du virage : le kart « décroche » en entrant en drift.
-  const kick = kart.speed * DRIFT.entryKick * dir
-  kart.vx += Math.cos(kart.yaw) * kick
-  kart.vz -= Math.sin(kart.yaw) * kick
+  kart.driftSteer = controls.steer
 }
 
 const steerSide = (controls) => (Math.abs(controls.steer) >= DRIFT.steerThreshold ? Math.sign(controls.steer) : 0)
-
-// Saut en cours, ou Drift tenu au sol sans sens encore choisi : le premier sens braqué lance
-// le dérapage (dès l'atterrissage, s'il a été choisi en l'air).
-function updateHop(kart, controls, dt) {
-  if (kart.hop > 0) {
-    const side = steerSide(controls)
-    if (side) kart.driftPick = side
-    kart.hop = Math.max(0, kart.hop - dt)
-    return
-  }
-  if (kart.airborne) return
-  const side = kart.driftPick || steerSide(controls)
-  if (side && kart.speed > kart.stats.maxSpeed * DRIFT.minSpeed) startDrift(kart, side)
-}
+const fastEnough = (kart, share) => kart.speed > kart.stats.maxSpeed * share
 
 export function updateDrift(kart, controls, dt) {
   const pressed = controls.drift && !kart.driftHeld
@@ -67,30 +52,29 @@ export function updateDrift(kart, controls, dt) {
     startTrick(kart)
     return
   }
-  if (pressed && !kart.driftDir && kart.hop === 0 && !kart.airborne && !kart.gliding && kart.speed > kart.stats.maxSpeed * 0.15) {
+  if (kart.hop > 0) kart.hop = Math.max(0, kart.hop - dt)
+  if (pressed && !kart.driftDir && kart.hop === 0 && !kart.airborne && !kart.gliding && fastEnough(kart, DRIFT.startSpeed)) {
     kart.hop = DRIFT.hopTime
     kart.driftArmed = true
-    kart.driftPick = 0
   }
   if (!kart.driftDir) {
-    if (!controls.drift) {
-      kart.driftArmed = false
-      kart.driftPick = 0
-    }
-    if (kart.driftArmed) updateHop(kart, controls, dt)
-    else if (kart.hop > 0) kart.hop = Math.max(0, kart.hop - dt)
+    if (!controls.drift) kart.driftArmed = false
+    const side = kart.driftArmed ? steerSide(controls) : 0
+    if (side && !kart.airborne && fastEnough(kart, DRIFT.minSpeed)) startDrift(kart, side, controls)
     return
   }
-  if (controls.brake > 0.5 || kart.speed < kart.stats.maxSpeed * DRIFT.cancelSpeed) {
+  if (controls.brake > 0.5 || kart.gliding || !fastEnough(kart, DRIFT.cancelSpeed)) {
     cancelDrift(kart)
     return
   }
   if (controls.drift) {
-    kart.driftCharge += dt * kart.stats.driftCharge * chargeQuality(kart, controls)
+    kart.driftTime += dt
+    // La charge commence à l'atterrissage du saut, au sol seulement.
+    if (kart.hop === 0 && !kart.airborne) kart.driftCharge += dt * chargeRate(kart, driftInward(kart))
     kart.driftTier = getDriftTier(kart.driftCharge)
     return
   }
-  // Relâché : mini-turbo du palier atteint.
+  // Relâché : mini-turbo du palier atteint, sans délai.
   if (kart.driftTier > 0) applyBoost(kart, DRIFT.tiers[kart.driftTier - 1].boost)
   cancelDrift(kart)
 }

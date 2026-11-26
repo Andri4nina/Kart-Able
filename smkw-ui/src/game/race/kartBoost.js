@@ -13,10 +13,23 @@ export function applyBoost(kart, sourceId, scale = 1) {
     kart.boostSpeed = source.speed
     kart.boostAccel = source.accel
     kart.boostSource = sourceId
+    if (source.kick) addKick(kart, source.kick * scale)
   } else {
     kart.boost = Math.min(BOOST_MAX_STACK, Math.max(kart.boost, duration, kart.boost + duration * 0.5))
   }
   return true
+}
+
+// Élan immédiat (mini-turbo) : la vitesse grandit dans sa direction, sans dépasser la vitesse
+// permise par le turbo.
+function addKick(kart, kick) {
+  const speed = Math.hypot(kart.vx, kart.vz)
+  if (speed < 0.5) return
+  const next = Math.min(speed + kick, kart.stats.maxSpeed * kart.topFactor * kart.boostSpeed)
+  if (next <= speed) return
+  kart.vx *= next / speed
+  kart.vz *= next / speed
+  kart.speed = next
 }
 
 export function tickBoost(kart, dt) {

@@ -27,6 +27,7 @@ export function driveBot(kart, geometry, out, dt = 0) {
   const lane = chooseBotLateral(geometry, kart, kart.lane * half * (kart.driftDir ? 0.25 : 1), half)
   const targetX = path.x[i] - path.tz[i] * lane
   const targetZ = path.z[i] + path.tx[i] * lane
+  // Visée avec le nez : en drift, la trajectoire rejoint le nez (adhérence), on anticipe donc.
   const error = wrapAngle(Math.atan2(targetX - kart.x, targetZ - kart.z) - kart.yaw)
   out.steer = Math.max(-1, Math.min(1, -error * STEER_GAIN))
 

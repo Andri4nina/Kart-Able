@@ -1,7 +1,7 @@
 import { Color } from 'three'
-import { DRIFT } from '../../config/kartTuning'
 import { PALETTE } from '../World/palette'
 import { burst, count, pick, place, spec, spread } from './emitterKit'
+import { emitBoostFx } from './boostEmitters'
 import { emitDraft } from './draftEmitters'
 import { emitExhaust } from './exhaustEmitters'
 import { emitItemAura } from './itemAuraEmitters'
@@ -12,13 +12,12 @@ import { emitKartTrails, TIER_COLORS } from './trailEmitters'
 // - drift : fumée de pneus, puis étincelles aux roues arrière dès le palier bleu (orange,
 //   violet ensuite) ; gerbe au déclenchement du mini-turbo ; traînées au sol (trailEmitters) ;
 // - échappement : fumée continue (exhaustEmitters) ;
-// - turbo : braises éjectées par le réacteur (nitro), traînée de fumée ;
+// - turbo : rubans lumineux, boules de feu, braises, fumée (boostEmitters) ;
 // - aspiration : filets de vent (draftEmitters) ; surcharge, orage (itemAuraEmitters) ;
 // - hors-piste : mottes de terre et d'herbe arrachées ;
 // - chute dans l'eau : grande gerbe ; choc : éclats blancs.
 // `rate` : facteur global (mouvement réduit : moins de particules).
 const SPARK_RATES = [0, 70, 110, 150]
-const EMBER = [new Color('#fff3b0'), new Color(PALETTE.yellow), new Color(PALETTE.orange)]
 const SMOKE = new Color('#d9dde3')
 const SPLASH = [new Color('#ffffff'), new Color(PALETTE.sky)]
 const REAR = -0.85
@@ -40,22 +39,6 @@ function emitDrift(kart, angle, pools, dt, rate) {
       Object.assign(spec, { vx: -fx * 4 + Math.cos(angle) * out + spread(1), vy: 1.5 + Math.random() * 3, vz: -fz * 4 - Math.sin(angle) * out + spread(1), life: 0.18 + Math.random() * 0.2, size: 0.04 + kart.driftTier * 0.012, grow: 1, gravity: 14, drag: 1, color })
       emitParticle(pools.glow, spec)
     }
-  }
-}
-
-function emitBoost(kart, angle, pools, dt, rate) {
-  const fx = Math.sin(angle)
-  const fz = Math.cos(angle)
-  for (let k = count(90 * rate, dt); k > 0; k -= 1) {
-    place(kart, angle, spread(0.25), 0.4, REAR - 0.5)
-    const v = 7 + Math.random() * 6
-    Object.assign(spec, { vx: kart.vx * 0.5 - fx * v + spread(1.2), vy: spread(0.8) + 0.4, vz: kart.vz * 0.5 - fz * v + spread(1.2), life: 0.22 + Math.random() * 0.15, size: 0.09, grow: 1, gravity: 0, drag: 4, color: pick(EMBER) })
-    emitParticle(pools.glow, spec)
-  }
-  for (let k = count(22 * rate, dt); k > 0; k -= 1) {
-    place(kart, angle, spread(0.2), 0.45, REAR - 1.4)
-    Object.assign(spec, { vx: spread(0.4), vy: 0.3, vz: spread(0.4), life: 0.55, size: 0.22, grow: 2.6, gravity: -0.3, drag: 2, color: SMOKE })
-    emitParticle(pools.puff, spec)
   }
 }
 
@@ -91,11 +74,11 @@ export function emitKartParticles(world, pools, trails, dt, rate, dirt, memory) 
     emitExhaust(kart, pools, dt, rate, previous)
     emitKartTrails(kart, trails, previous)
     if (sinking) continue
-    const angle = kart.yaw - kart.driftDir * DRIFT.slipAngle
-    if (kart.driftDir && !kart.airborne) emitDrift(kart, angle, pools, dt, rate)
-    if (kart.boost > 0) emitBoost(kart, kart.yaw, pools, dt, rate)
+    // Le lacet inclut l'angle de glisse : les roues arrière sont celles du kart affiché.
+    if (kart.driftDir && kart.hop === 0 && !kart.airborne) emitDrift(kart, kart.yaw, pools, dt, rate)
+    emitBoostFx(kart, pools, trails, dt, rate, previous)
     emitDraft(kart, pools, dt, rate)
     emitItemAura(kart, pools, dt, rate, previous)
-    emitOffRoad(kart, angle, pools, dt, rate, dirt)
+    emitOffRoad(kart, kart.yaw, pools, dt, rate, dirt)
   }
 }

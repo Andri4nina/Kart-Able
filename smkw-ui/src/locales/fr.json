@@ -259,7 +259,8 @@
     "itemRolling": "Tirage en cours",
     "itemCharges": "×{{count}}",
     "luckyBox": "Case dorée",
-    "draft": "Aspiration"
+    "draft": "Aspiration",
+    "minimap": "Mini-carte du circuit"
   },
   "input": {
     "keyboard1": "Clavier 1",

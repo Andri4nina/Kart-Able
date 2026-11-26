@@ -5,11 +5,11 @@
 // prendre leur mini-turbo. Les meilleurs pilotes tiennent jusqu'au palier orange.
 // `turnAhead` : virage restant du tracé (rad, différence de cap de la route entre le kart et un
 // point lointain ; > 0 : virage à gauche), indépendant de l'orientation du kart (qui pivote en drift).
-const START_ERROR = 0.5 // virage assez marqué pour lancer un drift
+const START_ERROR = 1.0 // virage assez marqué pour lancer un drift
 const END_ERROR = 0.15 // virage terminé : relâcher
 const OFF_ROAD_GRACE = 0.4 // s hors-piste tolérées avant de relâcher
-const OVERTURN = 0.75 // braquage vers l'extérieur au-delà duquel le kart tourne trop
-const OVERTURN_GRACE = 0.35 // s de survirage tolérées
+const OVERTURN = 0.9 // contre-braquage au-delà duquel le drift tourne trop pour le virage
+const OVERTURN_GRACE = 0.6 // s de survirage tolérées
 const TURN_IN = 0.35 // braquage vers l'intérieur nécessaire pour lancer le drift
 const MIN_SPEED = 0.62 // fraction de la vitesse max pour tenter un drift
 const MAX_HOLD = 4 // s au plus

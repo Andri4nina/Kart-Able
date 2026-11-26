@@ -258,7 +258,8 @@
     "itemRolling": "Misafidy",
     "itemCharges": "×{{count}}",
     "luckyBox": "Boaty volamena",
-    "draft": "Fisintonana"
+    "draft": "Fisintonana",
+    "minimap": "Sarintany kely amin'ny lalana"
   },
   "input": {
     "keyboard1": "Fitendry 1",
