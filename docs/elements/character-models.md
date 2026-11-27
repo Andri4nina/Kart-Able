@@ -39,6 +39,13 @@ Hauteurs (`CHARACTER_HEIGHTS`) : 1,65 sur le socle et 1 au volant pour un grand 
 
 Environ 10 Mo de GLB pour les 16 personnages, chargés une fois. Clones partagés ; matériaux copiés seulement pour la teinte. Une passe de rendu par portrait, une seule fois. Une mise à jour de mixer par personnage animé et par frame.
 
+## Personnages ajoutés en phase 3G
+
+- **Nino** (`ninja.glb`, squelette Quaternius) : regarde déjà +Z (aucun `yaw`), animation d'attente `CharacterArmature|Idle` en boucle (sans elle : pose en T), cadrage `CHIBI`, couleur d'identité propre (`#4b5563`, elle doublait celle de Pyrox).
+- Squelettes Quaternius : pieds en IK (os `Foot` enfants de `Root`, pas du tibia) et bouts de chaîne `_end` sans os ; `driverPose` / `driverFeet` les gèrent (voir [driver-rig.md](driver-rig.md)).
+- **Steev** et **Imposter** : non corrigés, car ils reprennent des personnages protégés (Minecraft, Among Us), voir [CREDITS.md](../CREDITS.md). À remplacer par des modèles originaux ; leur `yaw` actuel (quart de tour) les montre de profil.
+- Repérer l'avant d'un nouveau modèle : un modèle en T a les bras sur X, il regarde donc ±Z ; un `yaw` d'un quart de tour ne sert qu'aux modèles exportés de profil.
+
 ## Licences
 
 Noms de fichiers issus de Sketchfab, certains évoquent des personnages existants (« smol Ame », « Puro »...). Vérifier la licence de chaque modèle (attribution, usage commercial) avant publication. Le jeu affiche ses propres noms.
