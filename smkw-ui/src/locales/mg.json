@@ -366,6 +366,15 @@
     },
     "miella": {
       "name": "Miella"
+    },
+    "nino": {
+      "name": "Nino"
+    },
+    "steev": {
+      "name": "Steev"
+    },
+    "imposter": {
+      "name": "Imposter"
     }
   },
   "selection": {
