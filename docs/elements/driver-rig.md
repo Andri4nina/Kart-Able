@@ -24,6 +24,13 @@ Avant : la figurine debout (première image d'une marche ou d'une attente) étai
 
 Poses précalculées ; par frame : ~12 slerp par pilote rigué.
 
+## Squelettes Quaternius (phase 3G)
+
+- Bout de chaîne sans os (`LowerLeg.L_end` est un simple nœud dans les exports FBX2glTF) : `limb` prend alors ce nœud comme extrémité. Sans cela, aucune pose assise (Nino restait debout dans le kart).
+- Pieds en IK (`Foot.L` enfant de `Root`) : `driverFeet.attachFeet` les replace au bout du tibia une fois la pose calculée. Sans cela, ils restaient au sol, 70 cm sous le bassin.
+- Colonne : `abdomen` et `torso` reconnus comme `spine`.
+- Vérifié en Node : bassin et rig identiques pour les 15 personnages existants.
+
 ## Conformité règles d'or
 
 - [x] Aucun dégradé linéaire
