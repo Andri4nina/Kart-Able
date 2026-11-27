@@ -1,0 +1,37 @@
+# Serveur de jeu en ligne de Kart Able sur Fly.io (voir docs/HOSTING.md, section 6).
+# Première fois : fly launch --no-deploy --copy-config (garder ce fichier), puis fly deploy.
+# Les salons vivent en mémoire : UNE seule machine (fly scale count 1), sinon deux joueurs
+# pourraient tomber sur deux serveurs différents et ne pas se trouver.
+app = "kart-able-server"
+primary_region = "cdg"
+
+[build]
+  dockerfile = "smkw-api/Dockerfile"
+
+[env]
+  SMKW_PORT = "2567"
+  SMKW_PUBLIC_URL = "https://kart-able-server.fly.dev"
+
+[http_service]
+  internal_port = 2567
+  force_https = true
+  # Arrêt quand personne ne joue (gratuit ou presque), redémarrage à la première connexion.
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [http_service.concurrency]
+    type = "connections"
+    soft_limit = 300
+    hard_limit = 400
+
+  [[http_service.checks]]
+    method = "GET"
+    path = "/api/info"
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"

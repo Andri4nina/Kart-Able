@@ -35,6 +35,7 @@ function describeCourse(t, course) {
 export function LobbySummary({ setup, course = null, playerCount, limit, isOnline }) {
   const { t } = useTranslation()
   const courseValue = describeCourse(t, course)
+  const onlineServer = useNetStore((state) => state.online)
   const serverAddress = useNetStore((state) => state.lanUrl?.replace(/^https?:\/\//, '') || state.address || location.host)
   const { icon: ModeIcon, accent } = getModeVisual(setup.modeId)
 
@@ -56,7 +57,7 @@ export function LobbySummary({ setup, course = null, playerCount, limit, isOnlin
         <SummaryRow icon={Users} label={t('lobby.players')} value={t('players.count', { count: playerCount, max: limit })} />
         {isOnline ? <SummaryRow icon={Hash} label={t('lobby.code')} value={setup.online.code || t('lobby.codePending')} /> : null}
       </div>
-      {isOnline && setup.online.code ? <Notice icon={Network}>{t('lan.lobby.invite', { address: serverAddress, code: setup.online.code })}</Notice> : null}
+      {isOnline && setup.online.code ? <Notice icon={Network}>{onlineServer ? t('lan.lobby.inviteOnline', { code: setup.online.code }) : t('lan.lobby.invite', { address: serverAddress, code: setup.online.code })}</Notice> : null}
     </motion.aside>
   )
 }

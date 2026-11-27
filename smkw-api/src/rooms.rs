@@ -5,6 +5,7 @@ use std::collections::HashMap;
 use serde_json::Value;
 use tokio::sync::mpsc::UnboundedSender;
 
+use crate::limits::{MAX_CLIENTS, MAX_ROOMS};
 use crate::protocol::{ClientMessage, MemberView, RoomSummary, RoomView, ServerMessage};
 
 const CODE_LENGTH: usize = 6; // comme ROOM_CODE_LENGTH (smkw-ui/src/config/gameModes.js)
@@ -23,6 +24,7 @@ pub struct Room {
     pub mode_id: String,
     pub phase: String,
     pub members: Vec<u64>,
+    pub private: bool,
 }
 
 #[derive(Default)]
@@ -34,11 +36,16 @@ pub struct Lobby {
 }
 
 impl Lobby {
-    pub fn add_client(&mut self, sender: UnboundedSender<String>) -> u64 {
+    /// Nouveau client, ou None si le serveur est plein.
+    pub fn add_client(&mut self, sender: UnboundedSender<String>) -> Option<u64> {
+        if self.clients.len() >= MAX_CLIENTS {
+            let _ = sender.send(ServerMessage::Error { reason: String::from("serverFull") }.to_json());
+            return None;
+        }
         self.next_id += 1;
         let client = Client { name: format!("Machine {}", self.next_id), room: None, players: Value::Array(vec![]), sender };
         self.clients.insert(self.next_id, client);
-        self.next_id
+        Some(self.next_id)
     }
 
     fn send(&self, id: u64, message: &ServerMessage) {
@@ -84,6 +91,7 @@ impl Lobby {
         let mut list: Vec<RoomSummary> = self
             .rooms
             .iter()
+            .filter(|(_, room)| !room.private)
             .map(|(code, room)| RoomSummary {
                 code: code.clone(),
                 host_name: self.clients.get(&room.host_id).map(|c| c.name.clone()).unwrap_or_default(),
@@ -142,10 +150,14 @@ impl Lobby {
                 self.send(id, &ServerMessage::Welcome { client_id: id, version: env!("CARGO_PKG_VERSION").to_string() });
             }
             ClientMessage::List => self.send(id, &ServerMessage::Rooms { rooms: self.summaries() }),
-            ClientMessage::Create { mode_id } => {
+            ClientMessage::Create { mode_id, private } => {
                 self.leave(id);
+                if self.rooms.len() >= MAX_ROOMS {
+                    return self.send(id, &ServerMessage::Error { reason: String::from("serverFull") });
+                }
                 let code = self.new_code();
-                self.rooms.insert(code.clone(), Room { host_id: id, mode_id, phase: String::from("lobby"), members: vec![] });
+                let room = Room { host_id: id, mode_id: mode_id.chars().take(32).collect(), phase: String::from("lobby"), members: vec![], private };
+                self.rooms.insert(code.clone(), room);
                 self.join(id, code);
             }
             ClientMessage::Join { code } => {
@@ -163,7 +175,7 @@ impl Lobby {
             ClientMessage::Phase { phase } => {
                 let Some(code) = self.clients.get(&id).and_then(|client| client.room.clone()) else { return };
                 if let Some(room) = self.rooms.get_mut(&code).filter(|room| room.host_id == id) {
-                    room.phase = phase;
+                    room.phase = phase.chars().take(16).collect();
                     self.broadcast_room(&code);
                 }
             }

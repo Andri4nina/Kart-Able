@@ -29,7 +29,7 @@ fn main() {
     tauri::Builder::default()
         .setup(|app| {
             let port = free_port();
-            let config = ServerConfig { port, web_dir: web_dir(app) };
+            let config = ServerConfig { port, web_dir: web_dir(app), public_url: None };
             tauri::async_runtime::spawn(async move {
                 if let Err(error) = smkw_api::serve(config).await {
                     eprintln!("Serveur de jeu arrete : {error}");

@@ -109,15 +109,15 @@
   },
   "playType": {
     "title": "Match type",
-    "subtitle": "On this device or online?",
+    "subtitle": "On this device or over a network?",
     "notAvailable": "Not available for this mode",
     "local": {
       "name": "Local",
       "description": "On this device, split screen, keyboard and gamepads."
     },
     "online": {
-      "name": "Local network",
-      "description": "On several machines on the same network (Wi-Fi, cable): installed app and browser together."
+      "name": "Network",
+      "description": "Online with your friends, or on several machines on the same network (Wi-Fi, cable): installed app and browser together."
     }
   },
   "local": {
@@ -630,12 +630,12 @@
     "hint": "Up / down · A: select · BACK: go back · START: resume"
   },
   "lan": {
-    "title": "Local network",
-    "subtitle": "Play with the other machines on the same network: installed app or browser.",
-    "howTo": "The host runs the installed Kart Able app (or the smkw-api server). The others open the address shown by the host in their browser, or type it below in their app.",
+    "title": "Network play",
+    "subtitle": "Online, or with the other machines on the same network: installed app or browser.",
+    "howTo": "Online: Play online, create a room and give its code to your friends. Local network: the host runs the installed Kart Able app (or the smkw-api server); the others open the address shown by the host in their browser, or type it below.",
     "server": {
-      "title": "Game server",
-      "help": "Empty: the server that opened this page. Otherwise the host address, for example 192.168.1.20:2567.",
+      "title": "Other server",
+      "help": "Empty: the server that opened this page. Otherwise a local network host (192.168.1.20:2567) or an online server (kart-able.fly.dev).",
       "addressLabel": "Server address",
       "placeholder": "192.168.1.20:2567",
       "connect": "Connect"
@@ -652,7 +652,8 @@
       "serverNotFound": "no server at this address",
       "roomNotFound": "room not found",
       "roomFull": "room is full",
-      "badMessage": "message rejected"
+      "badMessage": "message rejected",
+      "serverFull": "server full, try again later"
     },
     "rooms": {
       "title": "Rooms",
@@ -667,7 +668,15 @@
       "waitingOthers": "Waiting for the players on the other machines.",
       "hostCanStart": "The whole room is ready: start the game.",
       "waitingHost": "Waiting for the host.",
-      "invite": "Other players on the network open http://{{address}} then join room {{code}}."
+      "invite": "Other players on the network open http://{{address}} then join room {{code}}.",
+      "inviteOnline": "Your friends open Kart Able (website or app), go to Network play, Play online, then join room {{code}}."
+    },
+    "internet": {
+      "title": "Online",
+      "help": "Play with your friends wherever they are: create a room, then give them its code.",
+      "connect": "Play online",
+      "connected": "Connected online",
+      "missing": "No online server is configured for this version: type the address of a Kart Able server in Other server."
     }
   }
 }

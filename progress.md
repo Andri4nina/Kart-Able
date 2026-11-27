@@ -522,3 +522,30 @@ Fiche : docs/phases/PHASE_3E_DRIFT_REWORK.md.
   - `carry` et `STAT_CURVES.driftGrip` : angle de glisse ;
   - `entryKick` et `hopGrip` : attaque ;
   - `counterGrip` : contre-braquage.
+
+---
+
+## 2026-11-27 — Phase 3F : jeu en ligne
+
+Fiche : docs/phases/PHASE_3F_ONLINE.md.
+
+### Fait
+- **Serveur** :
+  - `SMKW_PUBLIC_URL` (mode en ligne), `PORT` ;
+  - salons privés ;
+  - limites et ping (`limits.rs`) ;
+  - `/api/info` avec `public`, `rooms`, `clients`.
+- **Jeu** :
+  - `config/network.js` (`VITE_ONLINE_SERVER_URL`) ;
+  - `OnlineServerCard` ;
+  - connexion automatique au serveur en ligne sur le site public ;
+  - `toSocketUrl` (`wss`) ;
+  - `netStore.online` ;
+  - invitation en ligne.
+- **Déploiement** : `fly.toml`, `.dockerignore` ; docs/HOSTING.md, section 6.
+
+### TODO
+- Déployer le serveur sur Fly.io (compte de l'utilisateur), puis définir `VITE_ONLINE_SERVER_URL`
+  sur Vercel.
+- Tester une course complète à distance (latence sur Internet).
+- Facultatif : `VITE_ONLINE_SERVER_URL` dans le workflow des installateurs.

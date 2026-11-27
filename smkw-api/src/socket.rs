@@ -1,23 +1,42 @@
 //! Une connexion WebSocket : messages entrants vers le salon, messages sortants depuis la file
-//! du client. Deconnexion : le client quitte son salon.
+//! du client, ping regulier (les proxys des hebergeurs coupent une connexion silencieuse).
+//! Deconnexion : le client quitte son salon.
 
 use std::sync::{Arc, Mutex};
+use std::time::Duration;
 
 use axum::extract::ws::{Message, WebSocket};
 use futures_util::{SinkExt, StreamExt};
 use tokio::sync::mpsc;
 
+use crate::limits::{MAX_MESSAGE_BYTES, PING_SECONDS};
 use crate::protocol::{ClientMessage, ServerMessage};
 use crate::rooms::Lobby;
 
 pub async fn run(socket: WebSocket, lobby: Arc<Mutex<Lobby>>) {
     let (mut outgoing, mut incoming) = socket.split();
     let (sender, mut queue) = mpsc::unbounded_channel::<String>();
-    let id = lobby.lock().expect("lobby").add_client(sender);
+    let Some(id) = lobby.lock().expect("lobby").add_client(sender) else {
+        // Serveur plein : le message d'erreur est dans la file, on l'envoie puis on ferme.
+        while let Ok(text) = queue.try_recv() {
+            let _ = outgoing.send(Message::Text(text.into())).await;
+        }
+        let _ = outgoing.close().await;
+        return;
+    };
 
     let writer = tokio::spawn(async move {
-        while let Some(text) = queue.recv().await {
-            if outgoing.send(Message::Text(text.into())).await.is_err() {
+        let mut ping = tokio::time::interval(Duration::from_secs(PING_SECONDS));
+        ping.tick().await;
+        loop {
+            let message = tokio::select! {
+                next = queue.recv() => match next {
+                    Some(text) => Message::Text(text.into()),
+                    None => break,
+                },
+                _ = ping.tick() => Message::Ping(Vec::new().into()),
+            };
+            if outgoing.send(message).await.is_err() {
                 break;
             }
         }
@@ -30,9 +49,10 @@ pub async fn run(socket: WebSocket, lobby: Arc<Mutex<Lobby>>) {
             _ => continue,
         };
         let mut lobby = lobby.lock().expect("lobby");
-        match serde_json::from_str::<ClientMessage>(text.as_str()) {
-            Ok(parsed) => lobby.handle(id, parsed),
-            Err(_) => {
+        let parsed = if text.len() > MAX_MESSAGE_BYTES { None } else { serde_json::from_str::<ClientMessage>(text.as_str()).ok() };
+        match parsed {
+            Some(parsed) => lobby.handle(id, parsed),
+            None => {
                 if let Some(client) = lobby.clients.get(&id) {
                     let _ = client.sender.send(ServerMessage::Error { reason: String::from("badMessage") }.to_json());
                 }

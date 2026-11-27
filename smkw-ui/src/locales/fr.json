@@ -116,8 +116,8 @@
       "description": "Sur cet appareil, en écran partagé, clavier et manettes."
     },
     "online": {
-      "name": "Réseau local",
-      "description": "Sur plusieurs machines du même réseau (Wi-Fi, câble) : application installée et navigateur ensemble."
+      "name": "En réseau",
+      "description": "Sur Internet avec tes amis, ou sur plusieurs machines du même réseau (Wi-Fi, câble) : application installée et navigateur ensemble."
     }
   },
   "local": {
@@ -628,12 +628,12 @@
     "hint": "Haut / bas · A : valider · RETOUR : revenir · START : reprendre"
   },
   "lan": {
-    "title": "Réseau local",
-    "subtitle": "Joue avec les autres machines du même réseau : application installée ou navigateur.",
-    "howTo": "L'hôte lance l'application Kart Able installée (ou le serveur smkw-api). Les autres ouvrent l'adresse affichée par l'hôte dans leur navigateur, ou la saisissent ci-dessous dans leur application.",
+    "title": "En réseau",
+    "subtitle": "Sur Internet, ou avec les autres machines du même réseau : application installée ou navigateur.",
+    "howTo": "Sur Internet : Jouer en ligne, crée un salon et donne son code à tes amis. En réseau local : l'hôte lance l'application Kart Able installée (ou le serveur smkw-api) ; les autres ouvrent l'adresse affichée par l'hôte dans leur navigateur, ou la saisissent ci-dessous.",
     "server": {
-      "title": "Serveur de jeu",
-      "help": "Vide : le serveur qui a ouvert cette page. Sinon l'adresse de l'hôte, par exemple 192.168.1.20:2567.",
+      "title": "Autre serveur",
+      "help": "Vide : le serveur qui a ouvert cette page. Sinon l'adresse d'un hôte du réseau local (192.168.1.20:2567) ou d'un serveur en ligne (kart-able.fly.dev).",
       "addressLabel": "Adresse du serveur",
       "placeholder": "192.168.1.20:2567",
       "connect": "Se connecter"
@@ -650,7 +650,8 @@
       "serverNotFound": "aucun serveur à cette adresse",
       "roomNotFound": "salon introuvable",
       "roomFull": "salon complet",
-      "badMessage": "message refusé"
+      "badMessage": "message refusé",
+      "serverFull": "serveur complet, réessaie plus tard"
     },
     "rooms": {
       "title": "Salons",
@@ -665,7 +666,15 @@
       "waitingOthers": "En attente des joueurs des autres machines.",
       "hostCanStart": "Tout le salon est prêt : lance la partie.",
       "waitingHost": "En attente de l'hôte.",
-      "invite": "Les autres joueurs du réseau ouvrent http://{{address}} puis rejoignent le salon {{code}}."
+      "invite": "Les autres joueurs du réseau ouvrent http://{{address}} puis rejoignent le salon {{code}}.",
+      "inviteOnline": "Tes amis ouvrent Kart Able (site ou application), vont dans En réseau, Jouer en ligne, puis rejoignent le salon {{code}}."
+    },
+    "internet": {
+      "title": "Sur Internet",
+      "help": "Joue avec tes amis où qu'ils soient : crée un salon, puis donne-leur son code.",
+      "connect": "Jouer en ligne",
+      "connected": "Connecté en ligne",
+      "missing": "Aucun serveur en ligne n'est configuré pour cette version : saisis l'adresse d'un serveur Kart Able dans « Autre serveur »."
     }
   }
 }

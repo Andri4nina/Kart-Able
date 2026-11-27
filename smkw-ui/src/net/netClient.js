@@ -1,16 +1,27 @@
+import { LAN_PORT } from '../config/network'
+
 // Connexion WebSocket au serveur de jeu (smkw-api) : une seule à la fois. Messages JSON
 // (champ `t`), voir smkw-api/src/protocol.rs. Aucune logique de jeu ici.
 const listeners = new Set()
 let socket = null
 
-// Adresse WebSocket : vide = le serveur qui a servi la page (application de bureau, ou jeu
-// ouvert depuis l'adresse d'un hôte du réseau local) ; sinon « 192.168.1.20:2567 » ou une URL.
+// Adresse WebSocket :
+// - vide : le serveur qui a servi la page (application de bureau, jeu ouvert depuis l'adresse
+//   d'un hôte du réseau local, ou serveur en ligne qui sert aussi le jeu) ;
+// - « ws(s)://... » : telle quelle ; « https://nom » : wss://nom/ws ;
+// - IP, localhost, nom de machine sans point ou « hôte:port » : réseau local, ws://hôte:port (LAN_PORT par défaut) ;
+// - nom de domaine seul (ex. kart-able.fly.dev) : serveur en ligne, wss://nom/ws.
+const LOCAL_HOST = /^(localhost|\d{1,3}(\.\d{1,3}){3}|\[[0-9a-f:]+\])$/i
+
 export function toSocketUrl(address) {
   const value = String(address ?? '').trim()
   if (!value) return `${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/ws`
   if (/^wss?:\/\//.test(value)) return value
+  const secure = value.startsWith('https://')
   const host = value.replace(/^https?:\/\//, '').replace(/\/.*$/, '')
-  return `ws://${host.includes(':') ? host : `${host}:2567`}/ws`
+  const domain = host.includes('.') && !host.includes(':') && !LOCAL_HOST.test(host)
+  if (secure || domain) return `wss://${host}/ws`
+  return `ws://${host.includes(':') ? host : `${host}:${LAN_PORT}`}/ws`
 }
 
 // Adresse HTTP du même serveur (fichiers, /api/info).

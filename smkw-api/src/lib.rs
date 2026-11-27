@@ -2,13 +2,14 @@
 //! dans l'application de bureau (smkw-desktop), qui l'heberge pour les parties en reseau local.
 //!
 //! - `GET /ws` : WebSocket des salons (protocol.rs, rooms.rs) ;
-//! - `GET /api/info` : version et adresses du serveur sur le reseau local ;
+//! - `GET /api/info` : version, adresses (reseau local, ou adresse publique en ligne), charge ;
 //! - le reste : le jeu web compile (smkw-ui/dist), si `web_dir` est fourni. Les joueurs du
 //!   reseau local ouvrent simplement http://<adresse-de-l-hote>:<port> dans leur navigateur.
 
 pub mod config;
 pub mod protocol;
 pub mod rooms;
+mod limits;
 mod socket;
 
 use std::net::{SocketAddr, UdpSocket};
@@ -28,6 +29,7 @@ use rooms::Lobby;
 pub struct AppState {
     pub lobby: Arc<Mutex<Lobby>>,
     pub port: u16,
+    pub public_url: Option<String>,
 }
 
 /// Adresse de cette machine sur le reseau local (aucun paquet envoye : la socket UDP sert
@@ -39,8 +41,21 @@ pub fn lan_ip() -> Option<String> {
 }
 
 async fn info(State(state): State<AppState>) -> impl IntoResponse {
-    let addresses: Vec<String> = lan_ip().into_iter().map(|ip| format!("http://{ip}:{}", state.port)).collect();
-    Json(serde_json::json!({ "name": "smkw-api", "version": env!("CARGO_PKG_VERSION"), "port": state.port, "lan": addresses }))
+    // Serveur en ligne : pas d'adresse de reseau local (celle du conteneur ne sert a personne).
+    let addresses: Vec<String> = match state.public_url {
+        Some(_) => vec![],
+        None => lan_ip().into_iter().map(|ip| format!("http://{ip}:{}", state.port)).collect(),
+    };
+    let (rooms, clients) = state.lobby.lock().map(|lobby| (lobby.rooms.len(), lobby.clients.len())).unwrap_or((0, 0));
+    Json(serde_json::json!({
+        "name": "smkw-api",
+        "version": env!("CARGO_PKG_VERSION"),
+        "port": state.port,
+        "lan": addresses,
+        "public": state.public_url,
+        "rooms": rooms,
+        "clients": clients,
+    }))
 }
 
 async fn websocket(upgrade: WebSocketUpgrade, State(state): State<AppState>) -> impl IntoResponse {
@@ -48,7 +63,7 @@ async fn websocket(upgrade: WebSocketUpgrade, State(state): State<AppState>) -> 
 }
 
 pub fn router(config: &ServerConfig) -> Router {
-    let state = AppState { lobby: Arc::new(Mutex::new(Lobby::default())), port: config.port };
+    let state = AppState { lobby: Arc::new(Mutex::new(Lobby::default())), port: config.port, public_url: config.public_url.clone() };
     let api = Router::new().route("/ws", get(websocket)).route("/api/info", get(info)).with_state(state).layer(CorsLayer::permissive());
     match &config.web_dir {
         Some(dir) => api.fallback_service(ServeDir::new(dir).fallback(ServeFile::new(dir.join("index.html")))),

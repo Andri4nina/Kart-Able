@@ -109,15 +109,15 @@
   },
   "playType": {
     "title": "Karazana lalao",
-    "subtitle": "Amin'ity fitaovana ity sa an-tserasera?",
+    "subtitle": "Amin'ity fitaovana ity sa amin'ny tambajotra?",
     "notAvailable": "Tsy azo atao amin'ity fomba ity",
     "local": {
       "name": "Eo an-toerana",
       "description": "Amin'ity fitaovana ity, efijery zaraina, fitendry sy manette."
     },
     "online": {
-      "name": "Tambajotra eo an-toerana",
-      "description": "Amin'ny milina maromaro amin'ny tambajotra iray (Wi-Fi, tariby) : rindrambaiko napetraka sy mpitety tranonkala miaraka."
+      "name": "Amin'ny tambajotra",
+      "description": "Amin'ny Internet miaraka amin'ny namanao, na amin'ny milina maromaro ao amin'ny tambajotra iray (Wi-Fi, tariby): rindranasa napetraka sy navigateur miaraka."
     }
   },
   "local": {
@@ -627,12 +627,12 @@
     "hint": "Ambony / ambany · A : manamarina · RETOUR : miverina · START : manohy"
   },
   "lan": {
-    "title": "Tambajotra eo an-toerana",
-    "subtitle": "Milalao miaraka amin'ireo milina hafa amin'ny tambajotra iray ihany : rindrambaiko napetraka na mpitety tranonkala.",
-    "howTo": "Ny mpampiantrano no mandefa ny rindrambaiko Kart Able napetraka (na ny mpizara smkw-api). Ny hafa manokatra ny adiresy asehon'ny mpampiantrano ao amin'ny mpitety tranonkala, na manoratra izany eto ambany.",
+    "title": "Amin'ny tambajotra",
+    "subtitle": "Amin'ny Internet, na miaraka amin'ny milina hafa ao amin'ny tambajotra iray: rindranasa napetraka na navigateur.",
+    "howTo": "Amin'ny Internet: Hilalao an-tserasera, mamorona efitrano ary omeo ny namanao ny kaodiny. Amin'ny tambajotra eo an-toerana: ny mpampiantrano no mandefa ny rindranasa Kart Able napetraka (na ny mpizara smkw-api); ny hafa manokatra ny adiresy asehon'ny mpampiantrano ao amin'ny navigateur-ny, na manoratra azy eto ambany.",
     "server": {
-      "title": "Mpizara lalao",
-      "help": "Banga : ilay mpizara nanokatra ity pejy ity. Raha tsy izany, ny adiresin'ny mpampiantrano, ohatra 192.168.1.20:2567.",
+      "title": "Mpizara hafa",
+      "help": "Foana: ny mpizara nanokatra ity pejy ity. Raha tsy izany, ny adiresin'ny mpampiantrano eo an-toerana (192.168.1.20:2567) na mpizara an-tserasera (kart-able.fly.dev).",
       "addressLabel": "Adiresin'ny mpizara",
       "placeholder": "192.168.1.20:2567",
       "connect": "Hifandray"
@@ -649,7 +649,8 @@
       "serverNotFound": "tsy misy mpizara amin’io adiresy io",
       "roomNotFound": "tsy hita ny efitrano",
       "roomFull": "feno ny efitrano",
-      "badMessage": "hafatra nolavina"
+      "badMessage": "hafatra nolavina",
+      "serverFull": "feno ny mpizara, andramo indray rehefa afaka kelikely"
     },
     "rooms": {
       "title": "Efitrano",
@@ -664,7 +665,15 @@
       "waitingOthers": "Miandry ireo mpilalao amin'ny milina hafa.",
       "hostCanStart": "Vonona daholo ny efitrano : atombohy ny lalao.",
       "waitingHost": "Miandry ny mpampiantrano.",
-      "invite": "Ireo mpilalao hafa ao amin'ny tambajotra dia manokatra http://{{address}} ary miditra ao amin'ny efitrano {{code}}."
+      "invite": "Ireo mpilalao hafa ao amin'ny tambajotra dia manokatra http://{{address}} ary miditra ao amin'ny efitrano {{code}}.",
+      "inviteOnline": "Manokatra Kart Able (tranonkala na rindranasa) ny namanao, mankany amin'ny « Amin'ny tambajotra », « Hilalao an-tserasera », dia miditra ao amin'ny efitrano {{code}}."
+    },
+    "internet": {
+      "title": "Amin'ny Internet",
+      "help": "Milalao miaraka amin'ny namanao na aiza na aiza izy ireo: mamorona efitrano, dia omeo azy ireo ny kaodiny.",
+      "connect": "Hilalao an-tserasera",
+      "connected": "Mifandray an-tserasera",
+      "missing": "Tsy misy mpizara an-tserasera voarafitra amin'ity dikan-teny ity: soraty ao amin'ny « Mpizara hafa » ny adiresin'ny mpizara Kart Able."
     }
   }
 }

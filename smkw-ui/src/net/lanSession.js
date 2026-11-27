@@ -8,7 +8,8 @@ import { useVehicleSelectionStore } from '../stores/vehicleSelectionStore'
 import { getConfirmedId } from '../game/selection/selectionRules'
 import { closeSocket, onServerMessage, openSocket, sendMessage, toHttpUrl } from './netClient'
 
-// Session réseau local : connexion, salons, profil des joueurs de cette machine. Les messages
+// Session réseau (réseau local ou serveur en ligne) : connexion, salons, profil des joueurs de
+// cette machine. Les messages
 // de jeu relayés (départ, karts) vont aux abonnés de `onRelay` (net/netMatch.js).
 const relayListeners = new Set()
 let detach = null
@@ -26,10 +27,11 @@ const HANDLERS = {
   welcome: (message) => {
     set({ status: 'connected', clientId: message.clientId, error: null })
     sendMessage({ t: 'list' })
-    // Adresse du serveur sur le réseau local, à communiquer aux autres joueurs.
+    // Adresse du serveur sur le réseau local, à communiquer aux autres joueurs ; un serveur qui
+    // annonce une adresse publique est un serveur en ligne (salons privés).
     fetch(toHttpUrl(useNetStore.getState().address, '/api/info'))
       .then((response) => response.json())
-      .then((info) => set({ lanUrl: info.lan?.[0] ?? null }))
+      .then((info) => set(info.public ? { online: true, lanUrl: null } : { lanUrl: useNetStore.getState().online ? null : (info.lan?.[0] ?? null) }))
       .catch(() => set({ lanUrl: null }))
   },
   rooms: (message) => set({ rooms: message.rooms }),
@@ -48,10 +50,11 @@ const HANDLERS = {
   },
 }
 
-export function connectToServer(address = '') {
+// `online` : serveur public sur Internet (salons privés, rejoints par leur code).
+export function connectToServer(address = '', { online = false } = {}) {
   detach?.()
   detach = onServerMessage((message) => HANDLERS[message.t]?.(message))
-  set({ status: 'connecting', address, error: null, room: null, rooms: [] })
+  set({ status: 'connecting', address, online, lanUrl: null, error: null, room: null, rooms: [] })
   openSocket(address, {
     onOpen: () => sendMessage({ t: 'hello', name: navigator.platform ? `Kart Able ${navigator.platform}` : 'Kart Able' }),
     onClose: () => {
@@ -71,7 +74,7 @@ export function disconnect() {
 }
 
 export const refreshRooms = () => sendMessage({ t: 'list' })
-export const createRoom = () => sendMessage({ t: 'create', modeId: useMatchSetupStore.getState().modeId })
+export const createRoom = () => sendMessage({ t: 'create', modeId: useMatchSetupStore.getState().modeId, private: useNetStore.getState().online })
 export const joinRoom = (code) => sendMessage({ t: 'join', code })
 export function leaveRoom() {
   sendMessage({ t: 'leave' })

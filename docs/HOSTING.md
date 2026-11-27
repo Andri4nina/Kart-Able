@@ -7,6 +7,7 @@ Trois façons de jouer, trois livraisons :
 | Jeu web (`smkw-ui/dist`) | Vercel (gratuit), projet **rasoamanana-andrianina-kart-able** | Jouer seul ou en écran partagé dans le navigateur ; référencement Google / Bing |
 | Application de bureau (`smkw-desktop`) | Versions GitHub (installateurs Windows, macOS, Linux) | Jouer hors ligne et **héberger une partie en réseau local** |
 | Serveur de jeu (`smkw-api`) | Machine du réseau local, ou VPS / Fly.io / Railway (Docker) | Parties en réseau sans l'application de bureau |
+| Serveur en ligne (`smkw-api` public) | Fly.io (`fly.toml`), ou Render, Railway, VPS | **Jouer sur Internet**, chacun chez soi, web et bureau ensemble |
 
 ## 1. Site web sur Vercel
 
@@ -89,3 +90,39 @@ Le site web public (https) ne peut pas joindre une machine du réseau local (les
 
 - Sur une machine du réseau : `cd smkw-ui && npm run build`, puis `cd ../smkw-api && cargo run --release`.
 - En conteneur : `docker build -f smkw-api/Dockerfile -t kart-able .` puis `docker run -p 2567:2567 kart-able`. Sur Internet (Fly.io, Railway, VPS), placer le serveur derrière HTTPS pour les WebSocket (`wss://`).
+
+## 6. Jouer sur Internet (serveur en ligne)
+
+Le site Vercel ne fait que servir le jeu. Pour jouer à distance, il faut aussi un serveur de jeu public. C'est le même `smkw-api` que pour le réseau local, hébergé sur Internet. Les joueurs du site web et ceux de l'application de bureau s'y retrouvent.
+
+### a. Déployer le serveur sur Fly.io
+
+1. Installer la commande Fly (fly.io/docs/flyctl/install), puis `fly auth login`.
+2. À la racine du dépôt : `fly launch --no-deploy --copy-config`. Garder `fly.toml`, et changer le nom de l'application s'il est pris. Mettre alors à jour `SMKW_PUBLIC_URL` dans `fly.toml`.
+3. `fly deploy`, puis `fly scale count 1`. Il faut une seule machine : les salons vivent en mémoire.
+4. Vérifier : `https://kart-able-server.fly.dev/api/info` doit répondre avec `"public"`.
+
+Coût : la machine s'arrête quand personne ne joue et redémarre à la première connexion, quelques secondes au premier joueur. Fly.io demande une carte bancaire ; une si petite machine coûte quelques centimes à quelques dollars par mois selon l'usage.
+
+Autres hébergeurs (Render, Railway, VPS) :
+- construire l'image `smkw-api/Dockerfile` depuis la racine du dépôt ;
+- définir `SMKW_PUBLIC_URL` ;
+- le port suit `PORT` s'il est fourni ;
+- l'hébergeur doit gérer HTTPS et les WebSocket.
+
+### b. Brancher le site Vercel sur ce serveur
+
+1. Vercel, Settings, Environment Variables : `VITE_ONLINE_SERVER_URL` = `wss://kart-able-server.fly.dev/ws`.
+2. Redéployer : la variable est lue au build.
+
+Le site affiche alors « Jouer en ligne » et s'y connecte de lui-même dans « En réseau ». Le serveur Fly sert aussi le jeu : `https://kart-able-server.fly.dev` est jouable directement, déjà relié.
+
+Pour l'application de bureau : la construire avec la même variable (par exemple, la définir dans le workflow des installateurs) pour avoir le bouton. Sinon, on peut toujours saisir `kart-able-server.fly.dev` dans « Autre serveur ».
+
+### c. Jouer
+
+1. Jouer, Course, **En réseau**, **Jouer en ligne**, **Créer un salon**.
+2. Donner le code du salon (6 caractères) à ses amis.
+3. Ils font Jouer, Course, En réseau, Jouer en ligne, saisissent le code, puis Rejoindre.
+
+Les salons en ligne sont privés : ils n'apparaissent pas dans la liste, seul le code permet d'entrer.

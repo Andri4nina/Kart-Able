@@ -13,8 +13,13 @@ pub enum ClientMessage {
     Hello { name: String },
     /// Liste des salons ouverts.
     List,
-    /// Ouvrir un salon (ce client en devient l'hote).
-    Create { mode_id: String },
+    /// Ouvrir un salon (ce client en devient l'hote). Prive : absent de la liste, on le rejoint
+    /// seulement par son code (salons du serveur en ligne, entre amis).
+    Create {
+        mode_id: String,
+        #[serde(default)]
+        private: bool,
+    },
     /// Rejoindre un salon par son code.
     Join { code: String },
     Leave,

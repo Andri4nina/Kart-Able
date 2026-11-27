@@ -1,0 +1,7 @@
+# Contexte d'image du serveur (smkw-api/Dockerfile) : sources seulement.
+**/node_modules
+**/target
+**/dist
+smkw-desktop
+.git
+.claude

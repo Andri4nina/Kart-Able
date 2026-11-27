@@ -47,3 +47,34 @@ Environ 32 karts x 23 nombres x 20 envois par seconde : quelques dizaines de ko/
 ## Évolutions prévues
 
 Objets synchronisés, vote partagé, partie par Internet (serveur hébergé, wss), reconnexion.
+
+## Jeu sur Internet (phase 3F)
+
+- **Même protocole, même serveur** (`smkw-api`) que le réseau local. Seule l'adresse change :
+  le serveur est public (Fly.io ou autre), joint en `wss://`.
+- **Serveur en ligne** : la variable `SMKW_PUBLIC_URL` est définie.
+  - `/api/info` renvoie `public` et n'annonce aucune adresse locale.
+  - Le jeu passe alors en mode en ligne (`netStore.online`).
+- **Salons privés** (`create { private: true }`) : absents de la liste, on les rejoint par leur
+  code. Le jeu les crée ainsi dès qu'il est connecté à un serveur en ligne.
+- **Limites** (`smkw-api/src/limits.rs`) :
+  - 400 connexions, 100 salons ;
+  - messages de 64 Ko au plus ;
+  - un ping toutes les 20 s, pour que les proxys ne coupent pas un salon en attente.
+- **Écran « En réseau »** (`OnlineMultiplayer`) :
+  - carte « Sur Internet » (`OnlineServerCard`, bouton « Jouer en ligne ») ;
+  - carte « Autre serveur » (adresse libre) ;
+  - salons.
+  - Sur le site public (https), si un serveur en ligne est configuré, on s'y connecte
+    automatiquement ; sinon, on se connecte au serveur qui a servi la page.
+- **Adresse saisie** (`netClient.toSocketUrl`) :
+  - IP, `localhost`, nom de machine sans point ou `hôte:port` : réseau local, en `ws://`, port 2567 par défaut ;
+  - nom de domaine ou `https://...` : serveur en ligne, en `wss://.../ws`.
+- **Configuration** : `config/network.js` (`ONLINE_SERVER_URL` ← `VITE_ONLINE_SERVER_URL` au build).
+- **Lobby** : l'invitation indique « Jouer en ligne » et le code du salon (`lan.lobby.inviteOnline`).
+
+### Conformité règles d'or (ajouts 3F)
+
+- [x] Textes par `t()` en fr, en, mg ; icône lucide `Globe` utile (Internet)
+- [x] Réglages dans `config/network.js` ; aucune touche physique
+- [x] Aucun dégradé, aucun emoji
