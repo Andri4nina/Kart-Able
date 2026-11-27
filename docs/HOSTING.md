@@ -18,8 +18,9 @@ Le dépôt est prêt pour Vercel de deux façons. Les deux construisent seulemen
 1. Sur vercel.com, **Add New Project**, puis importer le dépôt GitHub `Kart-Able`.
 2. **Project Name** : `rasoamanana-andrianina-kart-able`. L'adresse sera https://rasoamanana-andrianina-kart-able.vercel.app.
 3. **Root Directory**, au choix :
-   - laisser la racine du dépôt : `vercel.json` (à la racine) installe et construit `smkw-ui` et publie `smkw-ui/dist` ;
-   - ou choisir `smkw-ui` : c'est alors `smkw-ui/vercel.json` qui s'applique.
+   - racine du dépôt ou `smkw-ui` : les deux marchent. Les commandes de `vercel.json` repèrent
+     où elles sont lancées ; depuis la racine, elles construisent `smkw-ui` puis copient le jeu
+     dans `dist/`, le dossier publié.
 
    Dans les deux cas, ces fichiers règlent le build (`npm run build`), le dossier de sortie, le cache des fichiers et les en-têtes de sécurité. Rien n'est à saisir dans l'interface.
 4. Variables d'environnement (Settings, Environment Variables) :

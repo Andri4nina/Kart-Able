@@ -1,9 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "installCommand": "cd smkw-ui && npm ci",
-  "buildCommand": "cd smkw-ui && npm run build",
-  "outputDirectory": "smkw-ui/dist",
+  "installCommand": "if [ -d smkw-ui ]; then cd smkw-ui; fi; npm ci",
+  "buildCommand": "if [ -d smkw-ui ]; then (cd smkw-ui && npm run build) && rm -rf dist && cp -r smkw-ui/dist dist; else npm run build; fi",
+  "outputDirectory": "dist",
   "cleanUrls": true,
   "headers": [
     {

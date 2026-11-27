@@ -1,2 +1,4 @@
 # Liaison locale au projet Vercel (CLI)
 .vercel
+# Copie du jeu construit pour Vercel (vercel.json)
+/dist
