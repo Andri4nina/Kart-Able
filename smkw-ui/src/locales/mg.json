@@ -375,6 +375,12 @@
     },
     "imposter": {
       "name": "Imposter"
+    },
+    "blou": {
+      "name": "Blou"
+    },
+    "droid": {
+      "name": "Droid"
     }
   },
   "selection": {

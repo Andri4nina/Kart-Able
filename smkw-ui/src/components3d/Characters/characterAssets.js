@@ -18,6 +18,8 @@ import miellaUrl from '../../assets/models/Character/smol_ame_bee.glb'
 import steevUrl from '../../assets/models/Character/steev.glb'
 import imposterUrl from '../../assets/models/Character/imposter.glb'
 import ninoUrl from '../../assets/models/Character/ninja.glb'
+import blouUrl from '../../assets/models/Character/blou.glb'
+import droidUrl from '../../assets/models/Character/android.glb'
 
 // Modèles GLB des personnages (exports Sketchfab, échelles d'origine très différentes : chaque
 // modèle est ramené à la hauteur de son gabarit, voir prepareCharacter.js).
@@ -50,9 +52,11 @@ const CHARACTER_ASSETS = {
   pompon: { url: pomponUrl, clip: 'Action', portrait: CHIBI },
   miella: { url: miellaUrl, portrait: CHIBI },
 
-  nino: { url: ninoUrl, yaw: Math.PI / 2, portrait: [0.86, 0.34] },
-  steev: { url: steevUrl, yaw: Math.PI / 2, portrait: [0.68, 0.66] },
-  imposter: { url: imposterUrl, yaw: Math.PI / 2, portrait: CHIBI },
+  nino: { url: ninoUrl, yaw: 2 * Math.PI , portrait: CHIBI, driverPose: false },
+  steev: { url: steevUrl, yaw: 2 * Math.PI , portrait: [0.68, 0.66], driverPose: false },
+  imposter: { url: imposterUrl, yaw: Math.PI , portrait: CHIBI, driverPose: false },
+  blou: { url: blouUrl, yaw: 2 * Math.PI , portrait: ROUND, driverPose: false },
+  droid: { url: droidUrl, yaw: 2 * Math.PI , portrait: ROUND, driverPose: false },
 }
 
 // Hauteur d'un personnage de gabarit « grand » (les autres à l'échelle de leur gabarit) :

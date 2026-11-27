@@ -28,7 +28,7 @@ const forward = normalize(sub(target, position))
 // Caméra sans lacet : droite = X, haut = droite x avant.
 const up = normalize([0, -forward[2], forward[1]])
 const tanHalfFov = Math.tan((fov * Math.PI) / 360)
-
+ 
 function project(y, zOffset = 0) {
   const offset = sub([0, y, PREVIEW_STAGE.lineupZ + zOffset], position)
   const depth = dot(offset, forward)

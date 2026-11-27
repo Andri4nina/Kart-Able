@@ -549,3 +549,13 @@ Fiche : docs/phases/PHASE_3F_ONLINE.md.
   sur Vercel.
 - Tester une course complète à distance (latence sur Internet).
 - Facultatif : `VITE_ONLINE_SERVER_URL` dans le workflow des installateurs.
+
+### Featurs imagination
+-
+-
+-
+-
+-
+-
+-
+-
