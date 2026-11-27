@@ -1,6 +1,7 @@
 import { DUST_TRACKS } from './trackData/dustCup'
 import { FROST_TRACKS } from './trackData/frostCup'
 import { KAIROS_TRACKS } from './trackData/kairosCup'
+import { PAX_TRACKS } from './trackData/paxCup'
 import { SUMMIT_TRACKS } from './trackData/summitCup'
 
 // Circuits : unique source de vérité. Un circuit n'est qu'une poignée de données ; la route, le
@@ -27,7 +28,7 @@ import { SUMMIT_TRACKS } from './trackData/summitCup'
 // Textes : tracks.<id>.name et tracks.<id>.description.
 
 // Données des circuits : config/trackData/<coupe>.js (une liste par coupe).
-const TRACK_DEFINITIONS = [...KAIROS_TRACKS, ...SUMMIT_TRACKS, ...FROST_TRACKS, ...DUST_TRACKS]
+const TRACK_DEFINITIONS = [...KAIROS_TRACKS, ...SUMMIT_TRACKS, ...FROST_TRACKS, ...DUST_TRACKS, ...PAX_TRACKS]
 
 // Mise à l'échelle de tous les circuits : positions (et lacs) x size, largeurs x width,
 // hauteurs x height (les pentes restent du même ordre sur des distances plus longues).

@@ -549,3 +549,20 @@ Fiche : docs/phases/PHASE_3F_ONLINE.md.
   sur Vercel.
 - Tester une course complète à distance (latence sur Internet).
 - Facultatif : `VITE_ONLINE_SERVER_URL` dans le workflow des installateurs.
+
+---
+
+## 2026-11-27 — Phase 3G : Pax Cup
+
+Branche `feat/pax-cup`. Fiche : docs/phases/PHASE_3G_PAX_CUP.md.
+
+### Fait
+- Coupe `pax` : 4 circuits techniques sans cases à objets (`config/trackData/paxCup.js`).
+- Emblème `Route` et couleur `--color-cup-pax`.
+- Textes en fr, en et mg.
+
+### TODO
+- Avis de l'utilisateur sur la difficulté des circuits :
+  - largeur 13 (avant échelle) ;
+  - épingles de Jardins Pax ;
+  - lacets du Zénith.
