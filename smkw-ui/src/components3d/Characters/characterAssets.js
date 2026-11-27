@@ -15,6 +15,10 @@ import voltUrl from '../../assets/models/Character/robot.glb'
 import ossoUrl from '../../assets/models/Character/skeleton.glb'
 import miellaUrl from '../../assets/models/Character/smol_ame_bee.glb'
 
+import steevUrl from '../../assets/models/Character/steev.glb'
+import imposterUrl from '../../assets/models/Character/imposter.glb'
+import ninoUrl from '../../assets/models/Character/ninja.glb'
+
 // Modèles GLB des personnages (exports Sketchfab, échelles d'origine très différentes : chaque
 // modèle est ramené à la hauteur de son gabarit, voir prepareCharacter.js).
 // - yaw     : quart de tour pour que le personnage regarde +Z ;
@@ -45,6 +49,10 @@ const CHARACTER_ASSETS = {
   zenji: { url: zenjiUrl, portrait: CHIBI },
   pompon: { url: pomponUrl, clip: 'Action', portrait: CHIBI },
   miella: { url: miellaUrl, portrait: CHIBI },
+
+  nino: { url: ninoUrl, yaw: Math.PI / 2, portrait: [0.86, 0.34] },
+  steev: { url: steevUrl, yaw: Math.PI / 2, portrait: [0.68, 0.66] },
+  imposter: { url: imposterUrl, yaw: Math.PI / 2, portrait: CHIBI },
 }
 
 // Hauteur d'un personnage de gabarit « grand » (les autres à l'échelle de leur gabarit) :
