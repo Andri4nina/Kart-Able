@@ -1,4 +1,5 @@
 import { MathUtils, Quaternion, Vector3 } from 'three'
+import { attachFeet } from './driverFeet'
 import { applyDriverPose, findDriverBones, posedBones } from './driverPose'
 
 // Pilote animé au volant. À la préparation : poses clés calculées sur le squelette (centre,
@@ -28,6 +29,7 @@ export function createDriverRig(root) {
     poses[name] = snapshot(bones)
   }
   restore(bones, poses.center)
+  attachFeet(root, rig)
   root.updateMatrixWorld(true)
   // Bassin (parent des cuisses) : c'est lui qu'on pose sur le siège.
   rig.legs[0].top.parent.getWorldPosition(pelvis)

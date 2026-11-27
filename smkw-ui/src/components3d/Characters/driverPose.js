@@ -1,4 +1,5 @@
 import { Quaternion, Vector3 } from 'three'
+import { detachedFoot } from './driverFeet'
 
 // Pose de pilote assis, calculée sur n'importe quel squelette (Mixamo, Rigify, exports
 // Sketchfab...) sans connaître ses axes : les membres sont repérés par leur nom (chaîne
@@ -8,7 +9,7 @@ import { Quaternion, Vector3 } from 'three'
 const LEG = /(leg|thigh|tigh|shin)/i
 const ARM = /arm/i
 const NOT_LIMB = /armature|root/i
-const SPINE = /(spine|chest)/i
+const SPINE = /(spine|chest|abdomen|torso)/i
 const HEAD = /head/i
 
 const from = new Vector3()
@@ -28,7 +29,8 @@ function chainTops(bones, regex) {
 
 function limb(root, top) {
   const middle = firstBoneChild(top)
-  const end = firstBoneChild(middle)
+  // Bout de chaîne : os, sinon simple repère (« _end » des exports FBX2glTF, sans os).
+  const end = firstBoneChild(middle) ?? middle?.children[0] ?? null
   if (!middle || !end) return null
   root.updateMatrixWorld(true)
   return { top, middle, end, side: Math.sign(top.getWorldPosition(from).x) || 1 }
@@ -42,6 +44,7 @@ export function findDriverBones(root) {
   const legs = chainTops(bones, LEG).map((bone) => limb(root, bone)).filter(Boolean)
   const arms = chainTops(bones, ARM).map((bone) => limb(root, bone)).filter(Boolean)
   if (legs.length < 2 || arms.length < 2) return null
+  for (const leg of legs) leg.foot = detachedFoot(bones, leg)
   return {
     legs: legs.slice(0, 2),
     arms: arms.slice(0, 2),

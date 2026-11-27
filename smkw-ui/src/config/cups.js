@@ -12,6 +12,8 @@ export const CUPS = Object.freeze([
   { id: 'frostbloom', trackIds: ['frostHollow', 'borealPass', 'icefallRun', 'whitePines'] },
   // Coupe de la terre battue : pistes brunes, mesas, carrières, ornières.
   { id: 'dustrail', trackIds: ['rustMesa', 'clayQuarry', 'dustWhirl', 'rutRally'] },
+  // Coupe technique : aucun objet, routes étroites, épingles et chicanes ; seul le pilotage compte.
+  { id: 'pax', trackIds: ['paxGardens', 'lanternPass', 'stillwaterBend', 'zenithSpiral'] },
 ])
 
 // Tous les circuits, coupe par coupe.

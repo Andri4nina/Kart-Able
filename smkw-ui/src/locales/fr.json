@@ -434,6 +434,9 @@
     },
     "dustrail": {
       "name": "Dustrail Cup"
+    },
+    "pax": {
+      "name": "Pax Cup"
     }
   },
   "tracks": {
@@ -500,6 +503,22 @@
     "rutRally": {
       "name": "Rallye des Ornières",
       "description": "Ornières, bosses et virages enchaînés autour d'un étang de boue."
+    },
+    "paxGardens": {
+      "name": "Jardins Pax",
+      "description": "Épingles serrées et chicane au cordeau : sans objets, chaque trajectoire compte."
+    },
+    "lanternPass": {
+      "name": "Col des Lanternes",
+      "description": "Une forêt de lanternes et un triple S en montée : la précision avant tout."
+    },
+    "stillwaterBend": {
+      "name": "Méandres d'Eau Calme",
+      "description": "Le long d'un étang tranquille, des virages en série qui punissent la moindre erreur."
+    },
+    "zenithSpiral": {
+      "name": "Spirale du Zénith",
+      "description": "Des lacets jusqu'au sommet, puis une longue descente technique."
     }
   },
   "vehicles": {

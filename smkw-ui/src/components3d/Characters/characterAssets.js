@@ -50,7 +50,8 @@ const CHARACTER_ASSETS = {
   pompon: { url: pomponUrl, clip: 'Action', portrait: CHIBI },
   miella: { url: miellaUrl, portrait: CHIBI },
 
-  nino: { url: ninoUrl, yaw: Math.PI / 2, portrait: [0.86, 0.34] },
+  // Squelette Quaternius (pieds en IK, hors de la chaîne des jambes : driverPose les rattache).
+  nino: { url: ninoUrl, clip: 'CharacterArmature|Idle', loop: true, portrait: CHIBI },
   steev: { url: steevUrl, yaw: Math.PI / 2, portrait: [0.68, 0.66] },
   imposter: { url: imposterUrl, yaw: Math.PI / 2, portrait: CHIBI },
 }
