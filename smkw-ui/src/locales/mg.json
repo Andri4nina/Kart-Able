@@ -433,6 +433,9 @@
     },
     "dustrail": {
       "name": "Dustrail Cup"
+    },
+    "pax": {
+      "name": "Pax Cup"
     }
   },
   "tracks": {
@@ -499,6 +502,22 @@
     "rutRally": {
       "name": "Hazakazaka Lavaka",
       "description": "Lavaka, vongona ary fiolahana manodidina dobo feta."
+    },
+    "paxGardens": {
+      "name": "Zaridainan'i Pax",
+      "description": "Fiolahana henjana sy chicane mazava: tsy misy zavatra, ny lalana arahina no manan-danja."
+    },
+    "lanternPass": {
+      "name": "Lalan'ny Fanilo",
+      "description": "Ala feno fanilo sy S telo miakatra: ny fahamarinana no voalohany."
+    },
+    "stillwaterBend": {
+      "name": "Fiolahan'ny Rano Milamina",
+      "description": "Manamorona dobo milamina, fiolahana mifanesy manasazy ny fahadisoana kely indrindra."
+    },
+    "zenithSpiral": {
+      "name": "Fihodinana Zenith",
+      "description": "Lalana miolikolika hatrany an-tampony, avy eo fidinana lava sy sarotra."
     }
   },
   "vehicles": {
