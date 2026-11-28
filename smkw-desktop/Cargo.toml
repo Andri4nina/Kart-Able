@@ -1,6 +1,6 @@
 [package]
 name = "kart-able"
-version = "0.3.0"
+version = "0.5.0"
 edition = "2021"
 description = "Kart Able, application de bureau : le jeu et son serveur de reseau local (LAN)"
 authors = ["Rasoamanana Andrianina"]
