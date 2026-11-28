@@ -12,6 +12,7 @@ import { writeWheelRig } from '../Vehicles/wheelRig'
 import { writeAirPose } from './kartAirPose'
 import { KartEffects } from './KartEffects'
 import { KartGlider } from './KartGlider'
+import { KartWake } from './KartWake'
 import { writeKartPose } from './kartPose'
 
 // Kart d'un pilote (joueur ou ordinateur) : véhicule GLB à la couleur de son personnage, le
@@ -69,6 +70,7 @@ export function RacerKart({ racer, slot }) {
           ) : null}
         </group>
         <KartEffects racerId={racer.id} />
+        <KartWake racerId={racer.id} />
         <KartGlider ref={gliderRef} color={getCharacterColor(racer.characterId)} />
       </group>
     </group>

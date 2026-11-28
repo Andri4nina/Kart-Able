@@ -67,15 +67,17 @@ export function isInWater(lakes, x, z) {
 }
 
 // Réapparition sur la route, un peu avant l'endroit de la chute, dans le sens de course ; après
-// la brèche si la chute a eu lieu au-dessus d'une brèche du deltaplane (`gaps`).
-export function respawnOnTrack(path, kart, gaps) {
+// la brèche si la chute a eu lieu au-dessus d'une brèche du deltaplane (`gaps`) ; dans un
+// embranchement, sur la voie de son côté (à côté du terre-plein `island`).
+export function respawnOnTrack(path, kart, gaps, island) {
   let i = (kart.trackIndex - 4 + path.count) % path.count
   if (gaps?.[kart.trackIndex] || gaps?.[i]) {
     while (gaps[i] || gaps[(i - 4 + path.count) % path.count]) i = (i + 1) % path.count
   }
+  const lateral = island?.[i] > 0 ? (kart.lateral >= 0 ? 1 : -1) * (island[i] + path.width[i] / 2) / 2 : 0
   kart.trackIndex = i
-  kart.x = path.x[i]
-  kart.z = path.z[i]
+  kart.x = path.x[i] - path.tz[i] * lateral
+  kart.z = path.z[i] + path.tx[i] * lateral
   kart.yaw = Math.atan2(path.tx[i], path.tz[i])
   kart.vx = 0
   kart.vz = 0
@@ -86,6 +88,6 @@ export function respawnOnTrack(path, kart, gaps) {
   cancelDrift(kart)
   clearBoost(kart)
   resetAir(kart)
-  kart.lateral = 0
+  kart.lateral = lateral
   kart.offRoad = false
 }

@@ -436,6 +436,12 @@
     },
     "pax": {
       "name": "Pax Cup"
+    },
+    "duet": {
+      "name": "Duet Cup"
+    },
+    "water": {
+      "name": "Water Cup"
     }
   },
   "tracks": {
@@ -518,6 +524,38 @@
     "zenithSpiral": {
       "name": "Zenith Spiral",
       "description": "Switchbacks up to the summit, then a long technical descent."
+    },
+    "duetMeadows": {
+      "name": "Duet Meadows",
+      "description": "Two lanes after the big bend, then three hang-glider flights over the ponds."
+    },
+    "forkCanyon": {
+      "name": "Fork Canyon",
+      "description": "The canyon splits into two corridors: pad and rocks, or a ramp. Two flights to finish."
+    },
+    "twinIsles": {
+      "name": "Twin Isles",
+      "description": "Two forks along the coast, each with its own choice, and two hang-glider crossings."
+    },
+    "skyFork": {
+      "name": "Sky Fork",
+      "description": "Three flights below the peaks and a fork high in the mountains."
+    },
+    "lagoonRun": {
+      "name": "Lagoon Run",
+      "description": "Two long glides across the lagoon: the kart drifts, plan your turns early."
+    },
+    "riverRapids": {
+      "name": "River Rapids",
+      "description": "An S-shaped river run on the water, with rocks in the current."
+    },
+    "mangroveMaze": {
+      "name": "Mangrove Maze",
+      "description": "Channels between mangrove rocks, where you glide more than you drive."
+    },
+    "harborDash": {
+      "name": "Harbor Dash",
+      "description": "Along the docks, then across the harbor basin: twice on the water each lap."
     }
   },
   "vehicles": {

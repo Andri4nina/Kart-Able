@@ -82,3 +82,8 @@ export const WALL = Object.freeze({
   bumpSpeed: 4,
   speedLoss: 0.25, // part de la vitesse perdue sur un choc frontal (pondérée par la résistance)
 })
+
+// Voies d'eau (game/track/trackWaterways.js) : le kart flotte et glisse. Vitesse max x speed,
+// adhérence latérale x grip (il dérive dans les virages) ; le hors-piste sur l'eau n'est pas
+// ralenti comme l'herbe.
+export const WATER = Object.freeze({ speed: 0.95, grip: 0.4 })
