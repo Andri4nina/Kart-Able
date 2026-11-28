@@ -12,6 +12,9 @@ Faire trouver « Kart Able » et « Rasoamanana Andrianina » sur Google et Bing
 - `robots.txt` et `sitemap.xml` générés au build avec l'adresse `SITE_URL` (même sitemap pour Google Search Console et Bing Webmaster Tools) ;
 - vérification : balises meta par variables (`GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION`) ou fichiers déposés dans `public/`.
 
+- Adresse du site : https://kart-able.vercel.app (`site.config.js`, `SITE_URL` pour un autre domaine).
+- Fichier de vérification Google : `public/google0a72ea01ba7166e4.html`, servi à la racine. `cleanUrls` est désactivé dans `vercel.json` : il redirigeait `….html` vers une adresse sans extension, ce que la vérification Google refuse.
+
 Procédure complète : [docs/HOSTING.md](../HOSTING.md).
 
 ## Conformité règles d'or
