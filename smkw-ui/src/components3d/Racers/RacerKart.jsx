@@ -12,6 +12,7 @@ import { writeWheelRig } from '../Vehicles/wheelRig'
 import { writeAirPose } from './kartAirPose'
 import { KartEffects } from './KartEffects'
 import { KartGlider } from './KartGlider'
+import { KartBubbles } from './KartBubbles'
 import { KartWake } from './KartWake'
 import { writeKartPose } from './kartPose'
 
@@ -71,6 +72,7 @@ export function RacerKart({ racer, slot }) {
         </group>
         <KartEffects racerId={racer.id} />
         <KartWake racerId={racer.id} />
+        <KartBubbles racerId={racer.id} />
         <KartGlider ref={gliderRef} color={getCharacterColor(racer.characterId)} />
       </group>
     </group>

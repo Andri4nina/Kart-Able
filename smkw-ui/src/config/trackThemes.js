@@ -44,6 +44,17 @@ export const TRACK_THEMES = Object.freeze({
     treeCount: 260,
     bushCount: 200,
   },
+  // Récif : îlots de sable et de palmiers au milieu des lagons, eau turquoise (Water Cup).
+  reef: {
+    ground: ['#d9cf8f', '#bfc278'],
+    shoulder: '#e6d39c',
+    sand: '#fbefc4',
+    water: { shallow: '#3ff0e0', deep: '#0a64a8', foam: '#ffffff' },
+    grass: { tip: '#c9ea84', base: '#6a9a3e' },
+    trees: ['tealLean', 'acacia', 'orangeUmbrella', 'limeCube'],
+    treeCount: 150,
+    bushCount: 110,
+  },
   // Canyon : terre ocre, herbe sèche rare, arbres du désert.
   canyon: {
     ground: ['#d99a5b', '#c27d43'],

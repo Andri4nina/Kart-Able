@@ -527,35 +527,35 @@
     },
     "duetMeadows": {
       "name": "Duet Meadows",
-      "description": "Two lanes after the big bend, then three hang-glider flights over the ponds."
+      "description": "A hedge, a bridge over a cutting, then a canal: two lanes for most of the lap."
     },
     "forkCanyon": {
       "name": "Fork Canyon",
-      "description": "The canyon splits into two corridors: pad and rocks, or a ramp. Two flights to finish."
+      "description": "Rocks then a low wall between the two lanes, which cross by a bridge in the heart of the canyon."
     },
     "twinIsles": {
       "name": "Twin Isles",
-      "description": "Two forks along the coast, each with its own choice, and two hang-glider crossings."
+      "description": "Two lanes along the coast, a bridge to swap sides, then a canal out to sea."
     },
     "skyFork": {
       "name": "Sky Fork",
-      "description": "Three flights below the peaks and a fork high in the mountains."
+      "description": "Two bridges and two cuttings high in the mountains: you go over, then under."
     },
     "lagoonRun": {
       "name": "Lagoon Run",
-      "description": "Two long glides across the lagoon: the kart drifts, plan your turns early."
+      "description": "Glide across the lagoon, then dive to the bottom before climbing back onto the sand."
     },
     "riverRapids": {
       "name": "River Rapids",
-      "description": "An S-shaped river run on the water, with rocks in the current."
+      "description": "An S-shaped river on the surface, then two dives under the current, between the rocks."
     },
     "mangroveMaze": {
       "name": "Mangrove Maze",
-      "description": "Channels between mangrove rocks, where you glide more than you drive."
+      "description": "Channels between mangrove rocks and a long underwater crossing."
     },
     "harborDash": {
       "name": "Harbor Dash",
-      "description": "Along the docks, then across the harbor basin: twice on the water each lap."
+      "description": "The harbor basin on the surface, then two underwater runs between the docks."
     }
   },
   "vehicles": {

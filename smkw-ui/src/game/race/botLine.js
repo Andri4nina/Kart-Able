@@ -1,3 +1,4 @@
+import { branchCenter } from '../track/trackCrossings'
 import { islandAhead } from '../track/trackSplits'
 
 // Trajectoire latérale visée par un pilote ordinateur (calcul pur) : sa voie préférée, déviée
@@ -17,11 +18,22 @@ function aheadDistance(path, kart, feature) {
   return d
 }
 
-export function chooseBotLateral(geometry, kart, lane, half) {
-  const { path, obstacles, pads, island } = geometry
+// Croisement devant (échantillon visé `i`) : centre de la voie du kart (pont ou tranchée).
+function crossingLateral(geometry, kart, i) {
+  const { crossing, crossingT, crossings } = geometry
+  const at = crossing[i] ? i : crossing[kart.trackIndex] ? kart.trackIndex : -1
+  if (at < 0) return null
+  const branch = kart.branch || Math.sign(kart.lateral) || kart.splitSide
+  return branchCenter(crossings[crossing[at] - 1], branch, crossingT[at])
+}
+
+export function chooseBotLateral(geometry, kart, lane, half, i = kart.trackIndex) {
+  const { path, obstacles, pads, island, lock } = geometry
+  const cross = crossingLateral(geometry, kart, i)
+  if (cross !== null) return cross
   const split = islandAhead(path, island, kart.trackIndex, SPLIT_LOOK)
-  // Déjà le long du terre-plein : on reste dans la voie où l'on est (on ne le traverse pas).
-  const side = island[kart.trackIndex] > 1 ? Math.sign(kart.lateral) || kart.splitSide : kart.splitSide
+  // Déjà le long du terre-plein, ou juste après un croisement : on reste du côté où l'on est.
+  const side = island[kart.trackIndex] > 1 || lock[kart.trackIndex] ? Math.sign(kart.lateral) || kart.splitSide : kart.splitSide
   const inner = split + ISLAND_CLEARANCE
   // Voie de son côté : milieu de la voie, puis rochers et pads de cette voie seulement.
   let lateral = split > 0 ? side * (inner + Math.max(inner, half)) / 2 : lane

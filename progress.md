@@ -611,6 +611,19 @@ Fiche : docs/phases/PHASE_3G_DUET_WATER.md.
   - nombre de vols.
 - Le terre-plein n'a ni arbres ni décor.
 
+### Suite (2026-11-28) : sous l'eau, ponts et tranchées
+- **Water Cup** : ambiance `reef`, plongées (`trackDives.js`, `UNDERWATER`), vue sous-marine, bulles.
+- **Duet Cup** :
+  - voies coupées sur environ 50 % du tour ;
+  - styles de séparation `grass`, `hedge`, `wall`, `canal`, `rocks` ;
+  - croisements avec pont et tranchée (`trackCrossings.js`, `kartCrossing.js`, `TrackCrossings`) ;
+  - collisions ignorées entre karts à plus de 2 m de hauteur l'un de l'autre.
+- Simulation : équilibre au plus 0,5 s ; tous à l'arrivée.
+
+### TODO
+- Les croisements ne s'affichent pas sur la mini-carte (seule la ligne médiane est tracée).
+- Les objets lancés ignorent la hauteur (un objet du pont peut toucher un kart dans la tranchée).
+
 ## 2026-11-27 — Phase 3G : Pax Cup
 
 Branche `feat/pax-cup`. Fiche : docs/phases/PHASE_3G_PAX_CUP.md.

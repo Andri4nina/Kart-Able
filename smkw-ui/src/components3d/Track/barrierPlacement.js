@@ -16,7 +16,7 @@ function sideLimit(fences, side, i) {
 }
 
 export function placeBarriers(geometry) {
-  const { path, fences, hidden: gaps } = geometry
+  const { path, fences, bare: gaps } = geometry
   const walls = []
   const posts = []
   for (const side of [-1, 1]) {

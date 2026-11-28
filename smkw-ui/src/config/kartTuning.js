@@ -87,3 +87,7 @@ export const WALL = Object.freeze({
 // adhérence latérale x grip (il dérive dans les virages) ; le hors-piste sur l'eau n'est pas
 // ralenti comme l'herbe.
 export const WATER = Object.freeze({ speed: 0.95, grip: 0.4 })
+
+// Plongées (game/track/trackDives.js) : sous l'eau, le kart roule un peu moins vite (x speed) et
+// flotte en l'air (gravité x gravity : sauts longs et lents).
+export const UNDERWATER = Object.freeze({ speed: 0.93, gravity: 0.45 })

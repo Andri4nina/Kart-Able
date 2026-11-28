@@ -525,35 +525,35 @@
     },
     "duetMeadows": {
       "name": "Prairies Duo",
-      "description": "Deux voies à la sortie du grand virage, puis trois envols en deltaplane au-dessus des étangs."
+      "description": "Une haie, un pont au-dessus d'une tranchée, puis un canal : deux voies sur presque tout le tour."
     },
     "forkCanyon": {
       "name": "Canyon de la Fourche",
-      "description": "Le canyon se sépare en deux couloirs : pad et rochers, ou tremplin. Deux vols pour finir."
+      "description": "Rochers puis muret entre les deux voies, qui se croisent par un pont au cœur du canyon."
     },
     "twinIsles": {
       "name": "Îles Jumelles",
-      "description": "Deux embranchements le long de la côte, chacun avec son choix, et deux traversées en deltaplane."
+      "description": "Deux voies le long de la côte, un pont pour changer de côté, puis un canal jusqu'au large."
     },
     "skyFork": {
       "name": "Fourche du Ciel",
-      "description": "Trois envols au pied des sommets et une fourche en altitude."
+      "description": "Deux ponts et deux tranchées en altitude : on passe tour à tour dessus et dessous."
     },
     "lagoonRun": {
       "name": "Course du Lagon",
-      "description": "Deux longues glissades sur le lagon : le kart dérive, anticipe les virages."
+      "description": "Glisse sur le lagon, puis plonge au fond de l'eau avant de remonter sur le sable."
     },
     "riverRapids": {
       "name": "Rapides de la Rivière",
-      "description": "Une rivière en S à descendre sur l'eau, avec des rochers dans le courant."
+      "description": "Une rivière en S à la surface, puis deux plongées sous le courant, entre les rochers."
     },
     "mangroveMaze": {
       "name": "Dédale des Mangroves",
-      "description": "Des chenaux entre les rochers de la mangrove, où l'on glisse plus qu'on ne roule."
+      "description": "Des chenaux entre les rochers de la mangrove et une longue traversée sous-marine."
     },
     "harborDash": {
       "name": "Sprint du Port",
-      "description": "Les quais puis le bassin du port : deux passages sur l'eau à chaque tour."
+      "description": "Le bassin du port à la surface, puis deux passages sous l'eau entre les quais."
     }
   },
   "vehicles": {

@@ -101,6 +101,8 @@ export function createRaceKart(racer, slot, geometry, { device, random, speedCla
     trackDistance: 0,
     offRoad: false,
     onWater: false,
+    underwater: false,
+    branch: 0,
     // Course
     progress: createLapProgress(geometry.gates.length),
     lapTimes: [],

@@ -1,5 +1,7 @@
 import { RELIEF } from '../../config/airTuning'
+import { UNDERWATER } from '../../config/kartTuning'
 import { getGroundHeight, getSlope } from '../track/trackHeight'
+import { branchHeight } from '../track/trackCrossings'
 import { readRamp } from '../track/trackJumps'
 import { WATERWAY } from '../track/trackWaterways'
 import { land, stepAir, takeOff } from './kartAir'
@@ -19,6 +21,8 @@ export function getDriveGround(geometry, kart, forwardX, forwardZ) {
   if (geometry.gaps[kart.trackIndex] && ramp.height === 0) return GAP_FLOOR
   // Voie d'eau : le kart flotte à la surface (un peu enfoncé).
   if (geometry.water[kart.trackIndex]) return WATERWAY.level + ramp.height
+  // Croisement : la voie du kart (pont ou tranchée), au-dessus ou au-dessous de la route.
+  if (kart.branch && geometry.crossing[kart.trackIndex]) return geometry.path.y[kart.trackIndex] + branchHeight(kart.branch, geometry.crossingT[kart.trackIndex]) + ramp.height
   return getGroundHeight(geometry, kart.x, kart.z) + ramp.height
 }
 
@@ -27,7 +31,7 @@ export function updateKartVertical(kart, geometry, dt) {
   const forwardZ = Math.cos(kart.yaw)
   const ground = getDriveGround(geometry, kart, forwardX, forwardZ)
   const wasGrounded = !kart.airborne
-  stepAir(kart, RELIEF.gravity, dt)
+  stepAir(kart, RELIEF.gravity * (kart.underwater ? UNDERWATER.gravity : 1), dt)
   kart.y += kart.vy * dt
   // Au-dessus du sol : en vol (même de quelques centimètres, sinon le kart ne décollerait
   // jamais) ; `airborne` (contrôle réduit, affichage) seulement au-delà du seuil.

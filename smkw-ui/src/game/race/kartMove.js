@@ -1,9 +1,11 @@
 import { RACE } from '../../config/race'
+import { DIVE } from '../track/trackDives'
 import { updateTrackFeatures } from './kartFeatures'
 import { stepKartPhysics } from './kartPhysics'
 import { placeOnGround, updateKartVertical } from './kartVertical'
 import { updateProgress } from './raceProgress'
 import { stepRemoteKart } from './remoteKart'
+import { applyCrossing, updateBranch } from './kartCrossing'
 import { applyIsland } from './kartIsland'
 import { applyFence, isInWater, respawnOnTrack, updateTrackIndex } from './trackTracking'
 
@@ -30,11 +32,14 @@ export function moveKart(world, kart, dt) {
   updateTrackIndex(path, kart)
   applyFence(world.geometry, kart)
   applyIsland(world.geometry, kart)
+  updateBranch(world.geometry, kart)
+  applyCrossing(world.geometry, kart)
   kart.onWater = world.geometry.water[kart.trackIndex] === 1 && !kart.airborne
+  kart.underwater = world.geometry.under[kart.trackIndex] === 1 && kart.y < DIVE.surface - DIVE.immersed
   updateTrackFeatures(world.geometry, kart, dt)
   // Dans l'eau : hors de la route sur un lac (au sol), ou tombé dans une brèche du deltaplane.
   const fell = gaps[kart.trackIndex] && kart.y < GAP_WATER
-  if (fell || (kart.offRoad && !kart.airborne && !kart.onWater && isInWater(track.lakes, kart.x, kart.z))) {
+  if (fell || (kart.offRoad && !kart.airborne && !kart.onWater && !world.geometry.under[kart.trackIndex] && isInWater(track.lakes, kart.x, kart.z))) {
     kart.sinking = RACE.respawnDelay
     kart.vx = 0
     kart.vz = 0
