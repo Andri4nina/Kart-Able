@@ -43,3 +43,17 @@ Poses précalculées ; par frame : ~12 slerp par pilote rigué.
 ## Évolutions prévues
 
 Animations faites main (assis, victoire) si des GLB dédiés sont ajoutés ; regarder un adversaire proche.
+
+## Animation procédurale (phase 3G)
+
+- **Principe** : `boneMotion.js` ajoute des rotations autour des axes du personnage (X gauche, Y haut, Z regard) par-dessus la pose du moment, sans connaître les axes du squelette (axes ramenés dans le repère de l'os une fois).
+- **Au volant** (`driverMotion.js`, appelé par `driverRig.update`), buste et tête :
+  - à l'arrêt : respiration, regard autour de soi ;
+  - en roulant : buste penché avec la vitesse, tête qui vibre avec le moteur ;
+  - turbo : plaqué en arrière ; drift : buste et tête penchés vers l'intérieur ;
+  - en l'air : tête vers le bas ; choc : tête secouée ; arrivée : balancement avec les bras levés.
+  - Entrées écrites par `kartPose.js` : `speed`, `boost`, `drift`, `air`.
+- **Modèles sans squelette** : tout le pilote est plaqué en arrière par le turbo et tassé à l'atterrissage (`kartPose.js`).
+- **Attente** (`idleMotion.js`, sélection et podium) : les personnages sans animation en boucle respirent, tournent la tête et balancent les bras.
+- **Mouvement réduit** : inclinaisons seulement, aucune oscillation ; aucune attente procédurale.
+- **Coût** : quelques multiplications de quaternions par pilote et par frame, aucune allocation.

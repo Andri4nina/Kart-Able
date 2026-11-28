@@ -19,6 +19,7 @@ Elles priment sur toute autre préférence. Vérification automatique : `npm run
 - Interdits : CSS Modules, styled-components, Emotion, Sass, fichiers CSS de composants, autre framework CSS.
 - Un seul fichier CSS : `smkw-ui/src/index.css`, limité à `@import "tailwindcss"`, `@theme` (tokens), `@custom-variant` et `@utility`. `@utility` est réservé à ce que les classes ne peuvent pas exprimer (aujourd'hui : `scrollbar-game`, les pseudo-éléments de barre de défilement) et s'utilise ensuite comme une classe Tailwind.
 - Toute zone qui défile utilise `scrollbar-game` (barre aux couleurs du jeu), jamais la barre native.
+- Un écran de jeu tient sur un seul écran : le contenu des écrans du parcours passe par `FitToScreen` (réduit pour tout afficher). Le défilement ne sert qu'en secours (écrans très bas, longues listes : salons, résultats, réglages).
 - Styles inline : **seulement** par nécessité technique (valeur dynamique haute fréquence écrite via ref, ex. barre de vitesse). Toujours commenter pourquoi.
 - Couleurs de marque via tokens : `brand-red`, `brand-yellow`, `brand-ink`, `brand-sky`. Pas de couleurs hexadécimales en dur dans les classes.
 
