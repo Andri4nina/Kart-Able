@@ -1,7 +1,7 @@
-# Embranchements (Duet Cup)
+# Embranchements et croisements (Duet Cup)
 
 - **Type** : système + objet 3D
-- **Fichiers** : `game/track/trackSplits.js`, `game/race/kartIsland.js`, `game/race/botLine.js`, `components3d/Track/TrackIslands.jsx`, `components3d/Track/islandGeometry.js` ; données `config/trackData/duetCup.js`
+- **Fichiers** : `game/track/trackSplits.js`, `game/track/trackCrossings.js`, `game/race/kartIsland.js`, `game/race/kartCrossing.js`, `game/race/botLine.js`, `components3d/Track/TrackIslands.jsx`, `components3d/Track/islandGeometry.js`, `components3d/Track/TrackCrossings.jsx`, `components3d/Track/crossingGeometry.js` ; données `config/trackData/duetCup.js`
 - **Phase** : introduit en phase 3G
 
 ## Rôle
@@ -24,14 +24,34 @@ Aucune dépendance npm.
 
 Calcul une fois par circuit ; collision : une comparaison par kart et par pas.
 
+## Styles de séparation
+
+`splits: [[fraction, longueur m, largeur m, style]]` ; même collision pour tous :
+- `grass` : terre-plein d'herbe (0,55 m) ;
+- `hedge` : haie (1,4 m) ;
+- `wall` : muret étroit (1,1 m, largeur 6) ;
+- `canal` : canal d'eau entre deux margelles ;
+- `rocks` : bande basse et blocs de rocher.
+
+## Croisements (pont et tranchée)
+
+- `crossings: [[fraction, longueur m]]` sur une route large (34 avant échelle), à hauteur 0.
+- La voie partie de gauche monte sur un pont (+4,5 m), celle de droite descend dans une tranchée (-5 m) et passe dessous ; les deux échangent leurs côtés (centres en cosinus, hauteurs en sinus). Même longueur.
+- `kart.branch` : voie prise à l'entrée, gardée jusqu'à la sortie ; murs de la voie (`applyCrossing`) ; sol = route + hauteur de la voie (`kartVertical`).
+- Collisions entre karts ignorées au-delà de 2 m d'écart vertical (l'un passe sur l'autre).
+- Terrain creusé sous la voie basse (`crossingCutHeight`, lu par le relief).
+- Rendu : voies (revêtement de la route), garde-corps, murs, dessous du tablier à l'ombre, piles hors de la voie basse.
+- Placer le croisement au milieu d'un grand virage : chaque kart en fait la moitié à l'intérieur et la moitié à l'extérieur. Sinon, la voie extérieure perd jusqu'à 3 s.
+
 ## Équilibre (simulation, 31 pilotes ordinateur, 3 tours)
 
-Temps de l'entrée du terre-plein à 90 m après sa fin, par voie :
-- Prairies Duo : 7,11 s et 7,17 s ;
-- Canyon de la Fourche : 7,13 s et 7,15 s ;
-- Îles Jumelles : 7,06 s et 7,31 s (1er), 7,03 s et 7,12 s (2e) ;
-- Fourche du Ciel : 7,58 s et 7,52 s.
-Réglage : ajouter ou retirer un rocher, déplacer le pad ou le tremplin d'une voie.
+Temps sur toute la partie à deux voies (environ 32 s), selon le côté de départ :
+- Prairies Duo : 31,43 s et 31,33 s ;
+- Canyon de la Fourche : 32,01 s et 31,60 s ;
+- Îles Jumelles : 32,58 s et 32,37 s ;
+- Fourche du Ciel : 32,22 s et 31,71 s.
+
+Ponts et tranchées : au plus 0,2 s d'écart. Les voies coupées couvrent environ 50 % du tour.
 
 ## Deltaplane
 

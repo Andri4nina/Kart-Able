@@ -1,4 +1,4 @@
-import { Color, DataTexture, LinearFilter, MeshLambertMaterial, RedFormat, RepeatWrapping, Vector2 } from 'three'
+import { Color, DataTexture, DoubleSide, LinearFilter, MeshLambertMaterial, RedFormat, RepeatWrapping, Vector2 } from 'three'
 import { fractalNoise } from '../../game/track/noise'
 import { trackTime } from './trackClock'
 
@@ -29,7 +29,8 @@ function getNoiseTexture() {
 }
 
 export function createWaterMaterial(field, theme) {
-  const material = new MeshLambertMaterial({ transparent: true, depthWrite: false })
+  // Deux faces : vue d'en dessous pendant une plongée, la surface ondule au-dessus des karts.
+  const material = new MeshLambertMaterial({ transparent: true, depthWrite: false, side: DoubleSide })
   material.onBeforeCompile = (shader) => {
     Object.assign(shader.uniforms, {
       uTime: trackTime,

@@ -524,35 +524,35 @@
     },
     "duetMeadows": {
       "name": "Ahitra Duo",
-      "description": "Lalana roa aorian'ny fiolahana lehibe, avy eo sidina telo amin'ny deltaplane ambonin'ny farihy kely."
+      "description": "Fefy maitso, tetezana ambonin'ny hady, avy eo lakandrano : lalana roa saika manerana ny fihodinana."
     },
     "forkCanyon": {
       "name": "Lohasahan'ny Sampanana",
-      "description": "Mizara roa ny lohasaha : pad sy vato, na fitsambikinana. Sidina roa hamaranana."
+      "description": "Vato avy eo rindrina ambany eo anelanelan'ny lalana roa, mifanapaka amin'ny tetezana ao afovoan'ny lohasaha."
     },
     "twinIsles": {
       "name": "Nosy Kambana",
-      "description": "Sampanana roa manaraka ny morontsiraka, samy manana ny safidiny, ary fiampitana roa amin'ny deltaplane."
+      "description": "Lalana roa manaraka ny morontsiraka, tetezana hifanakalozana, avy eo lakandrano mankany an-dranomasina."
     },
     "skyFork": {
       "name": "Sampanan'ny Lanitra",
-      "description": "Sidina telo eo am-pototry ny tendrombohitra ary sampanana any amin'ny avo."
+      "description": "Tetezana roa sy hady roa any amin'ny avo : mandalo ambony sy ambany mifandimby."
     },
     "lagoonRun": {
       "name": "Hazakazaka amin'ny Lagona",
-      "description": "Fitsoriana lava roa ambonin'ny lagona : mivembena ny kart, eritrereto mialoha ny fiolahana."
+      "description": "Mitsoriaka ambonin'ny lagona, avy eo milentika any amin'ny fanambanin'ny rano alohan'ny hiakatra amin'ny fasika."
     },
     "riverRapids": {
       "name": "Riaka an'Ony",
-      "description": "Ony miolikolika toy ny S hidinana ambonin'ny rano, misy vato eo afovoan'ny riaka."
+      "description": "Ony miolikolika ambonin'ny rano, avy eo filentehana roa ao ambanin'ny riaka, eo anelanelan'ny vato."
     },
     "mangroveMaze": {
       "name": "Labirintan'ny Honko",
-      "description": "Lakandrano eo anelanelan'ny vatolampy amin'ny honko, mitsoriaka bebe kokoa noho ny mihodina."
+      "description": "Lakandrano eo anelanelan'ny vatolampy amin'ny honko ary fiampitana lava ao ambanin'ny rano."
     },
     "harborDash": {
       "name": "Hazakazaka amin'ny Seranana",
-      "description": "Manaraka ny kianja an-tseranana avy eo ny dobo : indroa ambonin'ny rano isaky ny fihodinana."
+      "description": "Ny dobo amin'ny seranana ambonin'ny rano, avy eo indroa ao ambanin'ny rano eo anelanelan'ny kianja."
     }
   },
   "vehicles": {

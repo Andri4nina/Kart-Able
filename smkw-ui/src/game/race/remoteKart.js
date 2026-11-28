@@ -1,3 +1,4 @@
+import { DIVE } from '../track/trackDives'
 import { updateTrackIndex } from './trackTracking'
 
 // Kart piloté par une autre machine (réseau local, calcul pur) : il n'est pas simulé ici, il
@@ -41,4 +42,5 @@ export function stepRemoteKart(world, kart, dt) {
   updateTrackIndex(world.geometry.path, kart)
   // Voie d'eau : déduite de sa position (sillage, tangage), comme pour un kart local.
   kart.onWater = world.geometry.water[kart.trackIndex] === 1 && !kart.airborne
+  kart.underwater = world.geometry.under[kart.trackIndex] === 1 && kart.y < DIVE.surface - DIVE.immersed
 }
