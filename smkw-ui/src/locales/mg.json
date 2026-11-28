@@ -433,6 +433,12 @@
     },
     "pax": {
       "name": "Pax Cup"
+    },
+    "duet": {
+      "name": "Duet Cup"
+    },
+    "water": {
+      "name": "Water Cup"
     }
   },
   "tracks": {
@@ -515,6 +521,38 @@
     "zenithSpiral": {
       "name": "Fihodinana Zenith",
       "description": "Lalana miolikolika hatrany an-tampony, avy eo fidinana lava sy sarotra."
+    },
+    "duetMeadows": {
+      "name": "Ahitra Duo",
+      "description": "Lalana roa aorian'ny fiolahana lehibe, avy eo sidina telo amin'ny deltaplane ambonin'ny farihy kely."
+    },
+    "forkCanyon": {
+      "name": "Lohasahan'ny Sampanana",
+      "description": "Mizara roa ny lohasaha : pad sy vato, na fitsambikinana. Sidina roa hamaranana."
+    },
+    "twinIsles": {
+      "name": "Nosy Kambana",
+      "description": "Sampanana roa manaraka ny morontsiraka, samy manana ny safidiny, ary fiampitana roa amin'ny deltaplane."
+    },
+    "skyFork": {
+      "name": "Sampanan'ny Lanitra",
+      "description": "Sidina telo eo am-pototry ny tendrombohitra ary sampanana any amin'ny avo."
+    },
+    "lagoonRun": {
+      "name": "Hazakazaka amin'ny Lagona",
+      "description": "Fitsoriana lava roa ambonin'ny lagona : mivembena ny kart, eritrereto mialoha ny fiolahana."
+    },
+    "riverRapids": {
+      "name": "Riaka an'Ony",
+      "description": "Ony miolikolika toy ny S hidinana ambonin'ny rano, misy vato eo afovoan'ny riaka."
+    },
+    "mangroveMaze": {
+      "name": "Labirintan'ny Honko",
+      "description": "Lakandrano eo anelanelan'ny vatolampy amin'ny honko, mitsoriaka bebe kokoa noho ny mihodina."
+    },
+    "harborDash": {
+      "name": "Hazakazaka amin'ny Seranana",
+      "description": "Manaraka ny kianja an-tseranana avy eo ny dobo : indroa ambonin'ny rano isaky ny fihodinana."
     }
   },
   "vehicles": {

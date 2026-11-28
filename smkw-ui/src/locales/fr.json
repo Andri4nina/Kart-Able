@@ -434,6 +434,12 @@
     },
     "pax": {
       "name": "Pax Cup"
+    },
+    "duet": {
+      "name": "Duet Cup"
+    },
+    "water": {
+      "name": "Water Cup"
     }
   },
   "tracks": {
@@ -516,6 +522,38 @@
     "zenithSpiral": {
       "name": "Spirale du Zénith",
       "description": "Des lacets jusqu'au sommet, puis une longue descente technique."
+    },
+    "duetMeadows": {
+      "name": "Prairies Duo",
+      "description": "Deux voies à la sortie du grand virage, puis trois envols en deltaplane au-dessus des étangs."
+    },
+    "forkCanyon": {
+      "name": "Canyon de la Fourche",
+      "description": "Le canyon se sépare en deux couloirs : pad et rochers, ou tremplin. Deux vols pour finir."
+    },
+    "twinIsles": {
+      "name": "Îles Jumelles",
+      "description": "Deux embranchements le long de la côte, chacun avec son choix, et deux traversées en deltaplane."
+    },
+    "skyFork": {
+      "name": "Fourche du Ciel",
+      "description": "Trois envols au pied des sommets et une fourche en altitude."
+    },
+    "lagoonRun": {
+      "name": "Course du Lagon",
+      "description": "Deux longues glissades sur le lagon : le kart dérive, anticipe les virages."
+    },
+    "riverRapids": {
+      "name": "Rapides de la Rivière",
+      "description": "Une rivière en S à descendre sur l'eau, avec des rochers dans le courant."
+    },
+    "mangroveMaze": {
+      "name": "Dédale des Mangroves",
+      "description": "Des chenaux entre les rochers de la mangrove, où l'on glisse plus qu'on ne roule."
+    },
+    "harborDash": {
+      "name": "Sprint du Port",
+      "description": "Les quais puis le bassin du port : deux passages sur l'eau à chaque tour."
     }
   },
   "vehicles": {

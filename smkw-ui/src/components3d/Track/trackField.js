@@ -59,7 +59,7 @@ export function buildTrackField(geometry) {
   const { track, path, bounds } = geometry
   const size = (bounds.halfSize + MARGIN) * 2
   const origin = [bounds.centerX - size / 2, bounds.centerZ - size / 2]
-  const road = drawRoadMask(path, geometry.gaps, origin, size)
+  const road = drawRoadMask(path, geometry.hidden, origin, size)
   const data = new Uint8Array(RESOLUTION * RESOLUTION * 4)
   const texel = size / RESOLUTION
 

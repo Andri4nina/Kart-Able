@@ -1,6 +1,7 @@
 import { RELIEF } from '../../config/airTuning'
 import { getGroundHeight, getSlope } from '../track/trackHeight'
 import { readRamp } from '../track/trackJumps'
+import { WATERWAY } from '../track/trackWaterways'
 import { land, stepAir, takeOff } from './kartAir'
 
 // Hauteur d'un kart (calcul pur, aucune allocation) :
@@ -9,13 +10,15 @@ import { land, stepAir, takeOff } from './kartAir'
 // - au bout d'une rampe ou sur une crête prise vite, le sol descend plus vite que le kart : il
 //   décolle (figure possible, deltaplane après une rampe de vol), retombe et se repose ;
 // - au-dessus d'une brèche (deltaplane), le sol est le fond de l'eau : sans deltaplane, on y
-//   tombe (raceWorld).
+//   tombe (raceWorld) ; sur une voie d'eau, le sol est la surface de l'eau.
 export const GAP_FLOOR = -4
 const ramp = { height: 0, slope: 0, glide: false }
 
 export function getDriveGround(geometry, kart, forwardX, forwardZ) {
   readRamp(geometry.ramps, kart.x, kart.z, forwardX, forwardZ, ramp)
   if (geometry.gaps[kart.trackIndex] && ramp.height === 0) return GAP_FLOOR
+  // Voie d'eau : le kart flotte à la surface (un peu enfoncé).
+  if (geometry.water[kart.trackIndex]) return WATERWAY.level + ramp.height
   return getGroundHeight(geometry, kart.x, kart.z) + ramp.height
 }
 
