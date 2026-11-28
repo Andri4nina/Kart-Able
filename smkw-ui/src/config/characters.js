@@ -74,9 +74,8 @@ export const CHARACTERS = Object.freeze([
   { id: 'pompon', classId: 'speed', size: 'small', color: '#ff9ec4' },
   { id: 'miella', classId: 'special', size: 'small', color: '#ffc21a' },
 
-  { id: 'nino', classId: 'speed', size: 'small', color: '#4b5563' },
-  { id: 'steev', classId: 'special', size: 'large', color: '#a3e635' },
-  { id: 'imposter', classId: 'standard', size: 'medium', color: '#e0115f' },
+  { id: 'nino', classId: 'speed', size: 'small', color: '#1e3a8a' },
+  { id: 'blizzo', classId: 'tank', size: 'large', color: '#7cc4ff' },
 ])
 
 export function getCharacter(characterId) {

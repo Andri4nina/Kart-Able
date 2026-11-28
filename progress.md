@@ -574,6 +574,13 @@ Branche `fix/personnages-affichage`.
   - les remplacer par des modèles originaux ;
   - non corrigés ; encore de profil.
 - Confirmer la source et la licence de `ninja.glb` (docs/CREDITS.md).
+
+### Suite (2026-11-28)
+- Steev et Imposter retirés (personnages protégés), remplacés par **Blizzo**, le Yeti CC0 de Quaternius (`yeti.glb`) : lourd, grand, `#7cc4ff`, de face, animé, `driverPose: false`.
+- Nino en bleu nuit `#1e3a8a`.
+- Fonds colorés de Nino et Blizzo dans la sélection (`CHARACTER_BACKGROUNDS`).
+- Vérifié dans le jeu : sélection, portrait, course (Yeti au volant, de dos), aucune erreur.
+
 ## 2026-11-27 — Phase 3G : Pax Cup
 
 Branche `feat/pax-cup`. Fiche : docs/phases/PHASE_3G_PAX_CUP.md.

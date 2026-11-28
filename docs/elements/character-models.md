@@ -41,9 +41,10 @@ Environ 10 Mo de GLB pour les 16 personnages, chargés une fois. Clones partagé
 
 ## Personnages ajoutés en phase 3G
 
-- **Nino** (`ninja.glb`, squelette Quaternius) : regarde déjà +Z (aucun `yaw`), animation d'attente `CharacterArmature|Idle` en boucle (sans elle : pose en T), cadrage `CHIBI`, couleur d'identité propre (`#4b5563`, elle doublait celle de Pyrox).
+- **Nino** (`ninja.glb`, squelette Quaternius) : regarde déjà +Z (aucun `yaw`), animation d'attente `CharacterArmature|Idle` en boucle (sans elle : pose en T), cadrage `CHIBI`, couleur d'identité propre (bleu nuit `#1e3a8a` ; l'orange d'origine doublait celui de Pyrox).
 - Squelettes Quaternius : pieds en IK (os `Foot` enfants de `Root`, pas du tibia) et bouts de chaîne `_end` sans os ; `driverPose` / `driverFeet` les gèrent (voir [driver-rig.md](driver-rig.md)).
-- **Steev** et **Imposter** : non corrigés, car ils reprennent des personnages protégés (Minecraft, Among Us), voir [CREDITS.md](../CREDITS.md). À remplacer par des modèles originaux ; leur `yaw` actuel (quart de tour) les montre de profil.
+- **Blizzo** (`yeti.glb`, Yeti de Quaternius, CC0) : remplace Steev et Imposter, retirés car ils reprenaient des personnages protégés (Minecraft, Among Us). Il regarde déjà +Z, anime `EnemyArmature|EnemyArmature|EnemyArmature|Idle` en boucle, cadrage `ROUND`. `driverPose: false` : ses jambes n'ont qu'un os (pas de genou), il garde donc son animation au volant.
+- Les fonds colorés de la sélection viennent de `CHARACTER_BACKGROUNDS` (`components/players/playerVisuals.js`) : tout nouveau personnage doit y avoir sa classe `bg-char-<id>`, en plus de son token `--color-char-<id>`.
 - Repérer l'avant d'un nouveau modèle : un modèle en T a les bras sur X, il regarde donc ±Z ; un `yaw` d'un quart de tour ne sert qu'aux modèles exportés de profil.
 
 ## Licences
