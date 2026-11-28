@@ -4,7 +4,7 @@ Trois façons de jouer, trois livraisons :
 
 | Quoi | Où | Pour |
 | --- | --- | --- |
-| Jeu web (`smkw-ui/dist`) | Vercel (gratuit), projet **rasoamanana-andrianina-kart-able** | Jouer seul ou en écran partagé dans le navigateur ; référencement Google / Bing |
+| Jeu web (`smkw-ui/dist`) | Vercel (gratuit), projet **kart-able** (https://kart-able.vercel.app) | Jouer seul ou en écran partagé dans le navigateur ; référencement Google / Bing |
 | Application de bureau (`smkw-desktop`) | Versions GitHub (installateurs Windows, macOS, Linux) | Jouer hors ligne et **héberger une partie en réseau local** |
 | Serveur de jeu (`smkw-api`) | Machine du réseau local, ou VPS / Fly.io / Railway (Docker) | Parties en réseau sans l'application de bureau |
 | Serveur en ligne (`smkw-api` public) | Fly.io (`fly.toml`), ou Render, Railway, VPS | **Jouer sur Internet**, chacun chez soi, web et bureau ensemble |
@@ -16,7 +16,7 @@ Le dépôt est prêt pour Vercel de deux façons. Les deux construisent seulemen
 ### a. Depuis GitHub (recommandé : redéploiement à chaque push)
 
 1. Sur vercel.com, **Add New Project**, puis importer le dépôt GitHub `Kart-Able`.
-2. **Project Name** : `rasoamanana-andrianina-kart-able`. L'adresse sera https://rasoamanana-andrianina-kart-able.vercel.app.
+2. **Project Name** : `kart-able`. Adresse : https://kart-able.vercel.app.
 3. **Root Directory**, au choix :
    - racine du dépôt ou `smkw-ui` : les deux marchent. Les commandes de `vercel.json` repèrent
      où elles sont lancées ; depuis la racine, elles construisent `smkw-ui` puis copient le jeu
@@ -102,6 +102,8 @@ Le site Vercel ne fait que servir le jeu. Pour jouer à distance, il faut aussi 
 2. À la racine du dépôt : `fly launch --no-deploy --copy-config`. Garder `fly.toml`, et changer le nom de l'application s'il est pris. Mettre alors à jour `SMKW_PUBLIC_URL` dans `fly.toml`.
 3. `fly deploy`, puis `fly scale count 1`. Il faut une seule machine : les salons vivent en mémoire.
 4. Vérifier : `https://kart-able-server.fly.dev/api/info` doit répondre avec `"public"`.
+
+**Compte Fly.io en essai** : une machine d'essai est arrêtée au bout de 5 minutes (« Trial machine stopping ») ; tous les joueurs sont déconnectés et les salons effacés. Pour jouer en ligne, il faut ajouter une carte bancaire sur https://fly.io/trial, ou héberger le serveur ailleurs (Render, Railway, VPS).
 
 Coût : la machine s'arrête quand personne ne joue et redémarre à la première connexion, quelques secondes au premier joueur. Fly.io demande une carte bancaire ; une si petite machine coûte quelques centimes à quelques dollars par mois selon l'usage.
 

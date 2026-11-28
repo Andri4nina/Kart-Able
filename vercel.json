@@ -4,7 +4,7 @@
   "installCommand": "if [ -d smkw-ui ]; then cd smkw-ui; fi; npm ci",
   "buildCommand": "if [ -d smkw-ui ]; then (cd smkw-ui && npm run build) && rm -rf dist && cp -r smkw-ui/dist dist; else npm run build; fi",
   "outputDirectory": "dist",
-  "cleanUrls": true,
+  "cleanUrls": false,
   "headers": [
     {
       "source": "/assets/(.*)",
