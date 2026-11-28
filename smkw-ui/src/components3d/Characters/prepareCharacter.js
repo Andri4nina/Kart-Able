@@ -2,6 +2,7 @@ import { AnimationMixer, Box3, Group, Vector3 } from 'three'
 import { clone } from 'three/addons/utils/SkeletonUtils.js'
 import { DRIVER_PELVIS_LIFT } from './characterAssets'
 import { createDriverRig } from './driverRig'
+import { createIdleMotion } from './idleMotion'
 
 // Mesures d'un modèle posé (boîte englobante précise, squelette compris), calculées une fois
 // par fichier : tous les clones d'un même personnage ont la même pose de départ.
@@ -35,7 +36,7 @@ function tintMaterials(object, color) {
 
 // Prépare un personnage pour l'affichage : clone (squelette compris), pose (première image de
 // son animation), orientation vers +Z, mise au sol et à la hauteur demandée.
-// Renvoie { object, mixer, rig, dispose } ; `mixer` n'existe que pour une animation en boucle.
+// Renvoie { object, mixer, rig, idle, dispose } ; `mixer` n'existe que pour une animation en boucle.
 // `driver` : pose assise au volant (driverRig) si le squelette le permet ; le bassin est alors
 // ramené à l'origine (le kart le pose sur son siège) et l'animation en boucle est coupée.
 export function prepareCharacter(gltf, asset, { name, height, color, driver = false }) {
@@ -71,12 +72,17 @@ export function prepareCharacter(gltf, asset, { name, height, color, driver = fa
   const rig = driver && asset.driverPose !== false ? createDriverRig(object) : null
   if (rig) object.position.set(-rig.hip.x, DRIVER_PELVIS_LIFT - rig.hip.y, -rig.hip.z)
 
+  // Sans animation en boucle, hors volant : attente procédurale (idleMotion).
+  const looping = asset.loop && !rig ? mixer : null
+  const idle = !driver && !looping ? createIdleMotion(object, name.length) : null
+
   // `dispose` ne libère que les matériaux copiés (three les recrée s'ils resservent) ; il
   // n'arrête pas l'animation : en développement, React rejoue démontage et remontage.
   return {
     object,
-    mixer: asset.loop && !rig ? mixer : null,
+    mixer: looping,
     rig,
+    idle,
     dispose: () => {
       for (const material of copies) material.dispose()
     },
