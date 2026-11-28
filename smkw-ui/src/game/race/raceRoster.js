@@ -28,6 +28,8 @@ export function buildRaceBots(mode, players, seed) {
       vehicleId: VEHICLES[Math.floor(random() * VEHICLES.length)].id,
       skill: SKILL.best - ((SKILL.best - SKILL.worst) * index) / Math.max(1, count - 1),
       lane: (random() * 2 - 1) * 0.5,
+      // Embranchements : un pilote sur deux à gauche, l'autre à droite (niveaux mêlés).
+      splitSide: index % 2 ? 1 : -1,
     }),
   )
 }

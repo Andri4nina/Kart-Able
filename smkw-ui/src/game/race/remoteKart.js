@@ -39,4 +39,6 @@ export function stepRemoteKart(world, kart, dt) {
     kart.finishOrder = world.finishCount
   }
   updateTrackIndex(world.geometry.path, kart)
+  // Voie d'eau : déduite de sa position (sillage, tangage), comme pour un kart local.
+  kart.onWater = world.geometry.water[kart.trackIndex] === 1 && !kart.airborne
 }

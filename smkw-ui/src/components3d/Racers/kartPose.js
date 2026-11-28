@@ -48,7 +48,9 @@ export function writeKartPose(kart, delta, reducedMotion, visual, { root, body, 
   visual.land = Math.max(0, visual.land - delta * 6)
   const squash = reducedMotion ? 0 : Math.sin(visual.land * Math.PI) * 0.09
   const shake = reducedMotion ? 0 : kart.bump * 0.35
-  body.position.y = hopY - visual.squat
+  // Sur l'eau : le kart tangue doucement sur les vagues.
+  const bob = kart.onWater && !reducedMotion ? Math.sin(visual.phase * 0.35) * 0.05 : 0
+  body.position.y = hopY - visual.squat + bob
   body.scale.set(1 + squash * 0.5, 1 - squash, 1 + squash * 0.5)
   // Drift : le kart vibre légèrement sur ses pneus (petite trépidation, pas en mouvement réduit).
   const chatter = kart.driftDir && !reducedMotion ? Math.sin(visual.phase * 3.1) * 0.012 : 0

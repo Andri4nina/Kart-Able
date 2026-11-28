@@ -14,6 +14,10 @@ export const CUPS = Object.freeze([
   { id: 'dustrail', trackIds: ['rustMesa', 'clayQuarry', 'dustWhirl', 'rutRally'] },
   // Coupe technique : aucun objet, routes étroites, épingles et chicanes ; seul le pilotage compte.
   { id: 'pax', trackIds: ['paxGardens', 'lanternPass', 'stillwaterBend', 'zenithSpiral'] },
+  // Coupe des choix : embranchements à deux voies équilibrées, nombreux passages en deltaplane.
+  { id: 'duet', trackIds: ['duetMeadows', 'forkCanyon', 'twinIsles', 'skyFork'] },
+  // Coupe de l'eau : voies d'eau où les karts flottent et glissent.
+  { id: 'water', trackIds: ['lagoonRun', 'riverRapids', 'mangroveMaze', 'harborDash'] },
 ])
 
 // Tous les circuits, coupe par coupe.

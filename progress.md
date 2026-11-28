@@ -593,6 +593,24 @@ Branche `fix/personnages-affichage`.
 - Fenêtres de réglages et de pause, résultats, salons : défilement gardé (longues listes).
 - Personnages sans squelette (Volt, Frisko, Nox, Mitsu, Pyrox) : seulement des mouvements d'ensemble.
 
+## 2026-11-28 — Phase 3G : Duet Cup et Water Cup
+
+Fiche : docs/phases/PHASE_3G_DUET_WATER.md.
+
+### Fait
+- **Embranchements** : `splits`, `trackSplits.js`, `kartIsland.js`, `TrackIslands`.
+  - Les pilotes ordinateur choisissent leur voie avec `splitSide`.
+- **Voies d'eau** : `waterways`, `trackWaterways.js`, `WATER` (vitesse 0,95, adhérence 0,4).
+  - Sillage d'écume (`KartWake`), tangage sur les vagues.
+- **Coupes** `duet` et `water` : 8 circuits, emblèmes, textes.
+
+### TODO
+- Avis de l'utilisateur :
+  - glisse sur l'eau : `WATER.grip` ;
+  - équilibre des voies : rochers, pads et tremplins de chaque voie ;
+  - nombre de vols.
+- Le terre-plein n'a ni arbres ni décor.
+
 ## 2026-11-27 — Phase 3G : Pax Cup
 
 Branche `feat/pax-cup`. Fiche : docs/phases/PHASE_3G_PAX_CUP.md.

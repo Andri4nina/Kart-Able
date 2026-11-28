@@ -39,6 +39,7 @@ export function describeRace() {
       nextGate: kart.progress.nextGate,
       distance: round(kart.raceDistance, 1),
       offRoad: kart.offRoad,
+      onWater: kart.onWater,
       hop: kart.hop > 0,
       drift: kart.driftDir ? { dir: kart.driftDir, tier: kart.driftTier, charge: round(kart.driftCharge), slipDeg: Math.round((kart.slip * 180) / Math.PI) } : null,
       boost: kart.boost > 0 ? { time: round(kart.boost, 2), source: kart.boostSource, speed: kart.boostSpeed } : null,
