@@ -35,6 +35,8 @@ La sélection ne stocke qu'un `characterId`. Avec la règle d'unicité, 8 joueur
 | Zenji | vieux maître | Standard | Petit | sarcelle `#0f8b8d` |
 | Pompon | cochon en peluche | Vitesse | Petit | rose `#ff9ec4` |
 | Miella | abeille | Spécial | Petit | miel `#ffc21a` |
+| Nino | ninja | Vitesse | Petit | bleu nuit `#1e3a8a` |
+| Blizzo | yéti | Tank | Grand | glacier `#7cc4ff` |
 
 - **Gabarits** (5 grands, 5 moyens, 6 petits) : tous les modèles sont ramenés à la hauteur de leur gabarit, quelle que soit leur taille d'origine. Ils suivent globalement l'archétype (tanks grands, vitesses petits), comme le poids dans les jeux de kart. Les archétypes spéciaux (survol) sont des personnages qui volent ou flottent.
 - **Couleur d'identité** : peinture du kart du personnage ([kart-paint.md](kart-paint.md)) et fond de son portrait. Les tokens `--color-char-*` de `index.css` reprennent les mêmes valeurs ; `check:rules` vérifie qu'ils sont identiques.
