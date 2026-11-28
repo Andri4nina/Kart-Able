@@ -20,6 +20,7 @@
   --color-cup-summit: #e2762b;
   --color-cup-frostbloom: #5bb8e8;
   --color-cup-dustrail: #b0703a;
+  --color-cup-pax: #7c5cc4;
   /* Paliers de mini-turbo (mêmes valeurs que components3d/World/palette.js). */
   --color-turbo-0: #f5f7fa;
   --color-turbo-1: #3aa0ff;
@@ -59,6 +60,9 @@
   --color-char-zenji: #0f8b8d;
   --color-char-pompon: #ff9ec4;
   --color-char-miella: #ffc21a;
+  --color-char-nino: #4b5563;
+  --color-char-steev: #a3e635;
+  --color-char-imposter: #e0115f;
 }
 
 /*

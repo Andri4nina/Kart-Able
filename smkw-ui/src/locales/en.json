@@ -436,6 +436,9 @@
     },
     "dustrail": {
       "name": "Dustrail Cup"
+    },
+    "pax": {
+      "name": "Pax Cup"
     }
   },
   "tracks": {
@@ -502,6 +505,22 @@
     "rutRally": {
       "name": "Rut Rally",
       "description": "Ruts, bumps and linked corners around a muddy pond."
+    },
+    "paxGardens": {
+      "name": "Pax Gardens",
+      "description": "Tight hairpins and a precise chicane: no items, every line counts."
+    },
+    "lanternPass": {
+      "name": "Lantern Pass",
+      "description": "A lantern-lit forest and an uphill triple S: precision above all."
+    },
+    "stillwaterBend": {
+      "name": "Stillwater Bend",
+      "description": "Along a calm pond, a run of corners that punishes the smallest mistake."
+    },
+    "zenithSpiral": {
+      "name": "Zenith Spiral",
+      "description": "Switchbacks up to the summit, then a long technical descent."
     }
   },
   "vehicles": {
