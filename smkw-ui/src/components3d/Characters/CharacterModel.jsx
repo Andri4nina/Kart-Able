@@ -24,13 +24,15 @@ function LoadedCharacter({ characterId, asset, height, animate, driver }) {
 
   useEffect(() => () => prepared.dispose(), [prepared])
 
-  // Animation d'attente en boucle (si le modèle en a une) ; pose fixe en mouvement réduit.
+  // Animation d'attente en boucle (si le modèle en a une, sinon attente procédurale idleMotion) ;
+  // pose fixe en mouvement réduit.
   // Au volant : gestes du pilote (driverRig) d'après `driver`, écrit chaque frame par le kart ;
   // en mouvement réduit, les gestes suivent sans amorti.
   useFrame((_, delta) => {
     const step = Math.min(delta, MAX_FRAME_DELTA)
-    if (driver && prepared.rig) prepared.rig.update(driver, reducedMotion ? 1 : step)
+    if (driver && prepared.rig) prepared.rig.update(driver, reducedMotion ? 1 : step, reducedMotion)
     if (animate && !reducedMotion) prepared.mixer?.update(step)
+    if (animate && !reducedMotion) prepared.idle?.update(step)
   })
 
   return <primitive object={prepared.object} />

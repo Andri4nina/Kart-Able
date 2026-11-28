@@ -16,6 +16,7 @@ const ROLL = 0.07
 const DRIFT_ROLL = 0.13
 const DRIVER_LEAN = 0.12
 const BOOST_PITCH = -0.05
+const DRIVER_TOP_SPEED = 30
 
 export function writeKartPose(kart, delta, reducedMotion, visual, { root, body, driver, input }) {
   const sunk = kart.sinking > 0 ? SINK_DEPTH * (1 - kart.sinking / RACE.respawnDelay) : 0
@@ -60,10 +61,18 @@ export function writeKartPose(kart, delta, reducedMotion, visual, { root, body, 
   // Pilote : penché vers l'intérieur (contre le roulis du kart), vibration à l'arrêt moteur tournant.
   const idle = reducedMotion ? 0 : Math.sin(visual.phase * 1.3) * 0.006
   driver.rotation.z = turning * DRIVER_LEAN * (kart.driftDir ? 1 : 0.5) - visual.roll
+  // Tout le pilote (utile aux modèles sans squelette) : plaqué en arrière par le turbo, tassé à l'atterrissage.
+  visual.lean = MathUtils.damp(visual.lean ?? 0, kart.boost > 0 ? -0.1 : 0, 6, delta)
+  driver.rotation.x = visual.lean + squash * 0.8
   driver.position.y += idle - visual.idle
   visual.idle = idle
 
   input.steer = kart.finished ? 0 : kart.driftDir ? kart.driftDir * 0.6 + kart.controls.steer * 0.4 : kart.controls.steer
   input.panic = kart.bump > 0.12 || kart.spin > 0 ? 1 : 0
   input.cheer = kart.finished || kart.trick > 0 ? 1 : 0
+  // Vie du pilote (driverMotion) : vitesse, turbo, drift, saut.
+  input.speed = Math.min(1, Math.abs(kart.speed) / DRIVER_TOP_SPEED)
+  input.boost = kart.boost > 0 ? 1 : 0
+  input.drift = kart.driftDir
+  input.air = kart.airborne || kart.hop > 0 ? 1 : 0
 }

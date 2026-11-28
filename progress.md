@@ -581,6 +581,18 @@ Branche `fix/personnages-affichage`.
 - Fonds colorés de Nino et Blizzo dans la sélection (`CHARACTER_BACKGROUNDS`).
 - Vérifié dans le jeu : sélection, portrait, course (Yeti au volant, de dos), aucune erreur.
 
+### Suite 2 (2026-11-28) : pilotes animés, écrans sans défilement
+- **Animation procédurale** (`boneMotion`, `driverMotion`, `idleMotion`) : voir docs/elements/driver-rig.md.
+  - Vérifié en Node : la tête tourne d'environ 17° chez les personnages à squelette, à l'attente comme au volant.
+  - Course lancée sans erreur.
+- **Écrans sans défilement** : `FitToScreen` dans `MenuPage` (docs/elements/fit-to-screen.md).
+  - En 1280 x 720, tout tient : joueurs et personnages à 83 %, circuits à 80 %, les autres à 100 %.
+  - Téléphone en paysage (812 x 375) : la page entière défile.
+
+### TODO
+- Fenêtres de réglages et de pause, résultats, salons : défilement gardé (longues listes).
+- Personnages sans squelette (Volt, Frisko, Nox, Mitsu, Pyrox) : seulement des mouvements d'ensemble.
+
 ## 2026-11-27 — Phase 3G : Pax Cup
 
 Branche `feat/pax-cup`. Fiche : docs/phases/PHASE_3G_PAX_CUP.md.

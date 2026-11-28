@@ -1,5 +1,6 @@
 import { MathUtils, Quaternion, Vector3 } from 'three'
 import { attachFeet } from './driverFeet'
+import { createDriverMotion } from './driverMotion'
 import { applyDriverPose, findDriverBones, posedBones } from './driverPose'
 
 // Pilote animé au volant. À la préparation : poses clés calculées sur le squelette (centre,
@@ -37,9 +38,10 @@ export function createDriverRig(root) {
 
   const state = { steer: 0, cheer: 0, panic: 0 }
   const work = new Quaternion()
+  const motion = createDriverMotion(root, rig)
 
-  // `input` : { steer -1..1, cheer 0/1, panic 0/1 } ; amorti pour des gestes souples.
-  function update(input, delta) {
+  // `input` : { steer -1..1, cheer 0/1, panic 0/1, + driverMotion } ; amorti pour des gestes souples.
+  function update(input, delta, reducedMotion = false) {
     state.steer = MathUtils.damp(state.steer, input.steer, 8, delta)
     state.cheer = MathUtils.damp(state.cheer, input.cheer, 5, delta)
     state.panic = MathUtils.damp(state.panic, input.panic, 14, delta)
@@ -52,6 +54,7 @@ export function createDriverRig(root) {
       if (state.cheer > 1e-3) work.slerp(poses.cheer[i], state.cheer)
       bones[i].quaternion.copy(work)
     }
+    motion.apply(input, state, delta, reducedMotion)
   }
 
   return { hip, update }
