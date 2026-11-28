@@ -1,5 +1,5 @@
 import { GLIDE } from '../../config/airTuning'
-import { COLLISION, STAT_CURVES } from '../../config/kartTuning'
+import { COLLISION, STAT_CURVES, WATER } from '../../config/kartTuning'
 import { tickBoost } from './kartBoost'
 import { updateDrift } from './kartDrift'
 import { stepDriftMotion } from './kartDriftMotion'
@@ -50,7 +50,8 @@ function stepGripMotion(kart, controls, dt) {
   const forwardZ = Math.cos(kart.yaw)
   const forward = kart.vx * forwardX + kart.vz * forwardZ
   const loose = (kart.hop > 0 || kart.airborne) && !kart.gliding
-  const sideGrip = loose ? kart.stats.grip * 0.5 : kart.stats.grip
+  // En l'air (sauf deltaplane) ou sur l'eau, les pneus tiennent moins : le kart dérive.
+  const sideGrip = kart.stats.grip * (loose ? 0.5 : 1) * (kart.onWater ? WATER.grip : 1)
   const side = (kart.vx * -forwardZ + kart.vz * forwardX) * Math.exp(-sideGrip * dt)
   const nextForward = updateForward(kart, controls, forward, dt)
   kart.vx = forwardX * nextForward - forwardZ * side

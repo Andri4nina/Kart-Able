@@ -35,6 +35,7 @@ export function createRaceKart(racer, slot, geometry, { device, random, speedCla
     stats: scaleKartStats(buildKartStats(racer.characterId, racer.vehicleId), speedClass),
     skill,
     lane: racer.lane ?? 0,
+    splitSide: racer.splitSide ?? ((racer.lane ?? 0) >= 0 ? 1 : -1),
     reaction: racer.isBot ? BOT_REACTION.min + random() * (BOT_REACTION.max - BOT_REACTION.min) : 0,
     autopilot: false,
     controls: { throttle: 0, brake: 0, steer: 0, drift: false, item: false },
@@ -99,6 +100,7 @@ export function createRaceKart(racer, slot, geometry, { device, random, speedCla
     lateral: 0,
     trackDistance: 0,
     offRoad: false,
+    onWater: false,
     // Course
     progress: createLapProgress(geometry.gates.length),
     lapTimes: [],

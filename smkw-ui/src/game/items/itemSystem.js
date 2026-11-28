@@ -10,7 +10,7 @@ import { canReceiveItem, clearItem, consumeCharge, giveItem, rollItem } from './
 // Indépendant du rendu : la scène et le HUD lisent `world.items` et l'état des karts.
 
 export function createItemState(geometry, random) {
-  const boxes = placeItemBoxes(geometry.track, geometry.path)
+  const boxes = placeItemBoxes(geometry.track, geometry.path, geometry.island)
   for (const box of boxes) box.lucky = random() < ITEM_BOXES.luckyChance
   return { boxes, rareUntil: {}, ...createItemEntities() }
 }

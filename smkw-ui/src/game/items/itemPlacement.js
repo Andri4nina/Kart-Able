@@ -20,8 +20,9 @@ export function writeTrackPoint(path, distance, lateral, out) {
 }
 
 // Cases à objets d'un circuit : rangées en travers de la route aux fractions du tour
-// (`track.itemRows` ou ITEM_BOXES.rows). Calcul pur, une fois par course.
-export function placeItemBoxes(track, path) {
+// (`track.itemRows` ou ITEM_BOXES.rows), jamais sur le terre-plein d'un embranchement (`island`).
+// Calcul pur, une fois par course.
+export function placeItemBoxes(track, path, island) {
   const rows = track.itemRows ?? ITEM_BOXES.rows
   const boxes = []
   const point = { x: 0, z: 0, tx: 0, tz: 0, index: 0 }
@@ -32,6 +33,7 @@ export function placeItemBoxes(track, path) {
     for (let k = 0; k < ITEM_BOXES.perRow; k += 1) {
       const lateral = (k / (ITEM_BOXES.perRow - 1) - 0.5) * usable
       writeTrackPoint(path, distance, lateral, point)
+      if (island && Math.abs(lateral) < island[point.index] + 1.5) continue
       boxes.push({ x: point.x, z: point.z, index: point.index, active: true, timer: 0 })
     }
   }
