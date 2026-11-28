@@ -1,12 +1,14 @@
 // Circuits de la Water Cup, coupe de l'eau (valeurs avant mise à l'échelle : voir config/tracks.js,
-// qui décrit chaque champ). Des voies d'eau (`waterways`) remplacent la route : les karts y
-// flottent et glissent, l'adhérence baisse, il faut anticiper les virages. Garder la route à
-// hauteur 0 sur ces portions. Données seulement.
+// qui décrit chaque champ). Ambiance récif (îlots de sable au milieu des lagons). La course se
+// joue sur l'eau et sous l'eau :
+// - voies d'eau (`waterways`) : les karts flottent et glissent à la surface ;
+// - plongées (`dives`) : la route descend au fond du lagon puis remonte (vue sous-marine).
+// Garder la route à hauteur 0 sur ces portions. Données seulement.
 
 export const WATER_TRACKS = [
   {
     id: 'lagoonRun',
-    theme: 'coast',
+    theme: 'reef',
     laps: 3,
     seed: 13101,
     hills: 2,
@@ -14,27 +16,29 @@ export const WATER_TRACKS = [
     pads: [[0.3, 0]],
     obstacles: [[0.68, 0.4]],
     ramps: [],
-    waterways: [[0.24, 200], [0.6, 180]],
+    dives: [[0.33, 240, 7], [0.75, 200, 6]],
+    waterways: [[0.2, 170], [0.6, 180]],
     path: [[-80, 100, 22, 0], [20, 102, 22, 0], [100, 92, 20, 0], [145, 50, 20, 0], [150, -10, 20, 0], [125, -70, 20, 0], [70, -100, 20, 0], [10, -90, 18, 0], [-40, -110, 18, 0], [-100, -105, 18, 0], [-145, -60, 18, 0], [-160, 0, 18, 0], [-145, 60, 19, 0], [-120, 92, 21, 0]],
-    lakes: [],
+    lakes: [{ x: 0, z: 0, rx: 70, rz: 38, angle: 0 }],
   },
   {
     id: 'riverRapids',
-    theme: 'forest',
+    theme: 'reef',
     laps: 3,
     seed: 13203,
     hills: 5,
     itemRows: [0.1, 0.5, 0.82],
     pads: [[0.66, 0]],
-    obstacles: [[0.27, -0.4], [0.32, 0.4]],
+    obstacles: [[0.27, -0.4], [0.37, 0.4]],
     ramps: [],
-    waterways: [[0.2, 260], [0.6, 200]],
+    dives: [[0.29, 220, 7], [0.72, 190, 6]],
+    waterways: [[0.15, 200], [0.58, 170]],
     path: [[-70, 110, 22, 0], [30, 112, 22, 0], [100, 100, 20, 0], [140, 60, 18, 0], [120, 20, 18, 0], [150, -20, 18, 0], [130, -70, 18, 0], [80, -95, 18, 0], [20, -80, 18, 0], [-30, -100, 18, 0], [-90, -115, 18, 0], [-150, -85, 18, 0], [-165, -25, 18, 0], [-150, 40, 19, 0], [-115, 95, 21, 0]],
-    lakes: [],
+    lakes: [{ x: 0, z: 0, rx: 70, rz: 38, angle: 0 }],
   },
   {
     id: 'mangroveMaze',
-    theme: 'lake',
+    theme: 'reef',
     laps: 3,
     seed: 13307,
     hills: 3,
@@ -42,13 +46,14 @@ export const WATER_TRACKS = [
     pads: [[0.44, 0]],
     obstacles: [[0.25, -0.4], [0.3, 0.4], [0.56, 0.4], [0.62, -0.4]],
     ramps: [],
-    waterways: [[0.18, 220], [0.5, 230]],
+    dives: [[0.4, 220, 8]],
+    waterways: [[0.18, 220], [0.62, 160]],
     path: [[-60, 120, 22, 0], [40, 120, 22, 0], [115, 105, 19, 0], [160, 60, 18, 0], [140, 15, 18, 0], [170, -30, 18, 0], [150, -85, 18, 0], [90, -110, 18, 0], [40, -80, 18, 0], [-10, -110, 18, 0], [-70, -125, 18, 0], [-130, -100, 18, 0], [-170, -50, 18, 0], [-175, 20, 18, 0], [-140, 85, 20, 0]],
-    lakes: [],
+    lakes: [{ x: 0, z: 0, rx: 70, rz: 38, angle: 0 }],
   },
   {
     id: 'harborDash',
-    theme: 'meadow',
+    theme: 'reef',
     laps: 3,
     seed: 13409,
     hills: 3,
@@ -56,8 +61,9 @@ export const WATER_TRACKS = [
     pads: [[0.4, 0]],
     obstacles: [[0.7, -0.4]],
     ramps: [[0.12, 0.4]],
-    waterways: [[0.25, 250], [0.62, 220]],
+    dives: [[0.42, 200, 7], [0.7, 200, 6]],
+    waterways: [[0.25, 200]],
     path: [[-70, 110, 22, 0], [30, 112, 22, 0], [110, 100, 20, 0], [165, 55, 18, 0], [175, -10, 18, 0], [150, -70, 18, 0], [90, -105, 18, 0], [30, -110, 18, 0], [-20, -85, 18, 0], [-70, -110, 18, 0], [-130, -115, 18, 0], [-175, -70, 18, 0], [-180, 0, 18, 0], [-160, 60, 19, 0], [-120, 100, 21, 0]],
-    lakes: [],
+    lakes: [{ x: 0, z: 0, rx: 70, rz: 38, angle: 0 }],
   },
 ]

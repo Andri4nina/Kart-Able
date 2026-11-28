@@ -7,6 +7,7 @@ import { TrackBarriers } from './TrackBarriers'
 import { TrackDecor } from './TrackDecor'
 import { TrackFeatures } from './TrackFeatures'
 import { TrackGrass } from './TrackGrass'
+import { TrackCrossings } from './TrackCrossings'
 import { TrackGround } from './TrackGround'
 import { TrackIslands } from './TrackIslands'
 import { TrackRamps } from './TrackRamps'
@@ -45,6 +46,7 @@ export function TrackWorld({ trackId }) {
       <TrackFeatures geometry={geometry} theme={theme} />
       <TrackRamps geometry={geometry} />
       <TrackIslands geometry={geometry} theme={theme} />
+      <TrackCrossings geometry={geometry} theme={theme} />
       <TrackBarriers geometry={geometry} />
       <Suspense fallback={null}>
         <TrackVegetation geometry={geometry} field={field} theme={theme} />

@@ -19,10 +19,15 @@ import { WATER_TRACKS } from './trackData/waterCup'
 // - ramps : [fraction, position latérale -1..1, largeur m ?] : tremplins à figures ;
 // - gliders : [fraction, longueur m] : rampe de vol puis brèche au-dessus de l'eau, franchie en
 //   deltaplane (game/track/trackJumps.js) ; sur une ligne droite, route à hauteur 0 ;
-// - splits : [fraction, longueur m, largeur m] : embranchement, terre-plein central entre deux
-//   voies (game/track/trackSplits.js) ; élargir la route (points de contrôle) à cet endroit ;
+// - splits : [fraction, longueur m, largeur m, style ?] : embranchement, séparation centrale
+//   (herbe, haie, muret, canal, rochers) entre deux voies (game/track/trackSplits.js) ; élargir la
+//   route (points de contrôle) à cet endroit ;
+// - crossings : [fraction, longueur m] : les deux voies échangent leurs côtés, l'une sur un pont,
+//   l'autre dans une tranchée dessous (game/track/trackCrossings.js) ; route large, hauteur 0 ;
 // - waterways : [fraction, longueur m] : voie d'eau, les karts y flottent et glissent
 //   (game/track/trackWaterways.js) ; route à hauteur 0 ;
+// - dives : [fraction, longueur m, profondeur m] : la route plonge sous un lagon et y roule
+//   (game/track/trackDives.js) ; route à hauteur 0 autour ;
 // - lakes : plans d'eau elliptiques { x, z, rx, rz, angle } ; un lac à moins de 8 m du bord
 //           ouvre la barrière : on peut y tomber (game/track/trackFences.js) ;
 // - theme : ambiance (config/trackThemes.js) ; seed : graine du placement de la végétation.

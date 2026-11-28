@@ -13,6 +13,7 @@ import { useSessionStore } from '../../stores/sessionStore'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { fitCellFraming, getChaseFovKick, OVERVIEW_FOV, writeChaseCamera, writeKartChase, writeOverviewCamera } from './chaseCamera'
 import { recordSplitView, setSplitViewCount, splitCameras } from './splitViews'
+import { applyUnderwater, restoreUnderwater } from './underwaterView'
 
 // Priorité > 0 : R3F cesse son rendu automatique tant que ce composant est monté.
 const RENDER_PRIORITY = 1
@@ -24,12 +25,14 @@ const framing = { fov: 0, distance: 1 }
 // le brouillard le temps de cette case seulement (mêmes shaders, seules ses distances changent).
 const OVERVIEW_FOG = { near: 700, far: 2600 }
 
-function renderCell(gl, scene, camera, overview) {
+function renderCell(gl, scene, camera, overview, kart) {
   const fog = overview ? scene.fog : null
   const near = fog?.near
   const far = fog?.far
   if (fog) Object.assign(fog, OVERVIEW_FOG)
+  const underwater = !overview && applyUnderwater(scene, camera, kart)
   gl.render(scene, camera)
+  if (underwater) restoreUnderwater(scene)
   if (fog) Object.assign(fog, { near, far })
 }
 
@@ -80,7 +83,7 @@ function SplitViews({ match }) {
 
       gl.setViewport(left, bottom, width, height)
       gl.setScissor(left, bottom, width, height)
-      renderCell(gl, scene, camera, !player)
+      renderCell(gl, scene, camera, !player, kart)
       recordSplitView(cell, player?.id ?? null, left, top, width, height)
     }
 

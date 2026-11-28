@@ -67,6 +67,8 @@ export function resolveKartCollisions(karts) {
       const b = karts[j]
       if (b.sinking > 0) continue
       // Test grossier avant les capsules (karts éloignés : rien à faire).
+      // Pont et tranchée d'un croisement : l'un passe au-dessus de l'autre.
+      if (Math.abs(b.y - a.y) > 2) continue
       const dx = b.x - a.x
       const dz = b.z - a.z
       const reach = MIN_DISTANCE + COLLISION.halfLength * 2

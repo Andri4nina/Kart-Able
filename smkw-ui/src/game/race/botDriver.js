@@ -24,7 +24,7 @@ export function driveBot(kart, geometry, out, dt = 0) {
   const i = (kart.trackIndex + ahead) % path.count
   const half = Math.max(0, path.width[i] / 2 - 2.5)
   // En drift, le kart glisse vers l'extérieur : il vise le milieu de la route.
-  const lane = chooseBotLateral(geometry, kart, kart.lane * half * (kart.driftDir ? 0.25 : 1), half)
+  const lane = chooseBotLateral(geometry, kart, kart.lane * half * (kart.driftDir ? 0.25 : 1), half, i)
   const targetX = path.x[i] - path.tz[i] * lane
   const targetZ = path.z[i] + path.tx[i] * lane
   // Visée avec le nez : en drift, la trajectoire rejoint le nez (adhérence), on anticipe donc.

@@ -3,6 +3,8 @@ import { distanceToLakeEdge } from './lakes'
 import { buildFences } from './trackFences'
 import { placeTrackFeatures } from './trackFeatures'
 import { buildHeightField } from './trackHeight'
+import { applyDives } from './trackDives'
+import { placeCrossings } from './trackCrossings'
 import { placeJumps } from './trackJumps'
 import { placeSplits } from './trackSplits'
 import { placeWaterways } from './trackWaterways'
@@ -17,6 +19,8 @@ export function getTrackGeometry(trackId) {
     const definition = getTrack(trackId)
     if (!definition) return null
     const path = buildTrackPath(definition.path)
+    // dives : la route plonge sous un lagon (`under`, par échantillon) ; modifie path.y.
+    const { under, diveLakes } = applyDives(definition, path)
     const bounds = getTrackBounds(path)
     // jumps : rampes, brèches du deltaplane (gaps, par échantillon) et lacs sous les brèches,
     // ajoutés aux lacs du circuit (`track` les contient tous) ; relief : grille de hauteurs
@@ -26,13 +30,16 @@ export function getTrackGeometry(trackId) {
     // embranchements (`island`) ; `hidden` : échantillons sans asphalte (brèches et voies d'eau).
     const { gapLakes, ...jumps } = placeJumps(definition, path)
     const { waterLakes, water } = placeWaterways(definition, path)
-    const extraLakes = [...gapLakes, ...waterLakes]
+    const extraLakes = [...gapLakes, ...waterLakes, ...diveLakes]
     const track = extraLakes.length ? { ...definition, lakes: [...definition.lakes, ...extraLakes] } : definition
     const features = placeTrackFeatures(track, path)
     const hidden = jumps.gaps.map((gap, i) => gap | water[i])
+    // crossings : pont et tranchée (deux voies à part) ; `bare` : pas de ruban de route ici.
+    const crossings = placeCrossings(definition, path)
+    const bare = hidden.map((flag, i) => flag | (crossings.crossing[i] ? 1 : 0))
     cache.set(
       trackId,
-      Object.freeze({ track, path, gates: getCheckpointGates(path), bounds, relief: buildHeightField(track, path, bounds), fences: buildFences(track, path), ...features, ...jumps, ...placeSplits(definition, path), water, hidden }),
+      Object.freeze({ track, path, gates: getCheckpointGates(path), bounds, relief: buildHeightField(track, path, bounds, crossings), fences: buildFences(track, path), ...features, ...jumps, ...placeSplits(definition, path), water, under, hidden, bare, ...crossings }),
     )
   }
   return cache.get(trackId)
@@ -44,7 +51,7 @@ export const distanceToLake = distanceToLakeEdge
 // Contrôle de conception (tests, outils) : la route ne se recoupe pas et reste hors de l'eau.
 // Renvoie la plus petite marge entre deux portions éloignées et entre la route et les lacs.
 export function measureTrackClearance(trackId) {
-  const { track, path, water: waterway } = getTrackGeometry(trackId)
+  const { track, path, water: waterway, under } = getTrackGeometry(trackId)
   let road = Infinity
   let water = Infinity
   const stride = 3
@@ -55,7 +62,7 @@ export function measureTrackClearance(trackId) {
       const gap = Math.hypot(path.x[i] - path.x[j], path.z[i] - path.z[j]) - (path.width[i] + path.width[j]) / 2
       road = Math.min(road, gap)
     }
-    if (waterway[i]) continue
+    if (waterway[i] || under[i]) continue
     for (const lake of track.lakes) water = Math.min(water, distanceToLake(lake, path.x[i], path.z[i]) - path.width[i] / 2)
   }
   return { length: Math.round(path.length), road: Math.round(road), water: Math.round(water) }

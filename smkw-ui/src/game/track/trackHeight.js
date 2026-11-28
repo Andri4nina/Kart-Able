@@ -1,3 +1,4 @@
+import { crossingCutHeight } from './trackCrossings'
 import { distanceToLakeEdge } from './lakes'
 import { fractalNoise } from './noise'
 
@@ -39,12 +40,12 @@ function nearestRoad(path, x, z) {
 }
 
 function hasRelief(track, path) {
-  if (track.hills) return true
+  if (track.hills || track.crossings?.length) return true
   for (let i = 0; i < path.count; i += 1) if (path.y[i] !== 0) return true
   return false
 }
 
-export function buildHeightField(track, path, bounds) {
+export function buildHeightField(track, path, bounds, crossings = null) {
   if (!hasRelief(track, path)) return null
   const size = (bounds.halfSize + FIELD_MARGIN) * 2
   const origin = [bounds.centerX - size / 2, bounds.centerZ - size / 2]
@@ -62,7 +63,8 @@ export function buildHeightField(track, path, bounds) {
       const lakeFade = smooth(Math.max(0, Math.min(1, shore / LAKE_FADE)))
       const hills = (track.hills ?? 0) * (fractalNoise(x * 0.008, z * 0.008, track.seed + 17) - 0.35) * 2 * lakeFade
       const shoreFade = edge <= 0 ? 1 : smooth(Math.max(0, Math.min(1, shore / SHORE_FADE)))
-      heights[row * RESOLUTION + column] = (path.y[road.index] * toRoad + Math.max(hills, -1) * (1 - toRoad)) * shoreFade
+      const ground = (path.y[road.index] * toRoad + Math.max(hills, -1) * (1 - toRoad)) * shoreFade
+      heights[row * RESOLUTION + column] = Math.min(ground, crossingCutHeight(path, crossings, road.index, x, z))
     }
   }
   return { origin, size, resolution: RESOLUTION, cell, heights }
