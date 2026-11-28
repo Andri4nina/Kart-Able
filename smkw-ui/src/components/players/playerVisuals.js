@@ -59,6 +59,8 @@ const CHARACTER_BACKGROUNDS = {
   zenji: 'bg-char-zenji',
   pompon: 'bg-char-pompon',
   miella: 'bg-char-miella',
+  nino: 'bg-char-nino',
+  blizzo: 'bg-char-blizzo',
 }
 
 export function getCharacterBackground(characterId) {
