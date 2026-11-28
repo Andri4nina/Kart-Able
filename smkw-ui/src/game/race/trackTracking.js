@@ -89,5 +89,6 @@ export function respawnOnTrack(path, kart, gaps, island) {
   clearBoost(kart)
   resetAir(kart)
   kart.lateral = lateral
+  kart.branch = 0
   kart.offRoad = false
 }

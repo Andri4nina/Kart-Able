@@ -25,3 +25,17 @@
   - course sur Course du Lagon : karts sur l'eau, sillage ;
   - aucune erreur dans la console.
 - **Builds** : `npm run check` et `npm run build`.
+
+## Suite : demandes du 2026-11-28
+
+- **Water Cup** :
+  - l'environnement doit faire penser à l'eau : ambiance `reef` (sable, lagons turquoise, lagon central) ;
+  - on roule sur l'eau et sous l'eau : plongées (`dives`), voir [elements/track-dives.md](../elements/track-dives.md).
+- **Duet Cup** :
+  - deux voies sur la majorité du tour ;
+  - séparations de styles variés ;
+  - croisements avec pont et tranchée, voir [elements/track-splits.md](../elements/track-splits.md).
+- **Vérifié** :
+  - simulation : tous à l'arrivée sur les 8 circuits, sans chute ;
+  - équilibre des voies : au plus 0,5 s d'écart sur 32 s ;
+  - dans le jeu : pont, tranchée, lagon et plongée sous-marine, sans erreur.

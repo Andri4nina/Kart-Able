@@ -1,5 +1,5 @@
 import { SHRINK } from '../../config/items'
-import { OVER_SPEED_DRAG, WATER } from '../../config/kartTuning'
+import { OVER_SPEED_DRAG, UNDERWATER, WATER } from '../../config/kartTuning'
 
 // Vitesse le long de la direction de conduite (calcul pur), commune à la conduite normale
 // (kartPhysics.js) et au drift (kartDriftMotion.js).
@@ -8,7 +8,7 @@ import { OVER_SPEED_DRAG, WATER } from '../../config/kartTuning'
 export function topSpeed(kart) {
   const boosting = kart.boost > 0
   const surface = kart.onWater ? WATER.speed : kart.offRoad && !boosting ? kart.stats.offRoad : 1
-  const small = kart.shrink > 0 ? SHRINK.speed : 1
+  const small = (kart.shrink > 0 ? SHRINK.speed : 1) * (kart.underwater ? UNDERWATER.speed : 1)
   return kart.stats.maxSpeed * kart.topFactor * surface * small * (boosting ? kart.boostSpeed : 1)
 }
 
