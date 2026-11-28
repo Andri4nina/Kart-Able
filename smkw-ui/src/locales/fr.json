@@ -440,6 +440,12 @@
     },
     "water": {
       "name": "Water Cup"
+    },
+    "canyon": {
+      "name": "Canyon Cup"
+    },
+    "formula": {
+      "name": "Formula Cup"
     }
   },
   "tracks": {
@@ -525,35 +531,67 @@
     },
     "duetMeadows": {
       "name": "Prairies Duo",
-      "description": "Une haie, un pont au-dessus d'une tranchée, puis un canal : deux voies sur presque tout le tour."
+      "description": "Un grand S à droite, une haie, un pont au-dessus d'une tranchée, puis un canal qui serpente en haut de la prairie."
     },
     "forkCanyon": {
-      "name": "Canyon de la Fourche",
-      "description": "Rochers puis muret entre les deux voies, qui se croisent par un pont au cœur du canyon."
+      "name": "Canyon Fourchu",
+      "description": "Deux voies séparées par des rochers dans un S rapide, un pont, puis un muret jusqu'au sommet de la boucle."
     },
     "twinIsles": {
       "name": "Îles Jumelles",
-      "description": "Deux voies le long de la côte, un pont pour changer de côté, puis un canal jusqu'au large."
+      "description": "Un tracé en haricot entre deux lagons : herbe, pont, canal, et un dernier S avant le saut en deltaplane."
     },
     "skyFork": {
-      "name": "Fourche du Ciel",
-      "description": "Deux ponts et deux tranchées en altitude : on passe tour à tour dessus et dessous."
+      "name": "Fourche Céleste",
+      "description": "Deux ponts et deux tranchées, puis un crochet serré au cœur du circuit avant le vol au-dessus du lac."
     },
     "lagoonRun": {
       "name": "Course du Lagon",
-      "description": "Glisse sur le lagon, puis plonge au fond de l'eau avant de remonter sur le sable."
+      "description": "Un triangle autour du lagon : glisse sur l'eau, puis une longue plongée sous le récif en diagonale."
     },
     "riverRapids": {
       "name": "Rapides de la Rivière",
-      "description": "Une rivière en S à la surface, puis deux plongées sous le courant, entre les rochers."
+      "description": "Une rivière en lacets dans la forêt : deux longs rapides en surface et un passage sous le courant."
     },
     "mangroveMaze": {
       "name": "Dédale des Mangroves",
-      "description": "Des chenaux entre les rochers de la mangrove et une longue traversée sous-marine."
+      "description": "Des virages partout, trois plongées dans les chenaux et deux voies d'eau entre les racines."
     },
     "harborDash": {
       "name": "Sprint du Port",
-      "description": "Le bassin du port à la surface, puis deux passages sous l'eau entre les quais."
+      "description": "Un port aux angles droits : plongée sous les quais, saut en deltaplane au-dessus du bassin, long canal."
+    },
+    "boulderGorge": {
+      "name": "Gorge des Rochers",
+      "description": "Une montée vers la falaise sous les éboulements, une descente bosselée et des rochers à chaque virage."
+    },
+    "redCliffs": {
+      "name": "Falaises Rouges",
+      "description": "Des lacets qui grimpent au pied des falaises rouges, trois zones d'éboulement et des bosses au retour."
+    },
+    "rattleRidge": {
+      "name": "Crête Cahotante",
+      "description": "Une crête toute en bosses et en creux : on décolle sans cesse, entre deux couloirs d'éboulement."
+    },
+    "quarryDrop": {
+      "name": "Fosse de la Carrière",
+      "description": "On plonge au fond de la carrière puis on en ressort par une rampe, sous trois éboulements."
+    },
+    "monzaPark": {
+      "name": "Parc de Monza",
+      "description": "Le temple de la vitesse : de très longues lignes droites, trois chicanes et la grande courbe finale."
+    },
+    "spaHills": {
+      "name": "Collines de Spa",
+      "description": "Épingle après le départ, plongée puis montée raide, longue ligne droite et courbes rapides dans la forêt."
+    },
+    "silverField": {
+      "name": "Aérodrome Silver",
+      "description": "Un ancien aérodrome : courbes rapides enchaînées, complexe en S et épingle lente."
+    },
+    "interlagosBowl": {
+      "name": "Cuvette d'Interlagos",
+      "description": "Un S qui plonge dans la cuvette après le départ, un lac au fond et une longue remontée vers l'arrivée."
     }
   },
   "vehicles": {
@@ -738,6 +776,33 @@
       "connect": "Jouer en ligne",
       "connected": "Connecté en ligne",
       "missing": "Aucun serveur en ligne n'est configuré pour cette version : saisis l'adresse d'un serveur Kart Able dans « Autre serveur »."
+    }
+  },
+  "voice": {
+    "title": "Chat vocal",
+    "join": "Activer le micro",
+    "leave": "Quitter le vocal",
+    "mute": "Couper le micro",
+    "unmute": "Rétablir le micro",
+    "deafen": "Couper le son des autres",
+    "undeafen": "Rétablir le son des autres",
+    "reconnect": "Se reconnecter au vocal",
+    "alone": "Personne d'autre en vocal pour l'instant.",
+    "status": {
+      "off": "Désactivé",
+      "connecting": "Connexion…",
+      "on": "Actif",
+      "error": "Indisponible"
+    },
+    "peer": {
+      "connecting": "Connexion",
+      "connected": "Connecté",
+      "failed": "Échec"
+    },
+    "errors": {
+      "unavailable": "Micro indisponible ici : il faut une page sécurisée (https) ou l'application.",
+      "denied": "Accès au micro refusé : autorise-le dans le navigateur, puis réessaie.",
+      "noMicrophone": "Aucun micro trouvé."
     }
   }
 }

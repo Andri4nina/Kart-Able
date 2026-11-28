@@ -1,5 +1,7 @@
+import { CANYON_TRACKS } from './trackData/canyonCup'
 import { DUET_TRACKS } from './trackData/duetCup'
 import { DUST_TRACKS } from './trackData/dustCup'
+import { FORMULA_TRACKS } from './trackData/formulaCup'
 import { FROST_TRACKS } from './trackData/frostCup'
 import { KAIROS_TRACKS } from './trackData/kairosCup'
 import { PAX_TRACKS } from './trackData/paxCup'
@@ -28,6 +30,10 @@ import { WATER_TRACKS } from './trackData/waterCup'
 //   (game/track/trackWaterways.js) ; route à hauteur 0 ;
 // - dives : [fraction, longueur m, profondeur m] : la route plonge sous un lagon et y roule
 //   (game/track/trackDives.js) ; route à hauteur 0 autour ;
+// - bumps : [fraction, longueur m, amplitude m, longueur d'onde m ?] : bosses et creux de la
+//   route, qui font décoller (game/track/trackBumps.js) ;
+// - rockfalls : [fraction, longueur m, nombre ?] : éboulements, rochers qui tombent sur la route
+//   puis y restent un moment (game/track/trackRockfalls.js) ;
 // - lakes : plans d'eau elliptiques { x, z, rx, rz, angle } ; un lac à moins de 8 m du bord
 //           ouvre la barrière : on peut y tomber (game/track/trackFences.js) ;
 // - theme : ambiance (config/trackThemes.js) ; seed : graine du placement de la végétation.
@@ -39,7 +45,7 @@ import { WATER_TRACKS } from './trackData/waterCup'
 // Textes : tracks.<id>.name et tracks.<id>.description.
 
 // Données des circuits : config/trackData/<coupe>.js (une liste par coupe).
-const TRACK_DEFINITIONS = [...KAIROS_TRACKS, ...SUMMIT_TRACKS, ...FROST_TRACKS, ...DUST_TRACKS, ...PAX_TRACKS, ...DUET_TRACKS, ...WATER_TRACKS]
+const TRACK_DEFINITIONS = [...KAIROS_TRACKS, ...SUMMIT_TRACKS, ...FROST_TRACKS, ...DUST_TRACKS, ...PAX_TRACKS, ...DUET_TRACKS, ...WATER_TRACKS, ...CANYON_TRACKS, ...FORMULA_TRACKS]
 
 // Mise à l'échelle de tous les circuits : positions (et lacs) x size, largeurs x width,
 // hauteurs x height (les pentes restent du même ordre sur des distances plus longues).

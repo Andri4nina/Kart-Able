@@ -439,6 +439,12 @@
     },
     "water": {
       "name": "Water Cup"
+    },
+    "canyon": {
+      "name": "Canyon Cup"
+    },
+    "formula": {
+      "name": "Formula Cup"
     }
   },
   "tracks": {
@@ -523,36 +529,68 @@
       "description": "Lalana miolikolika hatrany an-tampony, avy eo fidinana lava sy sarotra."
     },
     "duetMeadows": {
-      "name": "Ahitra Duo",
-      "description": "Fefy maitso, tetezana ambonin'ny hady, avy eo lakandrano : lalana roa saika manerana ny fihodinana."
+      "name": "Tanimbary Roa",
+      "description": "S lehibe eo ankavanana, fefy hazo, tetezana ambonin'ny hady, ary lakandrano miolikolika eny ambony."
     },
     "forkCanyon": {
-      "name": "Lohasahan'ny Sampanana",
-      "description": "Vato avy eo rindrina ambany eo anelanelan'ny lalana roa, mifanapaka amin'ny tetezana ao afovoan'ny lohasaha."
+      "name": "Hantsana Sampanana",
+      "description": "Lalana roa misaraka amin'ny vato ao anaty S haingana, tetezana, ary rindrina ambany hatrany an-tampony."
     },
     "twinIsles": {
       "name": "Nosy Kambana",
-      "description": "Lalana roa manaraka ny morontsiraka, tetezana hifanakalozana, avy eo lakandrano mankany an-dranomasina."
+      "description": "Lalana endrika tsaramaso eo anelanelan'ny farihy roa : ahitra, tetezana, lakandrano, ary S farany alohan'ny fitsambikinana."
     },
     "skyFork": {
-      "name": "Sampanan'ny Lanitra",
-      "description": "Tetezana roa sy hady roa any amin'ny avo : mandalo ambony sy ambany mifandimby."
+      "name": "Sampanan-danitra",
+      "description": "Tetezana roa sy hady roa, avy eo fiolahana tery eo afovoany alohan'ny sidina ambonin'ny farihy."
     },
     "lagoonRun": {
-      "name": "Hazakazaka amin'ny Lagona",
-      "description": "Mitsoriaka ambonin'ny lagona, avy eo milentika any amin'ny fanambanin'ny rano alohan'ny hiakatra amin'ny fasika."
+      "name": "Hazakazaky ny Farihy",
+      "description": "Telozoro manodidina ny farihy : mitsoraka eny ambony rano, avy eo milentika lava ao ambanin'ny haran-dranomasina."
     },
     "riverRapids": {
-      "name": "Riaka an'Ony",
-      "description": "Ony miolikolika ambonin'ny rano, avy eo filentehana roa ao ambanin'ny riaka, eo anelanelan'ny vato."
+      "name": "Riaka an-Drenirano",
+      "description": "Renirano miolikolika anaty ala : riaka lava roa eny ambony sy fandehanana ambanin'ny onja."
     },
     "mangroveMaze": {
-      "name": "Labirintan'ny Honko",
-      "description": "Lakandrano eo anelanelan'ny vatolampy amin'ny honko ary fiampitana lava ao ambanin'ny rano."
+      "name": "Labyrintin'ny Honko",
+      "description": "Fiolahana eny rehetra eny, filentehana telo ao amin'ny lakandrano ary lalan-drano roa eo anelanelan'ny fakany."
     },
     "harborDash": {
-      "name": "Hazakazaka amin'ny Seranana",
-      "description": "Ny dobo amin'ny seranana ambonin'ny rano, avy eo indroa ao ambanin'ny rano eo anelanelan'ny kianja."
+      "name": "Hazakazaky ny Seranana",
+      "description": "Seranana misy zoro mahitsy : milentika ambanin'ny tobim-piantsonana, mitsambikina amin'ny elatra, lakandrano lava."
+    },
+    "boulderGorge": {
+      "name": "Hantsam-bato",
+      "description": "Fiakarana mankany amin'ny hantsana ambanin'ny vato latsaka, fidinana feno vongana ary vato isaky ny fiolahana."
+    },
+    "redCliffs": {
+      "name": "Hantsana Mena",
+      "description": "Lalana miolikolika miakatra eo am-pototry ny hantsana mena, faritra telo misy vato latsaka ary vongana amin'ny fiverenana."
+    },
+    "rattleRidge": {
+      "name": "Tampona Mikitoantoana",
+      "description": "Tampona feno vongana sy lavaka : manidina foana ianao, eo anelanelan'ny lalana roa misy vato latsaka."
+    },
+    "quarryDrop": {
+      "name": "Lavaka Fitrandrahana",
+      "description": "Milentika any amin'ny fanambanin'ny lavaka ary miakatra amin'ny lalana mideza, ambanin'ny vato latsaka telo."
+    },
+    "monzaPark": {
+      "name": "Valan'i Monza",
+      "description": "Tempolin'ny hafainganana : lalana mahitsy lava be, chicane telo ary fiolahana lehibe farany."
+    },
+    "spaHills": {
+      "name": "Havoan'i Spa",
+      "description": "Fiolahana tery aorian'ny fiaingana, fidinana avy eo fiakarana mideza, lalana mahitsy lava ary fiolahana haingana anaty ala."
+    },
+    "silverField": {
+      "name": "Seranam-piaramanidina Silver",
+      "description": "Seranam-piaramanidina taloha : fiolahana haingana mifanesy, S ary fiolahana tery miadana."
+    },
+    "interlagosBowl": {
+      "name": "Lavaka Interlagos",
+      "description": "S midina ao anaty lavaka aorian'ny fiaingana, farihy any ambany ary fiakarana lava mankany amin'ny tsipika farany."
     }
   },
   "vehicles": {
@@ -737,6 +775,33 @@
       "connect": "Hilalao an-tserasera",
       "connected": "Mifandray an-tserasera",
       "missing": "Tsy misy mpizara an-tserasera voarafitra amin'ity dikan-teny ity: soraty ao amin'ny « Mpizara hafa » ny adiresin'ny mpizara Kart Able."
+    }
+  },
+  "voice": {
+    "title": "Resaka am-peo",
+    "join": "Alefa ny mikrô",
+    "leave": "Hiala amin’ny resaka",
+    "mute": "Vonoy ny mikrô",
+    "unmute": "Avereno ny mikrô",
+    "deafen": "Vonoy ny feon’ny hafa",
+    "undeafen": "Avereno ny feon’ny hafa",
+    "reconnect": "Hiditra indray amin’ny resaka",
+    "alone": "Mbola tsy misy olon-kafa ao amin’ny resaka.",
+    "status": {
+      "off": "Maty",
+      "connecting": "Mifandray…",
+      "on": "Mandeha",
+      "error": "Tsy azo ampiasaina"
+    },
+    "peer": {
+      "connecting": "Mifandray",
+      "connected": "Mifandray tsara",
+      "failed": "Tsy nahomby"
+    },
+    "errors": {
+      "unavailable": "Tsy azo ampiasaina eto ny mikrô : ilaina ny pejy azo antoka (https) na ny rindranasa.",
+      "denied": "Tsy nahazo alalana hampiasa ny mikrô : omeo alalana ao amin’ny navigateur, dia andramo indray.",
+      "noMicrophone": "Tsy misy mikrô hita."
     }
   }
 }

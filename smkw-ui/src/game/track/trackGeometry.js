@@ -3,9 +3,11 @@ import { distanceToLakeEdge } from './lakes'
 import { buildFences } from './trackFences'
 import { placeTrackFeatures } from './trackFeatures'
 import { buildHeightField } from './trackHeight'
+import { applyBumps } from './trackBumps'
 import { applyDives } from './trackDives'
 import { placeCrossings } from './trackCrossings'
 import { placeJumps } from './trackJumps'
+import { placeRockfalls } from './trackRockfalls'
 import { placeSplits } from './trackSplits'
 import { placeWaterways } from './trackWaterways'
 import { buildTrackPath } from './trackPath'
@@ -21,6 +23,8 @@ export function getTrackGeometry(trackId) {
     const path = buildTrackPath(definition.path)
     // dives : la route plonge sous un lagon (`under`, par échantillon) ; modifie path.y.
     const { under, diveLakes } = applyDives(definition, path)
+    // bumps : bosses et creux de la route (modifie path.y) ; rockfalls : éboulements.
+    applyBumps(definition, path)
     const bounds = getTrackBounds(path)
     // jumps : rampes, brèches du deltaplane (gaps, par échantillon) et lacs sous les brèches,
     // ajoutés aux lacs du circuit (`track` les contient tous) ; relief : grille de hauteurs
@@ -39,7 +43,7 @@ export function getTrackGeometry(trackId) {
     const bare = hidden.map((flag, i) => flag | (crossings.crossing[i] ? 1 : 0))
     cache.set(
       trackId,
-      Object.freeze({ track, path, gates: getCheckpointGates(path), bounds, relief: buildHeightField(track, path, bounds, crossings), fences: buildFences(track, path), ...features, ...jumps, ...placeSplits(definition, path), water, under, hidden, bare, ...crossings }),
+      Object.freeze({ track, path, gates: getCheckpointGates(path), bounds, relief: buildHeightField(track, path, bounds, crossings), fences: buildFences(track, path), ...features, ...jumps, ...placeSplits(definition, path), ...placeRockfalls(definition, path), water, under, hidden, bare, ...crossings }),
     )
   }
   return cache.get(trackId)

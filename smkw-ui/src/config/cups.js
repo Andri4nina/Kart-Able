@@ -18,6 +18,10 @@ export const CUPS = Object.freeze([
   { id: 'duet', trackIds: ['duetMeadows', 'forkCanyon', 'twinIsles', 'skyFork'] },
   // Coupe de l'eau : voies d'eau où les karts flottent et glissent.
   { id: 'water', trackIds: ['lagoonRun', 'riverRapids', 'mangroveMaze', 'harborDash'] },
+  // Coupe des pièges : gorges, montées, bosses et creux, éboulements et rochers partout.
+  { id: 'canyon', trackIds: ['boulderGorge', 'redCliffs', 'rattleRidge', 'quarryDrop'] },
+  // Coupe des grands circuits : tracés inspirés de circuits automobiles célèbres.
+  { id: 'formula', trackIds: ['monzaPark', 'spaHills', 'silverField', 'interlagosBowl'] },
 ])
 
 // Tous les circuits, coupe par coupe.

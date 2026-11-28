@@ -25,7 +25,7 @@ function updatePads(pads, kart, dt) {
   }
 }
 
-function hitObstacle(obstacle, kart) {
+export function hitObstacle(obstacle, kart) {
   const dx = kart.x - obstacle.x
   const dz = kart.z - obstacle.z
   const reach = obstacle.radius + KART_RADIUS

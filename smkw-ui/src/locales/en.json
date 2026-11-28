@@ -442,6 +442,12 @@
     },
     "water": {
       "name": "Water Cup"
+    },
+    "canyon": {
+      "name": "Canyon Cup"
+    },
+    "formula": {
+      "name": "Formula Cup"
     }
   },
   "tracks": {
@@ -527,35 +533,67 @@
     },
     "duetMeadows": {
       "name": "Duet Meadows",
-      "description": "A hedge, a bridge over a cutting, then a canal: two lanes for most of the lap."
+      "description": "A big S on the right, a hedge, a bridge over a trench, then a canal winding across the top of the meadow."
     },
     "forkCanyon": {
       "name": "Fork Canyon",
-      "description": "Rocks then a low wall between the two lanes, which cross by a bridge in the heart of the canyon."
+      "description": "Two lanes split by rocks in a fast S, a bridge, then a low wall up to the top of the loop."
     },
     "twinIsles": {
       "name": "Twin Isles",
-      "description": "Two lanes along the coast, a bridge to swap sides, then a canal out to sea."
+      "description": "A bean-shaped course between two lagoons: grass, bridge, canal, and a last S before the glider jump."
     },
     "skyFork": {
       "name": "Sky Fork",
-      "description": "Two bridges and two cuttings high in the mountains: you go over, then under."
+      "description": "Two bridges and two trenches, then a tight hook in the heart of the track before flying over the lake."
     },
     "lagoonRun": {
       "name": "Lagoon Run",
-      "description": "Glide across the lagoon, then dive to the bottom before climbing back onto the sand."
+      "description": "A triangle around the lagoon: glide on the water, then a long diagonal dive under the reef."
     },
     "riverRapids": {
       "name": "River Rapids",
-      "description": "An S-shaped river on the surface, then two dives under the current, between the rocks."
+      "description": "A winding river through the forest: two long surface rapids and a run under the current."
     },
     "mangroveMaze": {
       "name": "Mangrove Maze",
-      "description": "Channels between mangrove rocks and a long underwater crossing."
+      "description": "Turns everywhere, three dives through the channels and two waterways between the roots."
     },
     "harborDash": {
       "name": "Harbor Dash",
-      "description": "The harbor basin on the surface, then two underwater runs between the docks."
+      "description": "A square-cornered harbor: a dive under the docks, a glider jump over the basin, a long canal."
+    },
+    "boulderGorge": {
+      "name": "Boulder Gorge",
+      "description": "A climb to the cliff under falling rocks, a bumpy descent and boulders at every turn."
+    },
+    "redCliffs": {
+      "name": "Red Cliffs",
+      "description": "Switchbacks climbing below the red cliffs, three rockfall zones and bumps on the way back."
+    },
+    "rattleRidge": {
+      "name": "Rattle Ridge",
+      "description": "A ridge made of bumps and dips: you keep taking off, between two rockfall corridors."
+    },
+    "quarryDrop": {
+      "name": "Quarry Drop",
+      "description": "Dive to the bottom of the quarry and climb back out by a ramp, under three rockfalls."
+    },
+    "monzaPark": {
+      "name": "Monza Park",
+      "description": "The temple of speed: very long straights, three chicanes and the big final curve."
+    },
+    "spaHills": {
+      "name": "Spa Hills",
+      "description": "A hairpin after the start, a dip then a steep climb, a long straight and fast forest curves."
+    },
+    "silverField": {
+      "name": "Silver Field",
+      "description": "An old airfield: linked fast curves, an S complex and a slow hairpin."
+    },
+    "interlagosBowl": {
+      "name": "Interlagos Bowl",
+      "description": "An S dropping into the bowl after the start, a lake at the bottom and a long climb to the finish."
     }
   },
   "vehicles": {
@@ -740,6 +778,33 @@
       "connect": "Play online",
       "connected": "Connected online",
       "missing": "No online server is configured for this version: type the address of a Kart Able server in Other server."
+    }
+  },
+  "voice": {
+    "title": "Voice chat",
+    "join": "Turn on mic",
+    "leave": "Leave voice",
+    "mute": "Mute mic",
+    "unmute": "Unmute mic",
+    "deafen": "Mute others",
+    "undeafen": "Unmute others",
+    "reconnect": "Reconnect voice",
+    "alone": "Nobody else in voice yet.",
+    "status": {
+      "off": "Off",
+      "connecting": "Connecting…",
+      "on": "On",
+      "error": "Unavailable"
+    },
+    "peer": {
+      "connecting": "Connecting",
+      "connected": "Connected",
+      "failed": "Failed"
+    },
+    "errors": {
+      "unavailable": "Mic unavailable here: a secure page (https) or the app is needed.",
+      "denied": "Mic access denied: allow it in the browser, then try again.",
+      "noMicrophone": "No microphone found."
     }
   }
 }

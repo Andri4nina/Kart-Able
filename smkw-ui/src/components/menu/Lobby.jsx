@@ -15,6 +15,7 @@ import { useVehicleSelectionStore } from '../../stores/vehicleSelectionStore'
 import { useNetStore } from '../../stores/netStore'
 import { isRoomReady } from '../../net/netMatch'
 import { useLanLobbyPlayers } from './lan/useLanLobbyPlayers'
+import { VoicePanel } from './lan/VoicePanel'
 import { LobbyFooter } from './LobbyFooter'
 import { LobbyPlayers } from './LobbyPlayers'
 import { LobbySummary } from './LobbySummary'
@@ -64,7 +65,10 @@ export function Lobby() {
       footer={<LobbyFooter blocker={blocker} unready={unready} isOnline={isOnline} isHost={isOnlineHost} roomReady={roomReady} />}
     >
       <div className="grid max-w-5xl grid-cols-1 gap-6 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
-        <LobbySummary setup={setup} course={isOnline && !isOnlineHost ? null : course} playerCount={players.length} limit={limit} isOnline={isOnline} />
+        <div className="flex flex-col gap-6">
+          <LobbySummary setup={setup} course={isOnline && !isOnlineHost ? null : course} playerCount={players.length} limit={limit} isOnline={isOnline} />
+          {isOnline && setup.online.code ? <VoicePanel /> : null}
+        </div>
         <LobbyPlayers players={players} freeSlots={freeSlots} showWaiting={isOnline && !roomReady} />
       </div>
     </MenuPage>

@@ -1,4 +1,4 @@
-import { Mountain, Route, Snowflake, Split, Sprout, Tornado, Trophy, Waves } from 'lucide-react'
+import { Flag, Mountain, Pickaxe, Route, Snowflake, Split, Sprout, Tornado, Trophy, Waves } from 'lucide-react'
 
 // Emblème de chaque coupe : symbole (lucide) et couleur (tokens --color-cup-* de index.css).
 // Classes écrites en entier pour que Tailwind les trouve. Coupe inconnue : trophée, rouge.
@@ -10,6 +10,8 @@ const EMBLEMS = Object.freeze({
   pax: { icon: Route, fill: 'text-cup-pax' },
   duet: { icon: Split, fill: 'text-cup-duet' },
   water: { icon: Waves, fill: 'text-cup-water' },
+  canyon: { icon: Pickaxe, fill: 'text-cup-canyon' },
+  formula: { icon: Flag, fill: 'text-cup-formula' },
 })
 const FALLBACK = { icon: Trophy, fill: 'text-brand-red' }
 

@@ -1,6 +1,7 @@
 import { RACE } from '../../config/race'
 import { DIVE } from '../track/trackDives'
 import { updateTrackFeatures } from './kartFeatures'
+import { updateRockfalls } from './kartRockfall'
 import { stepKartPhysics } from './kartPhysics'
 import { placeOnGround, updateKartVertical } from './kartVertical'
 import { updateProgress } from './raceProgress'
@@ -10,7 +11,7 @@ import { applyIsland } from './kartIsland'
 import { applyFence, isInWater, respawnOnTrack, updateTrackIndex } from './trackTracking'
 
 // Un pas de déplacement d'un kart (calcul pur) : kart distant (réseau local), réapparition
-// après une chute, conduite, relief et vol, limites du circuit et terre-plein, pads et rochers,
+// après une chute, conduite, relief et vol, limites du circuit et terre-plein, pads et rochers, éboulements,
 // voies d'eau (on y flotte), chute dans l'eau, tours.
 const GAP_WATER = -0.6 // hauteur sous laquelle un kart tombé dans une brèche coule
 
@@ -37,6 +38,7 @@ export function moveKart(world, kart, dt) {
   kart.onWater = world.geometry.water[kart.trackIndex] === 1 && !kart.airborne
   kart.underwater = world.geometry.under[kart.trackIndex] === 1 && kart.y < DIVE.surface - DIVE.immersed
   updateTrackFeatures(world.geometry, kart, dt)
+  updateRockfalls(world, kart)
   // Dans l'eau : hors de la route sur un lac (au sol), ou tombé dans une brèche du deltaplane.
   const fell = gaps[kart.trackIndex] && kart.y < GAP_WATER
   if (fell || (kart.offRoad && !kart.airborne && !kart.onWater && !world.geometry.under[kart.trackIndex] && isInWater(track.lakes, kart.x, kart.z))) {
