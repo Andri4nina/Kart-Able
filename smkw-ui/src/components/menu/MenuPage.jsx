@@ -7,10 +7,12 @@ import { useMatchSetupStore } from '../../stores/matchSetupStore'
 import { useNavigationStore } from '../../stores/navigationStore'
 import { BackButton } from './BackButton'
 import { MenuStepper } from './MenuStepper'
+import { FitToScreen } from '../ui/FitToScreen'
 import { SettingsButton } from './SettingsButton'
 
 // Gabarit commun des écrans du parcours : retour, numéro d'étape, titre, stepper,
-// contenu défilant (barre de défilement du jeu), actions en bas.
+// contenu ajusté à l'écran sans défilement (FitToScreen), actions en bas. Écrans très bas
+// (téléphone en paysage) : le contenu garde sa taille et toute la page défile.
 // Le glissement suit le sens de navigation (avant / retour).
 // `backdrop` : calque optionnel positionné sur tout l'écran (ex. étiquettes alignées sur la 3D).
 // `compactHeader` : masque le sous-titre sur les écrans bas (la 3D occupe le haut de l'écran).
@@ -29,7 +31,7 @@ export function MenuPage({ step, title, subtitle, footer, backdrop = null, compa
       initial="enter"
       animate="center"
       exit="exit"
-      className="absolute inset-0 flex flex-col bg-brand-ink/35 p-4 sm:p-8 lg:px-12 lg:py-8"
+      className="scrollbar-game absolute inset-0 flex flex-col bg-brand-ink/35 p-4 sm:p-8 lg:px-12 lg:py-8 [@media(max-height:30rem)]:overflow-y-auto"
     >
       {backdrop}
       <motion.header variants={pageItem} className="pointer-events-auto flex items-start justify-between gap-4">
@@ -57,11 +59,10 @@ export function MenuPage({ step, title, subtitle, footer, backdrop = null, compa
         </div>
       </motion.header>
 
-      <motion.div
-        variants={pageItem}
-        className="scrollbar-game pointer-events-auto mt-5 min-h-0 flex-1 overflow-y-auto overflow-x-hidden p-2 pr-3 sm:mt-6"
-      >
-        {children}
+      <motion.div variants={pageItem} className="pointer-events-auto mt-5 flex min-h-0 flex-1 flex-col sm:mt-6 [@media(max-height:30rem)]:flex-none">
+        <FitToScreen className="flex-1 [@media(max-height:30rem)]:flex-none [@media(max-height:30rem)]:overflow-visible">
+          <div className="p-2">{children}</div>
+        </FitToScreen>
       </motion.div>
 
       {footer ? (
